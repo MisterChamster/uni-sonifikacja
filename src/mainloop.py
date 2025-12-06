@@ -22,7 +22,12 @@ def mainloop() -> None:
 
     # Load file
     print("Loading file...\n")
-    loaded_boi = pd.read_csv(datafile_path, header=None, names=["values"], skipinitialspace=True)
+    segmenter = 5   #To get every 5th line
+    loaded_boi = pd.read_csv(datafile_path,
+                             header=None,
+                             names=["values"],
+                             skiprows=lambda i: i % segmenter != 0,
+                             skipinitialspace=True)
     # print(loaded_boi)
 
     # Data segmentation - averaging samples into n-sample bins
