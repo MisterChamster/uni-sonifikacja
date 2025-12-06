@@ -1,4 +1,4 @@
-from src.askers import ask_path_filedialog, ask_normalize
+from src.askers import Askers
 from src.utils import get_open_close_for_chunks, get_peak_coordinates
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,15 +10,15 @@ from matplotlib.ticker import MultipleLocator
 
 
 def mainloop() -> None:
-    asker_normalize = ask_normalize()
-    print()
-
     print("Choose data file in txt/csv format:")
-    datafile_path = ask_path_filedialog("f", "Choose data txt file")
+    datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
     if not datafile_path.endswith(".txt") and not datafile_path.endswith(".csv"):
         print("Wrong file format")
         return
     print(datafile_path)
+
+    asker_normalize = Askers.ask_normalize()
+    print()
 
     # Load file
     print("Loading file...\n")
