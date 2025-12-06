@@ -3,7 +3,7 @@ from src.utils import get_open_close_for_chunks, get_peak_coordinates
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
-# So, a border reasonable num of putting rows in hist with loaded_boi.hist()
+# So, a border reasonable num of putting rows in chart with loaded_boi.hist()
 # is around 25k which is 15 seconds. More than that will be a slog and we
 # don't want that.
 
@@ -28,13 +28,8 @@ def mainloop() -> None:
                              names=["values"],
                              skiprows=lambda i: i % segmenter != 0,
                              skipinitialspace=True)
-    # print(loaded_boi)
 
-    # Data segmentation - averaging samples into n-sample bins
-    # n = 10
-    # loaded_boi = loaded_boi.groupby(loaded_boi.index // n).mean()
-
-    # Get pandas.Series objects and convert them to floats. There was a 
+    # Get pandas.Series objects and convert them to floats. There was a
     # FutureWarning regarding a blatant type casting to float :((
     min_ds_val = loaded_boi.min()
     min_ds_val = float(min_ds_val["values"])
@@ -57,11 +52,6 @@ def mainloop() -> None:
 
         for i in range(len(peak_ys)):
             peak_ys[i] = (peak_ys[i]-min_ds_val)/(diff)
-    # print(asker_normalize)
-    # print(peak_ys)
-
-    # row_count = len(loaded_boi.index)
-    # print(row_count)
 
     print("Plotting (evil plans)...\n")
     plt.scatter(loaded_boi.index, loaded_boi["values"], s=1)
