@@ -19,13 +19,34 @@ class Askers():
         return sel_path
 
 
+    def ask_segment() -> int:
+        while True:
+            print("Segment data (Pick every n-th line of data. Max 10, optimal 5.)\n" \
+                  "Press Enter to skip.\n" \
+                  "n = ", end="")
+            asker = input()
+
+            if asker == "":
+                return None
+            elif not asker.isdigit():
+                print("Incorrect input.\n\n")
+            else:
+                asker = int(asker)
+            if asker <= 1:
+                return None
+            elif asker > 10:
+                print("Input too high.\n\n")
+            else:
+                return asker
+
+
     def ask_normalize() -> bool:
         rets_dict = {"y": True,
-                    "n": False}
+                     "n": False}
 
         while True:
             print("Do You want to normalize the data? (y/n)\n" \
-                ">> ", end="")
+                  ">> ", end="")
             asker = input()
 
             if asker in rets_dict:
