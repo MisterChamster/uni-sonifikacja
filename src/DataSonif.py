@@ -77,6 +77,11 @@ class DataSonif():
         peak_xes = [a[0] for a in peak_coords]
         peak_ys  = [a[1] for a in peak_coords]
 
+        if self.normalized == True:
+            difference = self.max_ds_val - self.min_ds_val
+            for i in range(len(peak_ys)):
+                peak_ys[i] = (peak_ys[i]-self.min_ds_val)/(difference)
+
         plt.scatter(self.data_array.index, self.data_array["values"], s=1)
         plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
 
