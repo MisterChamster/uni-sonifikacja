@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
+from src.utils import get_peak_coordinates
 
 
 
@@ -56,7 +57,7 @@ class DataSonif():
             return None
 
         difference = self.max_ds_val - self.min_ds_val
-        loaded_data = loaded_data.map(lambda x: (x-self.min_ds_val)/(difference))
+        self.data_array = self.data_array.map(lambda x: (x-self.min_ds_val)/(difference))
 
         self.update_min_max()
 
@@ -71,8 +72,26 @@ class DataSonif():
         pass
 
 
-    def show_chart(self):
-        pass
+    def show_chart(self) -> None:
+        peak_coords = get_peak_coordinates(self.file_path, 2000, self.min_val, self.max_val)
+        peak_xes = [a[0] for a in peak_coords]
+        peak_ys  = [a[1] for a in peak_coords]
+
+        plt.scatter(self.data_array.index, self.data_array["values"], s=1)
+        plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
+
+        plt.xlabel("Samples")
+        plt.ylabel("Value")
+        if self.normalized == True:
+            y_locators = 0.1
+        else:
+            y_locators = 1
+        plt.gca().xaxis.set_major_locator(MultipleLocator(10000))
+        plt.gca().yaxis.set_major_locator(MultipleLocator(y_locators))
+        plt.title('A VERY Cool Chart')
+        plt.show()
+
+        return None
 
 
     def show_histogram(self):

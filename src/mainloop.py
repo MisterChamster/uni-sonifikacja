@@ -1,5 +1,5 @@
 from src.Askers import Askers
-from src.utils import get_open_close_for_chunks, get_peak_coordinates
+from src.utils import get_peak_coordinates
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
