@@ -32,43 +32,29 @@ class Askers():
                 print("Incorrect input.\n\n")
             else:
                 asker = int(asker)
-            if asker <= 1:
-                return None
-            elif asker > 10:
-                print("Input too high.\n\n")
-            else:
-                return asker
+                if asker <= 1:
+                    return None
+                elif asker > 10:
+                    print("Input too high.\n\n")
+                else:
+                    return asker
 
-
-    def ask_normalize() -> bool:
-        rets_dict = {"y": True,
-                     "n": False}
-
-        while True:
-            print("Do You want to normalize the data? (y/n)\n"
-                  ">> ", end="")
-            asker = input().strip()
-
-            if asker in rets_dict:
-                return rets_dict[asker]
-            else:
-                print("Incorrect input.\n\n")
 
     def ask_action():
         returns_dict = {
-            "n": "normalisation",
+            "n": "normalization",
             "t": "calculate_threshold",
             "c": "show_chart",
             "h": "show_histogram",
-            "e": "exit"}
+            "exit": "exit"}
 
         while True:
             print("Choose an action:\n"
-                  "n - Normalisation\n"
-                  "t - Calculating threshold\n"
-                  "c - Showing chart\n"
-                  "h - Showing histogram\n"
-                  "e - Exit\n>> ", end="")
+                  "n - Normalize data\n"
+                  "t - Calculate threshold\n"
+                  "c - Show chart\n"
+                  "h - Show histogram\n"
+                  "exit - Exit\n>> ", end="")
             asker = input().strip()
 
             if asker not in returns_dict:
