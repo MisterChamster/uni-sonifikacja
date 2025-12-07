@@ -68,7 +68,7 @@ def mainloop() -> None:
         peak_xes = [a[0] for a in peak_coords]
         peak_ys  = [a[1] for a in peak_coords]
 
-        # Normalization xnorm = (x-xmin)\(xmax-xmin)
+        # Normalization xnorm = (x-xmin)/(xmax-xmin)
         if asker_normalize == True:
             print("Normalizing...\n")
             loaded_data = loaded_data.map(lambda x: (x-min_ds_val)/(diff))
