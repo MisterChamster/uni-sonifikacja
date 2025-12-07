@@ -39,6 +39,7 @@ def mainloop() -> None:
 
     while True:
         action_asker = Askers.ask_action()
+        print()
         if action_asker == "normalization":
             print("Normalizing...")
             loaded_data.normalize_data()

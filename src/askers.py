@@ -32,12 +32,12 @@ class Askers():
                 print("Incorrect input.\n\n")
             else:
                 asker = int(asker)
-            if asker <= 1:
-                return None
-            elif asker > 10:
-                print("Input too high.\n\n")
-            else:
-                return asker
+                if asker <= 1:
+                    return None
+                elif asker > 10:
+                    print("Input too high.\n\n")
+                else:
+                    return asker
 
 
     def ask_normalize() -> bool:
@@ -60,7 +60,7 @@ class Askers():
             "t": "calculate_threshold",
             "c": "show_chart",
             "h": "show_histogram",
-            "e": "exit"}
+            "exit": "exit"}
 
         while True:
             print("Choose an action:\n"

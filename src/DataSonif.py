@@ -44,10 +44,10 @@ class DataSonif():
     def update_min_max(self) -> None:
         # Get pandas.Series objects and convert them to floats. There was a
         # FutureWarning regarding a blatant type casting to float
-        self.min_ds_val = self.data_array.min()
-        self.min_ds_val = float(self.min_ds_val["values"])
-        self.max_ds_val = self.data_array.max()
-        self.max_ds_val = float(self.max_ds_val["values"])
+        self.min_val = self.data_array.min()
+        self.min_val = float(self.min_val["values"])
+        self.max_val = self.data_array.max()
+        self.max_val = float(self.max_val["values"])
         return None
 
 
@@ -56,8 +56,8 @@ class DataSonif():
         if self.normalized == True:
             return None
 
-        difference = self.max_ds_val - self.min_ds_val
-        self.data_array = self.data_array.map(lambda x: (x-self.min_ds_val)/(difference))
+        difference = self.max_val - self.min_val
+        self.data_array = self.data_array.map(lambda x: (x-self.min_val)/(difference))
 
         self.update_min_max()
 
@@ -78,9 +78,9 @@ class DataSonif():
         peak_ys  = [a[1] for a in peak_coords]
 
         if self.normalized == True:
-            difference = self.max_ds_val - self.min_ds_val
+            difference = self.max_val - self.min_val
             for i in range(len(peak_ys)):
-                peak_ys[i] = (peak_ys[i]-self.min_ds_val)/(difference)
+                peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
 
         plt.scatter(self.data_array.index, self.data_array["values"], s=1)
         plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
