@@ -64,11 +64,11 @@ class Askers():
 
         while True:
             print("Choose an action:\n"
-                  "n - Normalization\n"
-                  "t - Calculating threshold\n"
-                  "c - Showing chart\n"
-                  "h - Showing histogram\n"
-                  "e - Exit\n>> ", end="")
+                  "n - Normalize data\n"
+                  "t - Calculate threshold\n"
+                  "c - Show chart\n"
+                  "h - Show histogram\n"
+                  "exit - Exit\n>> ", end="")
             asker = input().strip()
 
             if asker not in returns_dict:
