@@ -3,6 +3,7 @@ from src.utils import get_peak_coordinates
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
+from src.DataSonif import DataSonif
 # So, a border reasonable num of putting rows in chart with loaded_data.hist()
 # is around 25k which is 15 seconds. More than that will be a slog and we
 # don't want that.
@@ -23,73 +24,79 @@ def mainloop() -> None:
     asker_segment = Askers.ask_segment()
     print()
 
-    if asker_segment is None:
-        loaded_data = pd.read_csv(datafile_path,
-                                  header=None,
-                                  names=["values"],
-                                  skipinitialspace=True)
-    else:
-        loaded_data = pd.read_csv(datafile_path,
-                                  header=None,
-                                  names=["values"],
-                                  skiprows=lambda i: i % asker_segment != 0,
-                                  skipinitialspace=True)
-        
-    print(type(loaded_data))
+    # if asker_segment is None:
+    #     loaded_data = pd.read_csv(datafile_path,
+    #                               header=None,
+    #                               names=["values"],
+    #                               skipinitialspace=True)
+    # else:
+    #     loaded_data = pd.read_csv(datafile_path,
+    #                               header=None,
+    #                               names=["values"],
+    #                               skiprows=lambda i: i % asker_segment != 0,
+    #                               skipinitialspace=True)
+    loaded_data = DataSonif(datafile_path, asker_segment)
 
     while True:
-        # action_asker = Askers.ask_action()
-        # if action_asker == "normalization":
-        #     pass
-        # elif action_asker == "calculate_threshold":
-        #     pass
-        # elif action_asker == "show_chart":
-        #     pass
-        # elif action_asker == "show_histogram":
-        #     pass
-        # elif action_asker == "exit":
-        #     break
+        action_asker = Askers.ask_action()
+        if action_asker == "normalization":
+            print("Normalizing...")
+            loaded_data.normalize_data()
+            print("Done!\n\n")
 
-        asker_normalize = Askers.ask_normalize()
-        print()
+        elif action_asker == "calculate_threshold":
+            print("This functionality is yet to be developed...\n")
+
+        elif action_asker == "show_chart":
+            print("Preparing chart...\n")
+            loaded_data.show_chart()
+
+        elif action_asker == "show_histogram":
+            print("This functionality is yet to be developed...\n")
+
+        elif action_asker == "exit":
+            break
+
+        # asker_normalize = Askers.ask_normalize()
+        # print()
 
         # Get pandas.Series objects and convert them to floats. There was a
         # FutureWarning regarding a blatant type casting to float :((
-        min_ds_val = loaded_data.min()
-        min_ds_val = float(min_ds_val["values"])
-        max_ds_val = loaded_data.max()
-        max_ds_val = float(max_ds_val["values"])
-        diff = max_ds_val-min_ds_val
+        # min_ds_val = loaded_data.min()
+        # min_ds_val = float(min_ds_val["values"])
+        # max_ds_val = loaded_data.max()
+        # max_ds_val = float(max_ds_val["values"])
+        # diff = max_ds_val-min_ds_val
 
         # Getting peaks
         # general_chunk_vals = get_open_close_for_chunks(datafile_path, 2000, min_ds_val, max_ds_val)
-        print("Getting peak coords...\n")
-        peak_coords = get_peak_coordinates(datafile_path, 2000, min_ds_val, max_ds_val)
-        peak_xes = [a[0] for a in peak_coords]
-        peak_ys  = [a[1] for a in peak_coords]
+        # print("Getting peak coords...\n")
+        # peak_coords = get_peak_coordinates(datafile_path, 2000, min_ds_val, max_ds_val)
+        # peak_xes = [a[0] for a in peak_coords]
+        # peak_ys  = [a[1] for a in peak_coords]
 
         # Normalization xnorm = (x-xmin)/(xmax-xmin)
-        if asker_normalize == True:
-            print("Normalizing...\n")
-            loaded_data = loaded_data.map(lambda x: (x-min_ds_val)/(diff))
-            print(loaded_data)
+        # if asker_normalize == True:
+            # print("Normalizing...\n")
+            # loaded_data = loaded_data.map(lambda x: (x-min_ds_val)/(diff))
+            # print(loaded_data)
 
-            for i in range(len(peak_ys)):
-                peak_ys[i] = (peak_ys[i]-min_ds_val)/(diff)
+            # for i in range(len(peak_ys)):
+            #     peak_ys[i] = (peak_ys[i]-min_ds_val)/(diff)
 
-        print("Plotting (evil plans)...\n")
-        plt.scatter(loaded_data.index, loaded_data["values"], s=1)
-        plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
+        # print("Plotting (evil plans)...\n")
+        # plt.scatter(loaded_data.index, loaded_data["values"], s=1)
+        # plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
 
-        plt.xlabel("Samples")
-        plt.ylabel("Value")
-        if asker_normalize == True:
-            y_locators = 0.1
-        else:
-            y_locators = 1
-        plt.gca().xaxis.set_major_locator(MultipleLocator(10000))
-        plt.gca().yaxis.set_major_locator(MultipleLocator(y_locators))
-        plt.title('A VERY Cool Chart')
-        plt.show()
+        # plt.xlabel("Samples")
+        # plt.ylabel("Value")
+        # if asker_normalize == True:
+        #     y_locators = 0.1
+        # else:
+        #     y_locators = 1
+        # plt.gca().xaxis.set_major_locator(MultipleLocator(10000))
+        # plt.gca().yaxis.set_major_locator(MultipleLocator(y_locators))
+        # plt.title('A VERY Cool Chart')
+        # plt.show()
 
-        break
+        # break
