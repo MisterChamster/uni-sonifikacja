@@ -40,20 +40,6 @@ class Askers():
                     return asker
 
 
-    def ask_normalize() -> bool:
-        rets_dict = {"y": True,
-                     "n": False}
-
-        while True:
-            print("Do You want to normalize the data? (y/n)\n"
-                  ">> ", end="")
-            asker = input().strip()
-
-            if asker in rets_dict:
-                return rets_dict[asker]
-            else:
-                print("Incorrect input.\n\n")
-
     def ask_action():
         returns_dict = {
             "n": "normalization",
