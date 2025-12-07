@@ -56,7 +56,7 @@ class Askers():
 
     def ask_action():
         returns_dict = {
-            "n": "normalisation",
+            "n": "normalization",
             "t": "calculate_threshold",
             "c": "show_chart",
             "h": "show_histogram",
@@ -64,7 +64,7 @@ class Askers():
 
         while True:
             print("Choose an action:\n"
-                  "n - Normalisation\n"
+                  "n - Normalization\n"
                   "t - Calculating threshold\n"
                   "c - Showing chart\n"
                   "h - Showing histogram\n"

@@ -1,4 +1,4 @@
-from src.askers import Askers
+from src.Askers import Askers
 from src.utils import get_open_close_for_chunks, get_peak_coordinates
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -12,7 +12,7 @@ from matplotlib.ticker import MultipleLocator
 def mainloop() -> None:
     print("Choose data file in txt/csv format:")
     datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
-    if not datafile_path.endswith(".txt", ".csv"):
+    if not datafile_path.endswith((".txt", ".csv")):
         print("Wrong file format")
         return
     print(datafile_path, "\n")
@@ -29,16 +29,17 @@ def mainloop() -> None:
                                   names=["values"],
                                   skipinitialspace=True)
     else:
-        segmenter = 5   #To get every n-th line
         loaded_data = pd.read_csv(datafile_path,
                                   header=None,
                                   names=["values"],
-                                  skiprows=lambda i: i % segmenter != 0,
+                                  skiprows=lambda i: i % asker_segment != 0,
                                   skipinitialspace=True)
+        
+    print(type(loaded_data))
 
     while True:
         # action_asker = Askers.ask_action()
-        # if action_asker == "normalisation":
+        # if action_asker == "normalization":
         #     pass
         # elif action_asker == "calculate_threshold":
         #     pass
