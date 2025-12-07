@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
-from src.utils import get_peak_coordinates
+# from src.utils import get_peak_coordinates
 
 
 
@@ -68,36 +68,40 @@ class DataSonif():
         return None
 
 
-    def calculate_treshold(self):
+    def calculate_treshold(self) -> None:
         pass
 
 
     def show_chart(self) -> None:
-        peak_coords = get_peak_coordinates(self.file_path, 2000, self.min_val, self.max_val)
-        peak_xes = [a[0] for a in peak_coords]
-        peak_ys  = [a[1] for a in peak_coords]
-
-        if self.normalized == True:
-            difference = self.max_val - self.min_val
-            for i in range(len(peak_ys)):
-                peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
-
+        # Getting x signs for evey state approximate midpoint
+        # peak_coords = get_peak_coordinates(self.file_path, 2000, self.min_val, self.max_val)
+        # peak_xes = [a[0] for a in peak_coords]
+        # peak_ys  = [a[1] for a in peak_coords]
+        # if self.normalized == True:
+        #     difference = self.max_val - self.min_val
+        #     for i in range(len(peak_ys)):
+        #         peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
+        # plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
         plt.scatter(self.data_array.index, self.data_array["values"], s=1)
-        plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
 
-        plt.xlabel("Samples")
-        plt.ylabel("Value")
+        plt.gca().xaxis.set_major_locator(MultipleLocator(240000/10))
         if self.normalized == True:
             y_locators = 0.1
         else:
             y_locators = 1
-        plt.gca().xaxis.set_major_locator(MultipleLocator(10000))
         plt.gca().yaxis.set_major_locator(MultipleLocator(y_locators))
-        plt.title('A VERY Cool Chart')
+
+        plt.xlabel("Sample index")
+        if self.normalized == True:
+            plt.ylabel("Normalised Voltage")
+        else:
+            plt.ylabel("Voltage [V]")
+        plt.title('Open and closed states of the ion canal in time (perceived in samples)')
+
         plt.show()
 
         return None
 
 
-    def show_histogram(self):
+    def show_histogram(self) -> None:
         pass
