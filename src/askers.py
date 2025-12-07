@@ -21,10 +21,10 @@ class Askers():
 
     def ask_segment() -> int:
         while True:
-            print("Segment data (Pick every n-th line of data. Max 10, optimal 5.)\n" \
-                  "Press Enter to skip.\n" \
+            print("Segment data (Pick every n-th line of data. Max 10, optimal 5.)\n"
+                  "Press Enter to skip.\n"
                   "n = ", end="")
-            asker = input()
+            asker = input().strip()
 
             if asker == "":
                 return None
@@ -45,11 +45,33 @@ class Askers():
                      "n": False}
 
         while True:
-            print("Do You want to normalize the data? (y/n)\n" \
+            print("Do You want to normalize the data? (y/n)\n"
                   ">> ", end="")
-            asker = input()
+            asker = input().strip()
 
             if asker in rets_dict:
                 return rets_dict[asker]
             else:
                 print("Incorrect input.\n\n")
+
+    def ask_action():
+        returns_dict = {
+            "n": "normalisation",
+            "t": "calculate_threshold",
+            "c": "show_chart",
+            "h": "show_histogram",
+            "e": "exit"}
+
+        while True:
+            print("Choose an action:\n"
+                  "n - Normalisation\n"
+                  "t - Calculating threshold\n"
+                  "c - Showing chart\n"
+                  "h - Showing histogram\n"
+                  "e - Exit\n>> ", end="")
+            asker = input().strip()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]
