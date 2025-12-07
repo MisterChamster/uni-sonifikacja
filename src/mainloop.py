@@ -1,5 +1,5 @@
-from src.Askers import Askers
-from src.DataSonif import DataSonif
+from src.askers import Askers
+from src.datasonif import DataSonif
 
 
 
