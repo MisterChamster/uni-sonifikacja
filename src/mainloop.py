@@ -12,13 +12,29 @@ from matplotlib.ticker import MultipleLocator
 def mainloop() -> None:
     print("Choose data file in txt/csv format:")
     datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
-    if not datafile_path.endswith(".txt") and not datafile_path.endswith(".csv"):
+    if not datafile_path.endswith(".txt", ".csv"):
         print("Wrong file format")
         return
     print(datafile_path, "\n")
 
+
+    # Load file
+    print("Loading file...\n")
     asker_segment = Askers.ask_segment()
     print()
+
+    if asker_segment is None:
+        loaded_data = pd.read_csv(datafile_path,
+                                  header=None,
+                                  names=["values"],
+                                  skipinitialspace=True)
+    else:
+        segmenter = 5   #To get every n-th line
+        loaded_data = pd.read_csv(datafile_path,
+                                  header=None,
+                                  names=["values"],
+                                  skiprows=lambda i: i % segmenter != 0,
+                                  skipinitialspace=True)
 
     while True:
         action_asker = Askers.ask_action()
@@ -35,21 +51,6 @@ def mainloop() -> None:
 
         asker_normalize = Askers.ask_normalize()
         print()
-
-        # Load file
-        print("Loading file...\n")
-        if asker_segment is None:
-            loaded_data = pd.read_csv(datafile_path,
-                                    header=None,
-                                    names=["values"],
-                                    skipinitialspace=True)
-        else:
-            segmenter = 5   #To get every n-th line
-            loaded_data = pd.read_csv(datafile_path,
-                                    header=None,
-                                    names=["values"],
-                                    skiprows=lambda i: i % segmenter != 0,
-                                    skipinitialspace=True)
 
         # Get pandas.Series objects and convert them to floats. There was a
         # FutureWarning regarding a blatant type casting to float :((
