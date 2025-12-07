@@ -18,18 +18,24 @@ class DataSonif():
         self.normalized = False
 
         if segment is None:
-            self.data_array = pd.read_csv(
-                                self.file_path,
-                                header=None,
-                                names=["values"],
-                                skipinitialspace=True)
+            try:
+                self.data_array = pd.read_csv(
+                                    self.file_path,
+                                    header=None,
+                                    names=["values"],
+                                    skipinitialspace=True)
+            except:
+                raise Exception("Data loading has failed.\n")
         else:
-            self.data_array = pd.read_csv(
-                                self.file_path,
-                                header=None,
-                                names=["values"],
-                                skiprows=lambda i: i % segment != 0,
-                                skipinitialspace=True)
+            try:
+                self.data_array = pd.read_csv(
+                                    self.file_path,
+                                    header=None,
+                                    names=["values"],
+                                    skiprows=lambda i: i % segment != 0,
+                                    skipinitialspace=True)
+            except:
+                raise Exception("Data loading has failed.\n")
 
         self.update_min_max()
 
