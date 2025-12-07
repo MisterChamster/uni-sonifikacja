@@ -37,17 +37,17 @@ def mainloop() -> None:
                                   skipinitialspace=True)
 
     while True:
-        action_asker = Askers.ask_action()
-        if action_asker == "normalisation":
-            pass
-        elif action_asker == "calculate_threshold":
-            pass
-        elif action_asker == "show_chart":
-            pass
-        elif action_asker == "show_histogram":
-            pass
-        elif action_asker == "exit":
-            pass
+        # action_asker = Askers.ask_action()
+        # if action_asker == "normalisation":
+        #     pass
+        # elif action_asker == "calculate_threshold":
+        #     pass
+        # elif action_asker == "show_chart":
+        #     pass
+        # elif action_asker == "show_histogram":
+        #     pass
+        # elif action_asker == "exit":
+        #     break
 
         asker_normalize = Askers.ask_normalize()
         print()
