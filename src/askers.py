@@ -4,6 +4,7 @@ from tkinter import filedialog
 
 
 class Askers():
+    @staticmethod
     def ask_path_filedialog(type, message) -> str:
         original_path = os.getcwd()
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
@@ -19,7 +20,8 @@ class Askers():
         return sel_path
 
 
-    def ask_segment() -> int:
+    @staticmethod
+    def ask_segment() -> int|None:
         while True:
             print("Segment data (Pick every n-th line of data. Max 10, optimal 5.)\n"
                   "Press Enter to skip.\n"
@@ -40,7 +42,8 @@ class Askers():
                     return asker
 
 
-    def ask_action():
+    @staticmethod
+    def ask_action() -> str:
         returns_dict = {
             "n": "normalization",
             "t": "calculate_threshold",
