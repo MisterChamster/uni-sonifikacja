@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 # from src.utils import get_peak_coordinates
@@ -7,7 +8,7 @@ from matplotlib.ticker import MultipleLocator
 
 class DataSonif():
     file_path:  str
-    data_array: pd.core.frame.DataFrame
+    data_array: np.ndarray
     min_val:    float
     max_val:    float
     treshold:   float
@@ -37,17 +38,14 @@ class DataSonif():
                                     skipinitialspace=True)
             except:
                 raise Exception("Data loading has failed.\n")
+        self.data_array = self.data_array.to_numpy()
 
         self.update_min_max()
 
 
     def update_min_max(self) -> None:
-        # Get pandas.Series objects and convert them to floats. There was a
-        # FutureWarning regarding a blatant type casting to float
-        self.min_val = self.data_array.min()
-        self.min_val = float(self.min_val["values"])
-        self.max_val = self.data_array.max()
-        self.max_val = float(self.max_val["values"])
+        self.min_val = float(np.min(self.data_array))
+        self.max_val = float(np.max(self.data_array))
         return None
 
 
@@ -57,7 +55,7 @@ class DataSonif():
             return None
 
         difference = self.max_val - self.min_val
-        self.data_array = self.data_array.map(lambda x: (x-self.min_val)/(difference))
+        self.data_array = (self.data_array - self.min_val)/(difference)
 
         self.update_min_max()
 
@@ -82,7 +80,7 @@ class DataSonif():
         #     for i in range(len(peak_ys)):
         #         peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
         # plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
-        plt.scatter(self.data_array.index, self.data_array["values"], s=1)
+        plt.scatter(np.arange(self.data_array.shape[0]), self.data_array, s=1)
 
         plt.gca().xaxis.set_major_locator(MultipleLocator(240000/10))
         if self.normalized == True:
@@ -104,7 +102,7 @@ class DataSonif():
 
 
     def show_histogram(self) -> None:
-        plt.hist(self.data_array["values"], bins=200)
+        plt.hist(self.data_array, bins=200)
 
         plt.ylabel("Sample index")
         if self.normalized == True:
