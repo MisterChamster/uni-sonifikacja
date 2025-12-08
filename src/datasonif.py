@@ -129,6 +129,10 @@ class DataSonif():
         # plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
         plt.scatter(np.arange(self.data_array.shape[0]), self.data_array, s=1)
 
+        # Treshold line
+        if self.treshold is not None:
+            plt.axhline(y=self.treshold, color="red")
+
         plt.gca().xaxis.set_major_locator(MultipleLocator(240000/10))
         if self.normalized == True:
             y_locators = 0.1
@@ -150,6 +154,10 @@ class DataSonif():
 
     def show_histogram(self) -> None:
         plt.hist(self.data_array, bins=self.bins_count)
+
+        # Treshold line
+        if self.treshold is not None:
+            plt.axvline(x=self.treshold, color="red")
 
         plt.ylabel("Sample count")
         if self.normalized == True:
