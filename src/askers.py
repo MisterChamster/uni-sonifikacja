@@ -49,6 +49,7 @@ class Askers():
             "t": "calculate_threshold",
             "c": "show_chart",
             "h": "show_histogram",
+            "f": "change_file",
             "exit": "exit"}
 
         while True:
@@ -57,6 +58,7 @@ class Askers():
                   "t - Calculate threshold\n"
                   "c - Show chart\n"
                   "h - Show histogram\n"
+                  "f - Change file\n"
                   "exit - Exit\n>> ", end="")
             asker = input().strip()
 
