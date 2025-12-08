@@ -11,6 +11,7 @@ class DataSonif():
     data_array: np.ndarray
     min_val:    float
     max_val:    float
+    bins_count: int
     treshold:   float
     normalized: bool
 
@@ -18,6 +19,7 @@ class DataSonif():
         self.file_path  = file_path
         self.treshold   = None
         self.normalized = False
+        self.bins_count = 200
 
         if segment is None:
             try:
@@ -67,7 +69,10 @@ class DataSonif():
 
 
     def calculate_treshold(self) -> None:
-        pass
+        sample_count, voltage_val = np.histogram(self.data_array, bins=self.bins_count)
+        print("Sample:", sample_count)
+        print("Voltage:", voltage_val)
+        return None
 
 
     def show_chart(self) -> None:
@@ -102,7 +107,7 @@ class DataSonif():
 
 
     def show_histogram(self) -> None:
-        plt.hist(self.data_array, bins=200)
+        plt.hist(self.data_array, bins=self.bins_count)
 
         plt.ylabel("Sample index")
         if self.normalized == True:
