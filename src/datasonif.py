@@ -25,7 +25,7 @@ class DataSonif():
         if segment is None:
             try:
                 self.data_array = pd.read_csv(
-                                    str(self.file_path),
+                                    self.file_path,
                                     header=None,
                                     names=["values"],
                                     skipinitialspace=True)
@@ -34,7 +34,7 @@ class DataSonif():
         else:
             try:
                 self.data_array = pd.read_csv(
-                                    str(self.file_path),
+                                    self.file_path,
                                     header=None,
                                     names=["values"],
                                     skiprows=lambda i: i % segment != 0,

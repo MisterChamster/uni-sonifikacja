@@ -3,5 +3,6 @@
 .vscode
 
 __pycache__
+data/
 
 priv_notes.txt
