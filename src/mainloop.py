@@ -39,7 +39,9 @@ def mainloop() -> None:
             print()
 
         elif action_asker == "show_histogram":
-            print("This functionality is yet to be developed...\n\n")
+            print("Preparing histogram...\n")
+            loaded_data.show_histogram()
+            print()
 
         elif action_asker == "exit":
             break

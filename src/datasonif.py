@@ -104,4 +104,13 @@ class DataSonif():
 
 
     def show_histogram(self) -> None:
-        pass
+        plt.hist(self.data_array["values"], bins=200)
+
+        plt.ylabel("Sample index")
+        if self.normalized == True:
+            plt.xlabel("Normalised Voltage")
+        else:
+            plt.xlabel("Voltage [V]")
+        plt.title('Histogram of number of samples per voltage')
+
+        plt.show()
