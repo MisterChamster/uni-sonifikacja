@@ -22,6 +22,7 @@ def mainloop() -> None:
         print(f"Chosen file:        {loaded_data.file_path}")
         print(f"Data segmentation:  {asker_segment}")
         print(f"Data normalization: {loaded_data.normalized}")
+        print(f"Num of bins (hist): {loaded_data.bins_count}")
         print(f"State treshold:     {loaded_data.treshold}\n")
         action_asker = Askers.ask_action()
         print()
@@ -31,7 +32,9 @@ def mainloop() -> None:
             print("Done!\n\n")
 
         elif action_asker == "calculate_threshold":
-            print("This functionality is yet to be developed...\n\n")
+            print("Calculating treshold...\n")
+            loaded_data.calculate_treshold()
+            print()
 
         elif action_asker == "show_chart":
             print("Preparing chart...\n")
@@ -39,7 +42,9 @@ def mainloop() -> None:
             print()
 
         elif action_asker == "show_histogram":
-            print("This functionality is yet to be developed...\n\n")
+            print("Preparing histogram...\n")
+            loaded_data.show_histogram()
+            print()
 
         elif action_asker == "exit":
             break
