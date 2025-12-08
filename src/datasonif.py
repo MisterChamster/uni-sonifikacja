@@ -10,6 +10,7 @@ from pathlib import Path
 class DataSonif():
     file_path:  Path
     data_array: np.ndarray
+    data_sign:  str
     min_val:    float
     max_val:    float
     bins_count: int
@@ -42,6 +43,10 @@ class DataSonif():
             except:
                 raise Exception("Data loading has failed.\n")
         self.data_array = self.data_array.to_numpy()
+        if self.data_array[0] < 0:
+            self.data_sign = "-"
+        else:
+            self.data_sign = "+"
 
         self.update_min_max()
 
@@ -134,7 +139,7 @@ class DataSonif():
         if self.treshold is not None:
             plt.axhline(y=self.treshold, color="red")
 
-        plt.gca().xaxis.set_major_locator(MultipleLocator(240000/10))
+        # plt.gca().xaxis.set_major_locator(MultipleLocator(len(self.data_array)/10))
         if self.normalized == True:
             y_locators = 0.1
         else:

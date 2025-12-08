@@ -47,4 +47,4 @@ def mainloop() -> None:
             print()
 
         elif action_asker == "exit":
-            break
+            return None
