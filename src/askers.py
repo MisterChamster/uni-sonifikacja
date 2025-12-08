@@ -24,18 +24,20 @@ class Askers():
     def ask_segment() -> int|None:
         while True:
             print("Segment data (Pick every n-th line of data. Max 10, optimal 5.)\n"
-                  "Press Enter to skip.\n"
+                  "Press Enter to skip. Input 'exit' to exit program.\n"
                   "n = ", end="")
             asker = input().strip()
 
             if asker == "":
+                return 1
+            elif asker == "exit":
                 return None
             elif not asker.isdigit():
                 print("Incorrect input.\n\n")
             else:
                 asker = int(asker)
                 if asker <= 1:
-                    return None
+                    return 1
                 elif asker > 10:
                     print("Input too high.\n\n")
                 else:

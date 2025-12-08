@@ -23,7 +23,7 @@ class DataSonif():
         self.normalized = False
         self.bins_count = 200
 
-        if segment is None:
+        if segment == 1:
             try:
                 self.data_array = pd.read_csv(
                                     self.file_path,
