@@ -2,12 +2,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
+from pathlib import Path
 # from src.utils import get_peak_coordinates
 
 
 
 class DataSonif():
-    file_path:  str
+    file_path:  Path
     data_array: np.ndarray
     min_val:    float
     max_val:    float
@@ -24,7 +25,7 @@ class DataSonif():
         if segment is None:
             try:
                 self.data_array = pd.read_csv(
-                                    self.file_path,
+                                    str(self.file_path),
                                     header=None,
                                     names=["values"],
                                     skipinitialspace=True)
@@ -33,7 +34,7 @@ class DataSonif():
         else:
             try:
                 self.data_array = pd.read_csv(
-                                    self.file_path,
+                                    str(self.file_path),
                                     header=None,
                                     names=["values"],
                                     skiprows=lambda i: i % segment != 0,
@@ -119,7 +120,7 @@ class DataSonif():
 
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
-        # peak_coords = get_peak_coordinates(self.file_path, 2000, self.min_val, self.max_val)
+        # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
         # peak_xes = [a[0] for a in peak_coords]
         # peak_ys  = [a[1] for a in peak_coords]
         # if self.normalized == True:

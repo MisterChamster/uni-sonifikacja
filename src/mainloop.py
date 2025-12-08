@@ -1,5 +1,6 @@
 from src.askers import Askers
 from src.datasonif import DataSonif
+from pathlib import Path
 
 
 
@@ -11,11 +12,10 @@ def mainloop() -> None:
         return
     print(datafile_path, "\n")
 
-    # Load file
-    print("Loading file...\n")
     asker_segment = Askers.ask_segment()
     print("\n")
 
+    datafile_path = Path(datafile_path)
     loaded_data = DataSonif(datafile_path, asker_segment)
 
     while True:
