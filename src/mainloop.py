@@ -26,7 +26,8 @@ def mainloop() -> None:
 
         while True:
             print(f"Chosen file:        {loaded_data.file_path}")
-            print(f"Data segmentation:  {asker_segment}")
+            segment_info = "False" if asker_segment == 1 else str(asker_segment)
+            print(f"Data segmentation:  {segment_info}")
             print(f"Data normalization: {loaded_data.normalized}")
             print(f"Num of bins (hist): {loaded_data.bins_count}")
             print(f"State treshold:     {loaded_data.treshold}\n")

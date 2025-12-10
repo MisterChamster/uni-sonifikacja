@@ -42,11 +42,9 @@ class DataSonif():
                                     skipinitialspace=True)
             except:
                 raise Exception("Data loading has failed.\n")
+
         self.data_array = self.data_array.to_numpy()
-        if self.data_array[0] < 0:
-            self.data_sign = "-"
-        else:
-            self.data_sign = "+"
+        self.data_sign = "-" if self.data_array[0] < 0 else "+"
 
         self.update_min_max()
 
@@ -140,10 +138,7 @@ class DataSonif():
             plt.axhline(y=self.treshold, color="red")
 
         # plt.gca().xaxis.set_major_locator(MultipleLocator(len(self.data_array)/10))
-        if self.normalized == True:
-            y_locators = 0.1
-        else:
-            y_locators = 1
+        y_locators = 0.1 if self.normalized == True else 1
         plt.gca().yaxis.set_major_locator(MultipleLocator(y_locators))
 
         plt.xlabel("Sample index")
