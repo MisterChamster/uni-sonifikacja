@@ -47,6 +47,8 @@ class Askers():
     @staticmethod
     def ask_action() -> str:
         returns_dict = {
+            "x": "reverse_order",
+            "y": "reverse_sign",
             "n": "normalization",
             "t": "calculate_threshold",
             "c": "show_chart",
@@ -56,6 +58,8 @@ class Askers():
 
         while True:
             print("Choose an action:\n"
+                  "x - Reverse data order\n"
+                  "y - Reverse data sign\n"
                   "n - Normalize data\n"
                   "t - Calculate threshold\n"
                   "c - Show chart\n"

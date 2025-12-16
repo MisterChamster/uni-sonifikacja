@@ -25,23 +25,38 @@ def mainloop() -> None:
         loaded_data = DataSonif(datafile_path, asker_segment)
 
         while True:
-            print(f"Chosen file:        {loaded_data.file_path}")
             segment_info = "False" if asker_segment == 1 else str(asker_segment)
+            ordering = "Original" if loaded_data.og_order is True else "Reverse"
+            sign = "Original" if loaded_data.og_sign is True else "Opposite"
+
+            print(f"Chosen file:        {loaded_data.file_path}")
             print(f"Data segmentation:  {segment_info}")
+            print(f"Data order (x):     {ordering}")
+            print(f"Data sign (y):      {sign}")
             print(f"Data normalization: {loaded_data.normalized}")
             print(f"Num of bins (hist): {loaded_data.bins_count}")
             print(f"State treshold:     {loaded_data.treshold}\n")
             action_asker = Askers.ask_action()
             print()
-            if action_asker == "normalization":
+            if action_asker == "reverse_order":
+                print("Reversing order...")
+                loaded_data.reverse_data_order()
+                print("Done!\n\n")
+
+            elif action_asker == "reverse_sign":
+                print("Reversing order...")
+                loaded_data.reverse_data_sign()
+                print("Done!\n\n")
+
+            elif action_asker == "normalization":
                 print("Normalizing...")
                 loaded_data.normalize_data()
                 print("Done!\n\n")
 
             elif action_asker == "calculate_threshold":
-                print("Calculating treshold...\n")
+                print("Calculating treshold...")
                 loaded_data.calculate_treshold()
-                print()
+                print("Done!\n\n")
 
             elif action_asker == "show_chart":
                 print("Preparing chart...\n")
