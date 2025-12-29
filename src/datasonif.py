@@ -19,7 +19,7 @@ class DataSonif():
     treshold:   float
     normalized: bool
 
-    def __init__(self, file_path: str, segment: int):
+    def __init__(self, file_path: str, segment: int) -> None:
         self.file_path  = file_path
         self.og_order   = True
         self.og_sign    = True

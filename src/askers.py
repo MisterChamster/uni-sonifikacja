@@ -49,6 +49,7 @@ class Askers():
         returns_dict = {
             "x": "reverse_order",
             "y": "reverse_sign",
+            "p": "apply_paa",
             "n": "normalization",
             "t": "calculate_threshold",
             "c": "show_chart",
@@ -60,6 +61,7 @@ class Askers():
             print("Choose an action:\n"
                   "x - Reverse data order\n"
                   "y - Reverse data sign\n"
+                  "p - Apply PAA downsampling"
                   "n - Normalize data\n"
                   "t - Calculate threshold\n"
                   "c - Show chart\n"
