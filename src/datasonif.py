@@ -11,6 +11,8 @@ class DataSonif():
     file_path:  Path
     data_array: np.ndarray
     data_sign:  str
+    og_order:   bool
+    og_sign:    bool
     min_val:    float
     max_val:    float
     bins_count: int
@@ -19,6 +21,9 @@ class DataSonif():
 
     def __init__(self, file_path: str, segment: int):
         self.file_path  = file_path
+        self.og_order   = True
+        self.og_sign    = True
+
         self.treshold   = None
         self.normalized = False
         self.bins_count = 200
@@ -44,14 +49,26 @@ class DataSonif():
                 raise Exception("Data loading has failed.\n")
 
         self.data_array = self.data_array.to_numpy()
-        self.data_sign = "-" if self.data_array[0] < 0 else "+"
+        self.data_sign  = "-" if self.data_array[0] < 0 else "+"
 
-        self.update_min_max()
+        self._update_min_max()
 
 
-    def update_min_max(self) -> None:
+    def _update_min_max(self) -> None:
         self.min_val = float(np.min(self.data_array))
         self.max_val = float(np.max(self.data_array))
+        return None
+
+
+    def reverse_data_order(self) -> None:
+        self.data_array = self.data_array[::-1]
+        self.og_order = not self.og_order
+        return None
+
+
+    def reverse_data_sign(self) -> None:
+        self.data_array = -self.data_array
+        self.og_sign = not self.og_sign
         return None
 
 
@@ -70,7 +87,7 @@ class DataSonif():
             # self.calculate_treshold()
             self.treshold = (self.treshold - self.min_val)/(difference)
 
-        self.update_min_max()
+        self._update_min_max()
         self.normalized = True
         return None
 
