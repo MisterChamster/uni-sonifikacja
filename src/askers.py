@@ -5,7 +5,7 @@ from tkinter import filedialog
 
 class Askers():
     @staticmethod
-    def ask_path_filedialog(type, message) -> str:
+    def ask_path_filedialog(type: str, message: str) -> str:
         original_path = os.getcwd()
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
         os.chdir(desktop_path)
@@ -61,7 +61,7 @@ class Askers():
             print("Choose an action:\n"
                   "x - Reverse data order\n"
                   "y - Reverse data sign\n"
-                  "p - Apply PAA downsampling"
+                  "p - Apply PAA downsampling\n"
                   "n - Normalize data\n"
                   "t - Calculate threshold\n"
                   "c - Show chart\n"
@@ -74,3 +74,25 @@ class Askers():
                 print("Invalid input!\n")
             else:
                 return returns_dict[asker]
+
+
+    @staticmethod
+    def ask_segments_paa(data_length: int) -> str|None:
+        while True:
+            print(f"Number of samples: {data_length}")
+            print("Input a number of segments (type 'exit' to return): ")
+            segment_count = input().strip()
+
+            if segment_count == "exit":
+                return None
+
+            if not segment_count.isdigit():
+                print("Invalid input!\n")
+                continue
+
+            segment_count = int(segment_count)
+            if segment_count >= data_length:
+                print("Invalid, chosen number is too high\n")
+                continue
+
+            return segment_count

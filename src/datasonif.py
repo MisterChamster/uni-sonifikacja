@@ -185,3 +185,7 @@ class DataSonif():
         plt.title('Histogram of number of samples per voltage')
 
         plt.show()
+
+
+    def get_sample_count(self) -> int:
+        return len(self.data_array)

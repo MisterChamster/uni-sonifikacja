@@ -38,6 +38,7 @@ def mainloop() -> None:
             print(f"State treshold:     {loaded_data.treshold}\n")
             action_asker = Askers.ask_action()
             print()
+
             if action_asker == "reverse_order":
                 print("Reversing order...")
                 loaded_data.reverse_data_order()
@@ -47,6 +48,14 @@ def mainloop() -> None:
                 print("Reversing order...")
                 loaded_data.reverse_data_sign()
                 print("Done!\n\n")
+
+            elif action_asker == "apply_paa":
+                segment_asker = Askers.ask_segments_paa(loaded_data.get_sample_count())
+                if segment_asker is None:
+                    continue
+                else:
+                    # COME BACK HERE!!!!!!!
+                    pass
 
             elif action_asker == "normalization":
                 print("Normalizing...")
