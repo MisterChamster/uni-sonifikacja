@@ -8,7 +8,7 @@ def mainloop() -> None:
     while True:
         print("Choose data file in txt/csv format:")
         datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
-        if datafile_path == "":
+        if datafile_path == () or datafile_path == "":
             print("No file has been chosen.")
             return None
         if not datafile_path.endswith((".txt", ".csv")):
