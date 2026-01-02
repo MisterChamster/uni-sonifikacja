@@ -72,6 +72,11 @@ class DataSonif():
         return None
 
 
+    def apply_paa_aggregation(self) -> None:
+        print("Hello paa!")
+        return None
+
+
     # Normalization xnorm = (x-xmin)/(xmax-xmin)
     def normalize_data(self) -> None:
         if self.normalized == True:

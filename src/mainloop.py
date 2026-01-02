@@ -51,11 +51,14 @@ def mainloop() -> None:
 
             elif action_asker == "apply_paa":
                 segment_asker = Askers.ask_segments_paa(loaded_data.get_sample_count())
+                print()
                 if segment_asker is None:
+                    print()
                     continue
                 else:
-                    # COME BACK HERE!!!!!!!
-                    pass
+                    print("Processing...")
+                    loaded_data.apply_paa_aggregation()
+                    print("Data successfully aggregated!\n\n")
 
             elif action_asker == "normalization":
                 print("Normalizing...")

@@ -80,7 +80,7 @@ class Askers():
     def ask_segments_paa(data_length: int) -> str|None:
         while True:
             print(f"Number of samples: {data_length}")
-            print("Input a number of segments (type 'exit' to return): ")
+            print("Input a number of segments (type 'exit' to return):\n>> ", end="")
             segment_count = input().strip()
 
             if segment_count == "exit":
