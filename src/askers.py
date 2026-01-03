@@ -1,5 +1,6 @@
 import os
 from tkinter import filedialog
+from src.settings import CUT_REMAINDER_STRING
 
 
 
@@ -54,6 +55,7 @@ class Askers():
             "t": "calculate_threshold",
             "c": "show_chart",
             "h": "show_histogram",
+            "s": "settings",
             "f": "change_file",
             "exit": "exit"}
 
@@ -66,6 +68,7 @@ class Askers():
                   "t - Calculate threshold\n"
                   "c - Show chart\n"
                   "h - Show histogram\n"
+                  "s - Settings\n"
                   "f - Change file\n"
                   "exit - Exit\n>> ", end="")
             asker = input().strip()
@@ -99,3 +102,26 @@ class Askers():
                 continue
 
             return segment_count
+
+
+    @staticmethod
+    def ask_settings() -> str:
+        returns_dict = {
+            "c":    "change_cutting_setting",
+            "exit": "exit"}
+
+        if CUT_REMAINDER_STRING == True:
+            cutting_option = "c    - Disable cutting remainder data during PAA (currently enabled)"
+        else:
+            cutting_option = "c    - Enable cutting remainder data during PAA (currently disabled)"
+
+        while True:
+            print( "Choose an action:\n"
+                  f"{cutting_option}\n"
+                   "exit - Exit\n>> ", end="")
+            asker = input().strip()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]

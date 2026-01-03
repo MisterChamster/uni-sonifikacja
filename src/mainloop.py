@@ -1,6 +1,7 @@
 from src.askers import Askers
 from src.datasonif import DataSonif
 from pathlib import Path
+from src.settings import CUT_REMAINDER_STRING
 
 
 
@@ -78,6 +79,14 @@ def mainloop() -> None:
             elif action_asker == "show_histogram":
                 print("Preparing histogram...\n")
                 loaded_data.show_histogram()
+                print()
+
+            elif action_asker == "settings":
+                asker_settings: str = Askers.ask_settings()
+                if asker_settings == "change_cutting_setting":
+                    pass
+                    # CUT_REMAINDER_STRING = not CUT_REMAINDER_STRING
+                print(CUT_REMAINDER_STRING)
                 print()
 
             elif action_asker == "change_file":
