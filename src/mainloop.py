@@ -1,6 +1,7 @@
 from src.askers import Askers
 from src.datasonif import DataSonif
 from pathlib import Path
+import json
 
 
 
@@ -8,7 +9,7 @@ def mainloop() -> None:
     while True:
         print("Choose data file in txt/csv format:")
         datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
-        if datafile_path == "":
+        if datafile_path == () or datafile_path == "":
             print("No file has been chosen.")
             return None
         if not datafile_path.endswith((".txt", ".csv")):
@@ -38,6 +39,7 @@ def mainloop() -> None:
             print(f"State treshold:     {loaded_data.treshold}\n")
             action_asker = Askers.ask_action()
             print()
+
             if action_asker == "reverse_order":
                 print("Reversing order...")
                 loaded_data.reverse_data_order()
@@ -47,6 +49,17 @@ def mainloop() -> None:
                 print("Reversing order...")
                 loaded_data.reverse_data_sign()
                 print("Done!\n\n")
+
+            elif action_asker == "apply_paa":
+                segment_asker = Askers.ask_segments_paa(loaded_data.get_sample_count())
+                print()
+                if segment_asker is None:
+                    print()
+                    continue
+
+                print("Processing...")
+                loaded_data.apply_paa_aggregation(segment_asker)
+                print("Data successfully aggregated!\n\n")
 
             elif action_asker == "normalization":
                 print("Normalizing...")
@@ -67,6 +80,19 @@ def mainloop() -> None:
                 print("Preparing histogram...\n")
                 loaded_data.show_histogram()
                 print()
+
+            elif action_asker == "settings":
+                asker_settings: str = Askers.ask_settings()
+                with open("src/settings.json") as f:
+                    config = json.load(f)
+                    cut_string = config["CUT_REMAINDER_STRING"]
+
+                if asker_settings == "change_cutting_setting":
+                    config["CUT_REMAINDER_STRING"] = "True" if cut_string == "False" else "False"
+                    with open("src/settings.json", "w") as f:
+                        json.dump(config, f, indent=2)
+                # print(cut_string)
+                print("\n")
 
             elif action_asker == "change_file":
                 break

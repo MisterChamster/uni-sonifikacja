@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from pathlib import Path
+import json
 # from src.utils import get_peak_coordinates
 
 
@@ -16,10 +17,11 @@ class DataSonif():
     min_val:    float
     max_val:    float
     bins_count: int
-    treshold:   float
+    treshold:   float | None
     normalized: bool
 
-    def __init__(self, file_path: str, segment: int):
+
+    def __init__(self, file_path: str, segment: int) -> None:
         self.file_path  = file_path
         self.og_order   = True
         self.og_sign    = True
@@ -48,7 +50,7 @@ class DataSonif():
             except:
                 raise Exception("Data loading has failed.\n")
 
-        self.data_array = self.data_array.to_numpy()
+        self.data_array = self.data_array.to_numpy().flatten()
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
 
         self._update_min_max()
@@ -68,7 +70,58 @@ class DataSonif():
 
     def reverse_data_sign(self) -> None:
         self.data_array = -self.data_array
-        self.og_sign = not self.og_sign
+        self.og_sign    = not self.og_sign
+        return None
+
+
+    def apply_paa_aggregation(self, segment_count: int) -> None:
+        temparr: np.ndarray = np.empty(segment_count)
+        with open("src/settings.json") as f:
+            config = json.load(f)
+            cut_string = config["CUT_REMAINDER_STRING"]
+
+        # Cutting data array before segmenting
+        if cut_string == "True":
+            cut_length: int = len(self.data_array) % segment_count
+
+            if cut_length != 0: #Cut if there's something to cut
+                self.data_array = self.data_array[:-cut_length]
+        # For additional segment with cutoff data
+        else:
+            segment_count -= 1
+
+
+        segment_size: int   = len(self.data_array) // segment_count
+        index_segment: int  = 0
+        iterative: int      = 0
+
+        # Putting segment means to temparr
+        while iterative < segment_count:
+            # print(str(iterative+1) + ".", index_segment, " - ", index_segment+segment_size-1)
+            segment_sum: np.float64 = 0
+            for i in range(index_segment, index_segment+segment_size):
+                segment_sum += self.data_array[i]
+
+            segment_mean: np.float64 = segment_sum / segment_size
+            temparr[iterative] = segment_mean
+
+            index_segment += segment_size
+            iterative += 1
+
+        # Calculating mean of the segment that wasn't cut off
+        if cut_string == "False":
+            segment_sum: np.float64 = 0
+            for i in range(index_segment, len(self.data_array)):
+                segment_sum += self.data_array[i]
+            segment_mean: np.float64 = segment_sum / segment_size
+            temparr[iterative] = segment_mean
+
+        self.data_array = temparr
+        # Update fields
+        self._update_min_max()
+        if self.treshold != None:
+            self.calculate_treshold()
+
         return None
 
 
@@ -185,3 +238,7 @@ class DataSonif():
         plt.title('Histogram of number of samples per voltage')
 
         plt.show()
+
+
+    def get_sample_count(self) -> int:
+        return len(self.data_array)
