@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from pathlib import Path
+from src.settings import CUT_REMAINDER_STRING
 # from src.utils import get_peak_coordinates
 
 
@@ -74,11 +75,10 @@ class DataSonif():
 
 
     def apply_paa_aggregation(self, segment_count: int) -> None:
-        cutting: bool       = True
         temparr: np.ndarray = np.empty(segment_count)
 
         # Cutting data array before segmenting
-        if cutting == True:
+        if CUT_REMAINDER_STRING == True:
             cut_length: int = len(self.data_array) % segment_count
 
             if cut_length != 0: #Cut if there's something to cut
@@ -106,7 +106,7 @@ class DataSonif():
             iterative += 1
 
         # Calculating mean of the segment that wasn't cut off
-        if cutting == False:
+        if CUT_REMAINDER_STRING == False:
             segment_sum: np.float64 = 0
             for i in range(index_segment, len(self.data_array)):
                 segment_sum += self.data_array[i]
