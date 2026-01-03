@@ -1,1 +1,0 @@
-CUT_REMAINDER_STRING: bool = True

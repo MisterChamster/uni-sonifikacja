@@ -1,7 +1,7 @@
 from src.askers import Askers
 from src.datasonif import DataSonif
 from pathlib import Path
-from src.settings import CUT_REMAINDER_STRING
+import json
 
 
 
@@ -83,11 +83,16 @@ def mainloop() -> None:
 
             elif action_asker == "settings":
                 asker_settings: str = Askers.ask_settings()
+                with open("src/settings.json") as f:
+                    config = json.load(f)
+                    cut_string = config["CUT_REMAINDER_STRING"]
+
                 if asker_settings == "change_cutting_setting":
-                    pass
-                    # CUT_REMAINDER_STRING = not CUT_REMAINDER_STRING
-                print(CUT_REMAINDER_STRING)
-                print()
+                    config["CUT_REMAINDER_STRING"] = "True" if cut_string == "False" else "False"
+                    with open("src/settings.json", "w") as f:
+                        json.dump(config, f, indent=2)
+                # print(cut_string)
+                print("\n")
 
             elif action_asker == "change_file":
                 break
