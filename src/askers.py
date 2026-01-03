@@ -94,5 +94,8 @@ class Askers():
             if segment_count >= data_length:
                 print("Invalid, chosen number is too high\n")
                 continue
+            elif segment_count <= 1:
+                print("Invalid, chosen number is too low\n")
+                continue
 
             return segment_count

@@ -55,10 +55,10 @@ def mainloop() -> None:
                 if segment_asker is None:
                     print()
                     continue
-                else:
-                    print("Processing...")
-                    loaded_data.apply_paa_aggregation()
-                    print("Data successfully aggregated!\n\n")
+
+                print("Processing...")
+                loaded_data.apply_paa_aggregation(segment_asker)
+                print("Data successfully aggregated!\n\n")
 
             elif action_asker == "normalization":
                 print("Normalizing...")
