@@ -9,17 +9,17 @@ def mainloop() -> None:
     while True:
         print("Choose data file in txt/csv format:")
         datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
-        if datafile_path == () or datafile_path == "":
+        if not datafile_path:
             print("No file has been chosen.")
-            return None
+            return
         if not datafile_path.endswith((".txt", ".csv")):
             print("Wrong file format.")
-            return None
+            return
         print(datafile_path, "\n")
 
         asker_segment = Askers.ask_segment()
         if asker_segment is None:
-            return None
+            return
         print("\n")
 
         datafile_path = Path(datafile_path)
@@ -98,4 +98,4 @@ def mainloop() -> None:
                 break
 
             elif action_asker == "exit":
-                return None
+                return

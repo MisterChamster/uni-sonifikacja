@@ -32,7 +32,7 @@ class Askers():
             if asker == "":
                 return 1
             elif asker == "exit":
-                return None
+                return
             elif not asker.isdigit():
                 print("Incorrect input.\n\n")
             else:
@@ -87,7 +87,7 @@ class Askers():
             segment_count = input().strip()
 
             if segment_count == "exit":
-                return None
+                return
 
             if not segment_count.isdigit():
                 print("Invalid input!\n")

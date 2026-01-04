@@ -59,19 +59,19 @@ class DataSonif():
     def _update_min_max(self) -> None:
         self.min_val = float(np.min(self.data_array))
         self.max_val = float(np.max(self.data_array))
-        return None
+        return
 
 
     def reverse_data_order(self) -> None:
         self.data_array = self.data_array[::-1]
         self.og_order = not self.og_order
-        return None
+        return
 
 
     def reverse_data_sign(self) -> None:
         self.data_array = -self.data_array
         self.og_sign    = not self.og_sign
-        return None
+        return
 
 
     def apply_paa_aggregation(self, segment_count: int) -> None:
@@ -122,13 +122,13 @@ class DataSonif():
         if self.treshold != None:
             self.calculate_treshold()
 
-        return None
+        return
 
 
     # Normalization xnorm = (x-xmin)/(xmax-xmin)
     def normalize_data(self) -> None:
         if self.normalized == True:
-            return None
+            return
 
         difference = self.max_val - self.min_val
         self.data_array = (self.data_array - self.min_val)/(difference)
@@ -142,7 +142,7 @@ class DataSonif():
 
         self._update_min_max()
         self.normalized = True
-        return None
+        return
 
 
     # Getting treshold as average between two sample count peaks (open and closed)
@@ -188,7 +188,7 @@ class DataSonif():
             treshold_val = (tempval1+tempval2)/2
 
         self.treshold = treshold_val
-        return None
+        return
 
 
     def show_chart(self) -> None:
@@ -220,7 +220,7 @@ class DataSonif():
 
         plt.show()
 
-        return None
+        return
 
 
     def show_histogram(self) -> None:
@@ -238,6 +238,7 @@ class DataSonif():
         plt.title('Histogram of number of samples per voltage')
 
         plt.show()
+        return
 
 
     def get_sample_count(self) -> int:
