@@ -19,6 +19,7 @@ class DataSonif():
     bins_count: int
     treshold:   float | None
     normalized: bool
+    converted_to_binary: bool
 
 
     def __init__(self, file_path: Path, segment: int) -> None:
@@ -26,9 +27,10 @@ class DataSonif():
         self.og_order   = True
         self.og_sign    = True
 
+        self.bins_count = 200
         self.treshold   = None
         self.normalized = False
-        self.bins_count = 200
+        self.converted_to_binary = False
 
         if segment == 1:
             try:
@@ -70,7 +72,16 @@ class DataSonif():
 
     def reverse_data_sign(self) -> None:
         self.data_array = -self.data_array
-        self.og_sign    = not self.og_sign
+        self.show_chart()
+
+        if self.data_sign == "-":
+            self.data_sign = "+"
+        else:
+            self.data_sign = "-"
+
+        self._update_min_max()
+        if self.treshold:
+            self.calculate_treshold()
         return
 
 
@@ -139,7 +150,7 @@ class DataSonif():
         self.data_array = (self.data_array - self.min_val)/(difference)
 
         # Normalize treshold
-        if self.treshold is not None:
+        if self.treshold:
             # Method calculate_treshold could be used, but calculating 
             # manually saves a ton of computing.
             # self.calculate_treshold()
@@ -196,6 +207,24 @@ class DataSonif():
         return
 
 
+    def convert_data_to_binary(self) -> None:
+        if not self.normalized:
+            self.normalize_data()
+
+        if not self.treshold:
+            self.calculate_treshold()
+
+        for i in range(len(self.data_array)):
+            if self.data_array[i] <= self.treshold:
+                self.data_array[i] = 0
+            else:
+                self.data_array[i] = 1
+
+        self._update_min_max()
+        self.converted_to_binary = True
+        return
+
+
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
@@ -209,7 +238,7 @@ class DataSonif():
         plt.scatter(np.arange(self.data_array.shape[0]), self.data_array, s=1)
 
         # Treshold line
-        if self.treshold is not None:
+        if self.treshold:
             plt.axhline(y=self.treshold, color="red")
 
         # plt.gca().xaxis.set_major_locator(MultipleLocator(len(self.data_array)/10))
@@ -217,7 +246,7 @@ class DataSonif():
         plt.gca().yaxis.set_major_locator(MultipleLocator(y_locators))
 
         plt.xlabel("Sample index")
-        if self.normalized == True:
+        if self.normalized:
             plt.ylabel("Normalised Voltage")
         else:
             plt.ylabel("Voltage [V]")

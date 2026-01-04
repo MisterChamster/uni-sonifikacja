@@ -72,6 +72,11 @@ def mainloop() -> None:
                 loaded_data.calculate_treshold()
                 print("Done!\n\n")
 
+            elif action_asker == "convert_to_bin":
+                print("Converting data to binary...")
+                loaded_data.convert_data_to_binary()
+                print("Done!\n\n")
+
             elif action_asker == "show_chart":
                 print("Preparing chart...\n")
                 loaded_data.show_chart()
