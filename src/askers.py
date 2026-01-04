@@ -53,6 +53,7 @@ class Askers():
             "p": "apply_paa",
             "n": "normalization",
             "t": "calculate_threshold",
+            "b": "convert_to_bin",
             "c": "show_chart",
             "h": "show_histogram",
             "s": "settings",
@@ -66,6 +67,7 @@ class Askers():
                   "p - Apply PAA downsampling\n"
                   "n - Normalize data\n"
                   "t - Calculate threshold\n"
+                  "b - Convert data to binary\n"
                   "c - Show chart\n"
                   "h - Show histogram\n"
                   "s - Settings\n"

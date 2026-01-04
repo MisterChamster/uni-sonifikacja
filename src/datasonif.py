@@ -19,6 +19,7 @@ class DataSonif():
     bins_count: int
     treshold:   float | None
     normalized: bool
+    converted_to_binary: bool
 
 
     def __init__(self, file_path: Path, segment: int) -> None:
@@ -26,9 +27,10 @@ class DataSonif():
         self.og_order   = True
         self.og_sign    = True
 
+        self.bins_count = 200
         self.treshold   = None
         self.normalized = False
-        self.bins_count = 200
+        self.converted_to_binary = False
 
         if segment == 1:
             try:
@@ -188,6 +190,12 @@ class DataSonif():
             treshold_val = (tempval1+tempval2)/2
 
         self.treshold = treshold_val
+        return
+
+
+    def convert_data_to_binary(self) -> None:
+        if not self.normalized():
+            self.normalize_data()
         return
 
 
