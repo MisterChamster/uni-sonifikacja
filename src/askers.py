@@ -112,9 +112,9 @@ class Askers():
 
         with open("src/settings.json") as f:
             config = json.load(f)
-            cut_string = config["CUT_REMAINDER_STRING"].strip()
+            cut_string = config["CUT_REMAINDER_STRING"]
 
-        if cut_string == "true":
+        if cut_string:
             cutting_option = "c    - Disable cutting remainder data during PAA (currently enabled)"
         else:
             cutting_option = "c    - Enable cutting remainder data during PAA (currently disabled)"

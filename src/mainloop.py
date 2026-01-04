@@ -85,10 +85,10 @@ def mainloop() -> None:
                 asker_settings: str = Askers.ask_settings()
                 with open("src/settings.json") as f:
                     config = json.load(f)
-                    cut_string = config["CUT_REMAINDER_STRING"].strip()
+                    cut_string = config["CUT_REMAINDER_STRING"]
 
                 if asker_settings == "change_cutting_setting":
-                    config["CUT_REMAINDER_STRING"] = "true" if cut_string == "false" else "false"
+                    config["CUT_REMAINDER_STRING"] = True if not cut_string else False
                     with open("src/settings.json", "w") as f:
                         json.dump(config, f, indent=2)
                 # print(cut_string)

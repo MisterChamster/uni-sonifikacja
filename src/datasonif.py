@@ -78,10 +78,10 @@ class DataSonif():
         temparr: np.ndarray = np.empty(segment_count)
         with open("src/settings.json") as f:
             config = json.load(f)
-            cut_string = config["CUT_REMAINDER_STRING"].strip()
+            cut_string = config["CUT_REMAINDER_STRING"]
 
         # Cutting data array before segmenting
-        if cut_string == "true":
+        if cut_string:
             cut_length: int = len(self.data_array) % segment_count
 
             if cut_length != 0: #Cut if there's something to cut
@@ -109,7 +109,7 @@ class DataSonif():
             iterative += 1
 
         # Calculating mean of the segment that wasn't cut off
-        if cut_string == "false":
+        if not cut_string:
             segment_sum: np.float64 = 0
             for i in range(index_segment, len(self.data_array)):
                 segment_sum += self.data_array[i]
