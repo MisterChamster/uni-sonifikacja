@@ -18,7 +18,7 @@ def mainloop() -> None:
         print(datafile_path, "\n")
 
         asker_segment = Askers.ask_segment()
-        if asker_segment is None:
+        if not asker_segment:
             return
         print("\n")
 
@@ -26,9 +26,9 @@ def mainloop() -> None:
         loaded_data = DataSonif(datafile_path, asker_segment)
 
         while True:
-            segment_info = "False" if asker_segment == 1 else str(asker_segment)
-            ordering = "Original" if loaded_data.og_order is True else "Reverse"
-            sign = "Original" if loaded_data.og_sign is True else "Opposite"
+            segment_info = "False" if asker_segment == 1  else str(asker_segment)
+            ordering = "Original" if loaded_data.og_order else "Reverse"
+            sign     = "Original" if loaded_data.og_sign  else "Opposite"
 
             print(f"Chosen file:        {loaded_data.file_path}")
             print(f"Data segmentation:  {segment_info}")
@@ -88,7 +88,7 @@ def mainloop() -> None:
                     cut_string = config["CUT_REMAINDER_STRING"]
 
                 if asker_settings == "change_cutting_setting":
-                    config["CUT_REMAINDER_STRING"] = True if not cut_string else False
+                    config["CUT_REMAINDER_STRING"] = not cut_string
                     with open("src/settings.json", "w") as f:
                         json.dump(config, f, indent=2)
                 # print(cut_string)
