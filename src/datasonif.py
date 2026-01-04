@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from pathlib import Path
 import json
-# from src.utils import get_peak_coordinates
+from src.utils import fix_value_in_settingsjson
 
 
 
@@ -78,7 +78,12 @@ class DataSonif():
         temparr: np.ndarray = np.empty(segment_count)
         with open("src/settings.json") as f:
             config = json.load(f)
+        try:
             cut_string = config["CUT_REMAINDER_STRING"]
+        except:
+            default: bool = True
+            cut_string = default
+            fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING", default)
 
         # Cutting data array before segmenting
         if cut_string:
