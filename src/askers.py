@@ -1,6 +1,7 @@
 import os
 from tkinter import filedialog
 import json
+from src.utils import fix_value_in_settingsjson
 
 
 
@@ -112,7 +113,12 @@ class Askers():
 
         with open("src/settings.json") as f:
             config = json.load(f)
+        try:
             cut_string = config["CUT_REMAINDER_STRING"]
+        except:
+            default: bool = True
+            cut_string = default
+            fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING", default)
 
         if cut_string:
             cutting_option = "c    - Disable cutting remainder data during PAA (currently enabled)"

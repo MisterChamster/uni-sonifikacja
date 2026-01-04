@@ -2,6 +2,7 @@ from src.askers import Askers
 from src.datasonif import DataSonif
 from pathlib import Path
 import json
+from src.utils import fix_value_in_settingsjson
 
 
 
@@ -18,7 +19,7 @@ def mainloop() -> None:
         print(datafile_path, "\n")
 
         asker_segment = Askers.ask_segment()
-        if asker_segment is None:
+        if not asker_segment:
             return
         print("\n")
 
@@ -26,9 +27,9 @@ def mainloop() -> None:
         loaded_data = DataSonif(datafile_path, asker_segment)
 
         while True:
-            segment_info = "False" if asker_segment == 1 else str(asker_segment)
-            ordering = "Original" if loaded_data.og_order is True else "Reverse"
-            sign = "Original" if loaded_data.og_sign is True else "Opposite"
+            segment_info = "False" if asker_segment == 1  else str(asker_segment)
+            ordering = "Original" if loaded_data.og_order else "Reverse"
+            sign     = "Original" if loaded_data.og_sign  else "Opposite"
 
             print(f"Chosen file:        {loaded_data.file_path}")
             print(f"Data segmentation:  {segment_info}")
@@ -85,13 +86,17 @@ def mainloop() -> None:
                 asker_settings: str = Askers.ask_settings()
                 with open("src/settings.json") as f:
                     config = json.load(f)
+                try:
                     cut_string = config["CUT_REMAINDER_STRING"]
+                except:
+                    default: bool = True
+                    cut_string = default
+                    fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING", default)
 
                 if asker_settings == "change_cutting_setting":
-                    config["CUT_REMAINDER_STRING"] = True if not cut_string else False
+                    config["CUT_REMAINDER_STRING"] = not cut_string
                     with open("src/settings.json", "w") as f:
                         json.dump(config, f, indent=2)
-                # print(cut_string)
                 print("\n")
 
             elif action_asker == "change_file":

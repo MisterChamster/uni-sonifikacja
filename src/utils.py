@@ -1,5 +1,31 @@
-import pandas as pd
-from math import floor
+# import pandas as pd
+# from math import floor
+import json
+
+
+
+def save_value_to_settings(adress: str, json_key: str, json_val: bool|str|int|float) -> None:
+    with open(adress) as f:
+        config = json.load(f)
+
+    config[json_key] = json_val
+    with open(adress, "w") as f:
+        json.dump(config, f, indent=2)
+
+
+def fix_value_in_settingsjson(adress: str, json_key: str, json_val: bool|str|int|float) -> None:
+    with open(adress) as f:
+        config = json.load(f)
+
+    try:
+        temp = config[json_key]
+    except:
+        print(f"[WARNING] Key value '{json_key}' could not be found in {adress}. Resorting to default value ('{json_val}').\nFixing {adress}...")
+        try:
+            save_value_to_settings(adress, json_key, json_val)
+            print(f"{json_key} has been fixed in {adress}")
+        except:
+            print(f"{json_key} could not have been fixed in {adress}")
 
 
 
