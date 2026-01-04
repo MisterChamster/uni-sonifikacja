@@ -6,15 +6,15 @@ import json
 
 class Askers():
     @staticmethod
-    def ask_path_filedialog(type: str, message: str) -> str:
+    def ask_path_filedialog(node_type: str, message: str) -> str:
         original_path = os.getcwd()
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
         os.chdir(desktop_path)
 
         sel_path = ""
-        if type == "f":
+        if node_type == "f":
             sel_path = filedialog.askopenfilename(title=message)
-        elif type == "d":
+        elif node_type == "d":
             sel_path = filedialog.askdirectory(title=message)
 
         os.chdir(original_path)
@@ -112,9 +112,9 @@ class Askers():
 
         with open("src/settings.json") as f:
             config = json.load(f)
-            cut_string = config["CUT_REMAINDER_STRING"]
+            cut_string = config["CUT_REMAINDER_STRING"].strip()
 
-        if cut_string == "True":
+        if cut_string == "true":
             cutting_option = "c    - Disable cutting remainder data during PAA (currently enabled)"
         else:
             cutting_option = "c    - Enable cutting remainder data during PAA (currently disabled)"

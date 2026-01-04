@@ -21,7 +21,7 @@ class DataSonif():
     normalized: bool
 
 
-    def __init__(self, file_path: str, segment: int) -> None:
+    def __init__(self, file_path: Path, segment: int) -> None:
         self.file_path  = file_path
         self.og_order   = True
         self.og_sign    = True
@@ -78,10 +78,10 @@ class DataSonif():
         temparr: np.ndarray = np.empty(segment_count)
         with open("src/settings.json") as f:
             config = json.load(f)
-            cut_string = config["CUT_REMAINDER_STRING"]
+            cut_string = config["CUT_REMAINDER_STRING"].strip()
 
         # Cutting data array before segmenting
-        if cut_string == "True":
+        if cut_string == "true":
             cut_length: int = len(self.data_array) % segment_count
 
             if cut_length != 0: #Cut if there's something to cut
@@ -109,7 +109,7 @@ class DataSonif():
             iterative += 1
 
         # Calculating mean of the segment that wasn't cut off
-        if cut_string == "False":
+        if cut_string == "false":
             segment_sum: np.float64 = 0
             for i in range(index_segment, len(self.data_array)):
                 segment_sum += self.data_array[i]
