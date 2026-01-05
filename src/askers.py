@@ -118,20 +118,47 @@ class Askers():
             "sd":   "change_segmenting_setting_dwelltimes",
             "exit": "exit"}
 
-        # Get string for cutting during PAA
-        cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
-                                                         "CUT_REMAINDER_STRING_PAA",
-                                                         True)
+        # Get current settings from settings.json
+        cut_string_paa          = Utils.get_val_from_settings_fix("src/settings.json",
+                                                                  "CUT_REMAINDER_STRING_PAA",
+                                                                  True)
+        cut_string_dwelltimes   = Utils.get_val_from_settings_fix("src/settings.json",
+                                                                  "CUT_REMAINDER_STRING_DWELLTIMES",
+                                                                  True)
+        segment_style_paa       = Utils.get_val_from_settings_fix("src/settings.json",
+                                                                  "SEGMENTING_PAA",
+                                                                  "count")
+        segment_style_dwelltimes = Utils.get_val_from_settings_fix("src/settings.json",
+                                                                  "SEGMENTING_DWELLTIMES",
+                                                                  "size")
 
         if cut_string_paa:
-            cutting_option_paa = "cp   - Disable cutting remainder data during PAA (currently enabled)"
+            cutting_option_paa = "Disable cutting remainder data during PAA (currently enabled)"
         else:
-            cutting_option_paa = "cp   - Enable cutting remainder data during PAA (currently disabled)"
+            cutting_option_paa = "Enable cutting remainder data during PAA (currently disabled)"
+
+        if cut_string_dwelltimes:
+            cutting_option_dwelltimes = "Disable cutting remainder data during dwell times conversion (currently enabled)"
+        else:
+            cutting_option_dwelltimes = "Enable cutting remainder data during dwell times conversion (currently disabled)"
+
+        if segment_style_paa == "count":
+            segmenting_style_paa = "size (currently segment count)"
+        elif segment_style_paa == "size":
+            segmenting_style_paa = "count (currently segment size)"
+
+        if segment_style_dwelltimes == "count":
+            segmenting_style_dwelltimes = "size (currently segment count)"
+        elif segment_style_dwelltimes == "size":
+            segmenting_style_dwelltimes = "count (currently segment size)"
 
 
         while True:
             print( "Choose an action:\n"
-                  f"{cutting_option_paa}\n"
+                  f"cp - {cutting_option_paa}\n"
+                  f"cd - {cutting_option_dwelltimes}\n"
+                  f"sp - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
+                  f"sd - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
                    "exit - Exit\n>> ", end="")
             asker = input().strip()
 
