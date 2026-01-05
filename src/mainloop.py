@@ -2,7 +2,7 @@ from src.askers import Askers
 from src.datasonif import DataSonif
 from pathlib import Path
 import json
-from src.utils import save_value_to_settings, fix_value_in_settingsjson
+from src.utils import Utils
 
 
 
@@ -96,11 +96,11 @@ def mainloop() -> None:
                 except:
                     default: bool = True
                     cut_string_paa = default
-                    fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
+                    Utils.fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
 
                 if asker_settings == "change_cutting_setting":
                     cut_string_paa = not cut_string_paa
-                    save_value_to_settings("src/settings.json", "CUT_REMAINDER_STRING_PAA", cut_string_paa)
+                    Utils.save_value_to_settings("src/settings.json", "CUT_REMAINDER_STRING_PAA", cut_string_paa)
                 print("\n")
 
             elif action_asker == "change_file":
