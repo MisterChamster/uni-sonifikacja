@@ -169,9 +169,9 @@ class DataSonif():
             segment_count -= 1
 
 
-        segment_size: int   = len(self.data_array) // segment_count
-        index_segment: int  = 0
-        iterative: int      = 0
+        segment_size: int  = len(self.data_array) // segment_count
+        index_segment: int = 0
+        iterative: int     = 0
 
         # Putting segment means to temparr
         while iterative < segment_count:
@@ -195,11 +195,10 @@ class DataSonif():
             temparr[iterative] = segment_mean
 
         self.data_array = temparr
-        # Update fields
+        # Update fields accordingly
         self._update_min_max()
         if self.treshold != None:
             self.calculate_treshold()
-
         return
 
 

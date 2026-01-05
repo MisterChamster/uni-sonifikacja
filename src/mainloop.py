@@ -90,27 +90,22 @@ def mainloop() -> None:
             elif action_asker == "settings":
                 asker_settings: str = Askers.ask_settings()
 
-
                 if asker_settings == "change_cutting_setting_paa":
                     Utils.change_setting_to_opposite("src/settings.json",
                                                      "CUT_REMAINDER_STRING_PAA",
                                                      True)
-
                 elif asker_settings == "change_cutting_setting_dwelltimes":
                     Utils.change_setting_to_opposite("src/settings.json",
                                                      "CUT_REMAINDER_STRING_DWELLTIMES",
                                                      True)
-
                 elif asker_settings == "change_segmenting_setting_paa":
                     Utils.change_setting_to_opposite("src/settings.json",
                                                      "SEGMENTING_PAA",
                                                      "size")
-
                 elif asker_settings == "change_segmenting_setting_dwelltimes":
                     Utils.change_setting_to_opposite("src/settings.json",
                                                      "SEGMENTING_DWELLTIMES",
                                                      "size")
-
                 print("\n")
 
             elif action_asker == "change_file":
