@@ -124,7 +124,7 @@ class Askers():
         except:
             default: bool = True
             cut_string_paa = default
-            Utils.save_value_to_settings_FIX("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
+            Utils.fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
 
         if cut_string_paa:
             cutting_option_paa = "cp   - Disable cutting remainder data during PAA (currently enabled)"

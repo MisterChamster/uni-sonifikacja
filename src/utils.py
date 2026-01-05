@@ -16,7 +16,7 @@ class Utils():
 
 
     @staticmethod
-    def save_value_to_settings_FIX(adress: str, json_key: str, json_val: bool|str|int|float) -> None:
+    def fix_value_in_settingsjson(adress: str, json_key: str, json_val: bool|str|int|float) -> None:
         with open(adress) as f:
             config = json.load(f)
 
