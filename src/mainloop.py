@@ -77,6 +77,11 @@ def mainloop() -> None:
                 loaded_data.convert_data_to_binary()
                 print("Done!\n\n")
 
+            elif action_asker == "convert_to_dwelltimes":
+                print("Converting data to dwell times...")
+                loaded_data.convert_to_dwell_times()
+                print("Done!\n\n")
+
             elif action_asker == "show_chart":
                 print("Preparing chart...\n")
                 loaded_data.show_chart()

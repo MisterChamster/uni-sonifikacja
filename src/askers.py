@@ -55,6 +55,7 @@ class Askers():
             "t": "calculate_threshold",
             "p": "apply_paa",
             "b": "convert_to_bin",
+            "d": "convert_to_dwelltimes",
             "c": "show_chart",
             "h": "show_histogram",
             "s": "settings",
@@ -69,6 +70,7 @@ class Askers():
                   "t - Calculate threshold\n"
                   "p - Apply PAA downsampling\n"
                   "b - Convert data to binary\n"
+                  "d - Convert data to dwell times\n"
                   "c - Show chart\n"
                   "h - Show histogram\n"
                   "s - Settings\n"
