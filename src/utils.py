@@ -20,15 +20,13 @@ class Utils():
         with open(adress) as f:
             config = json.load(f)
 
-        try:
-            temp = config[json_key]
-        except:
-            print(f"[WARNING] Key value '{json_key}' could not be found in {adress}. Resorting to default value ('{json_val}').\nFixing {adress}...")
+        if json_key not in config.keys():
+            print(f"[WARNING] Key value '{json_key}' could not be found in {adress}. Resorting to default value ('{default_val}').\nFixing {adress}...")
             try:
-                Utils.save_value_to_settings(adress, json_key, json_val)
+                Utils.save_value_to_settings(adress, json_key, default_val)
                 print(f"{json_key} has been fixed in {adress}")
-            except:
-                print(f"{json_key} could not have been fixed in {adress}")
+            except Exception as e:
+                print(f"{json_key} could not have been fixed in {adress}\n{e}")
 
 
 
