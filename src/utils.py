@@ -25,7 +25,7 @@ class Utils():
         except:
             print(f"[WARNING] Key value '{json_key}' could not be found in {adress}. Resorting to default value ('{json_val}').\nFixing {adress}...")
             try:
-                save_value_to_settings(adress, json_key, json_val)
+                Utils.save_value_to_settings(adress, json_key, json_val)
                 print(f"{json_key} has been fixed in {adress}")
             except:
                 print(f"{json_key} could not have been fixed in {adress}")
