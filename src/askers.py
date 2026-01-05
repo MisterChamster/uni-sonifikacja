@@ -117,14 +117,9 @@ class Askers():
             "exit": "exit"}
 
         # Get string for cutting during PAA
-        with open("src/settings.json") as f:
-            config = json.load(f)
-        try:
-            cut_string_paa = config["CUT_REMAINDER_STRING_PAA"]
-        except:
-            default: bool = True
-            cut_string_paa = default
-            Utils.fix_value_in_settings("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
+        cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
+                                                         "CUT_REMAINDER_STRING_PAA",
+                                                         True)
 
         if cut_string_paa:
             cutting_option_paa = "cp   - Disable cutting remainder data during PAA (currently enabled)"
