@@ -18,7 +18,7 @@ def mainloop() -> None:
             return
         print(datafile_path, "\n")
 
-        asker_segment = Askers.ask_segment()
+        asker_segment = Askers.ask_initial_segmentation()
         if not asker_segment:
             return
         print("\n")
@@ -52,14 +52,14 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "apply_paa":
-                segment_asker = Askers.ask_segments_paa(loaded_data.get_sample_count())
+                asker_segment_paa = Askers.ask_segment_count_paa(loaded_data.get_sample_count())
                 print()
-                if segment_asker is None:
+                if asker_segment_paa is None:
                     print()
                     continue
 
                 print("Processing...")
-                loaded_data.apply_paa_aggregation(segment_asker)
+                loaded_data.apply_paa_aggregation(asker_segment_paa)
                 print("Data successfully aggregated!\n\n")
 
             elif action_asker == "normalization":

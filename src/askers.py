@@ -23,7 +23,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_segment() -> int|None:
+    def ask_initial_segmentation() -> int|None:
         while True:
             print("Segment data (Pick every n-th line of data. Max 10, optimal 5.)\n"
                   "Press Enter to skip. Input 'exit' to exit program.\n"
@@ -83,7 +83,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_segments_paa(data_length: int) -> str|None:
+    def ask_segment_count_paa(data_length: int) -> str|None:
         while True:
             print(f"Number of samples: {data_length}")
             print("Input a number of segments (type 'exit' to return):\n>> ", end="")

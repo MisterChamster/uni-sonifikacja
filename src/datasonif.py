@@ -186,7 +186,7 @@ class DataSonif():
             index_segment += segment_size
             iterative += 1
 
-        # Calculating mean of the segment that wasn't cut off
+        # Calculating mean of the segment that wasn't cut off (if no cutting)
         if not cut_string_paa:
             segment_sum: np.float64 = 0
             for i in range(index_segment, len(self.data_array)):

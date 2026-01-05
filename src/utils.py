@@ -59,6 +59,8 @@ class Utils():
             setting_val = not setting_val
         elif setting_val in ["size", "count"]:
             setting_val = "size" if setting_val == "count" else "size"
+        else:
+            raise ValueError("ERROR: Incorrect value in settings.json")
 
         Utils.save_value_to_settings(adress, json_key, setting_val)
         return
