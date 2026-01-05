@@ -92,15 +92,15 @@ def mainloop() -> None:
                 with open("src/settings.json") as f:
                     config = json.load(f)
                 try:
-                    cut_string = config["CUT_REMAINDER_STRING_PAA"]
+                    cut_string_paa = config["CUT_REMAINDER_STRING_PAA"]
                 except:
                     default: bool = True
-                    cut_string = default
+                    cut_string_paa = default
                     fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
 
                 if asker_settings == "change_cutting_setting":
-                    cut_string = not cut_string
-                    save_value_to_settings("src/settings.json", "CUT_REMAINDER_STRING_PAA", cut_string)
+                    cut_string_paa = not cut_string_paa
+                    save_value_to_settings("src/settings.json", "CUT_REMAINDER_STRING_PAA", cut_string_paa)
                 print("\n")
 
             elif action_asker == "change_file":
