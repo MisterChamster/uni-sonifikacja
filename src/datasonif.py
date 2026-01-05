@@ -85,62 +85,6 @@ class DataSonif():
         return
 
 
-    def apply_paa_aggregation(self, segment_count: int) -> None:
-        temparr: np.ndarray = np.empty(segment_count)
-        with open("src/settings.json") as f:
-            config = json.load(f)
-        try:
-            cut_string_paa = config["CUT_REMAINDER_STRING_PAA"]
-        except:
-            default: bool = True
-            cut_string_paa = default
-            Utils.fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
-
-        # Cutting data array before segmenting
-        if cut_string_paa:
-            cut_length: int = len(self.data_array) % segment_count
-
-            if cut_length != 0: #Cut if there's something to cut
-                self.data_array = self.data_array[:-cut_length]
-        # For additional segment with cutoff data
-        else:
-            segment_count -= 1
-
-
-        segment_size: int   = len(self.data_array) // segment_count
-        index_segment: int  = 0
-        iterative: int      = 0
-
-        # Putting segment means to temparr
-        while iterative < segment_count:
-            # print(str(iterative+1) + ".", index_segment, " - ", index_segment+segment_size-1)
-            segment_sum: np.float64 = 0
-            for i in range(index_segment, index_segment+segment_size):
-                segment_sum += self.data_array[i]
-
-            segment_mean: np.float64 = segment_sum / segment_size
-            temparr[iterative] = segment_mean
-
-            index_segment += segment_size
-            iterative += 1
-
-        # Calculating mean of the segment that wasn't cut off
-        if not cut_string_paa:
-            segment_sum: np.float64 = 0
-            for i in range(index_segment, len(self.data_array)):
-                segment_sum += self.data_array[i]
-            segment_mean: np.float64 = segment_sum / segment_size
-            temparr[iterative] = segment_mean
-
-        self.data_array = temparr
-        # Update fields
-        self._update_min_max()
-        if self.treshold != None:
-            self.calculate_treshold()
-
-        return
-
-
     # Normalization xnorm = (x-xmin)/(xmax-xmin)
     def normalize_data(self) -> None:
         if self.normalized == True:
@@ -204,6 +148,62 @@ class DataSonif():
             treshold_val = (tempval1+tempval2)/2
 
         self.treshold = treshold_val
+        return
+
+
+    def apply_paa_aggregation(self, segment_count: int) -> None:
+        temparr: np.ndarray = np.empty(segment_count)
+        with open("src/settings.json") as f:
+            config = json.load(f)
+        try:
+            cut_string_paa = config["CUT_REMAINDER_STRING_PAA"]
+        except:
+            default: bool = True
+            cut_string_paa = default
+            Utils.fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
+
+        # Cutting data array before segmenting
+        if cut_string_paa:
+            cut_length: int = len(self.data_array) % segment_count
+
+            if cut_length != 0: #Cut if there's something to cut
+                self.data_array = self.data_array[:-cut_length]
+        # For additional segment with cutoff data
+        else:
+            segment_count -= 1
+
+
+        segment_size: int   = len(self.data_array) // segment_count
+        index_segment: int  = 0
+        iterative: int      = 0
+
+        # Putting segment means to temparr
+        while iterative < segment_count:
+            # print(str(iterative+1) + ".", index_segment, " - ", index_segment+segment_size-1)
+            segment_sum: np.float64 = 0
+            for i in range(index_segment, index_segment+segment_size):
+                segment_sum += self.data_array[i]
+
+            segment_mean: np.float64 = segment_sum / segment_size
+            temparr[iterative] = segment_mean
+
+            index_segment += segment_size
+            iterative += 1
+
+        # Calculating mean of the segment that wasn't cut off
+        if not cut_string_paa:
+            segment_sum: np.float64 = 0
+            for i in range(index_segment, len(self.data_array)):
+                segment_sum += self.data_array[i]
+            segment_mean: np.float64 = segment_sum / segment_size
+            temparr[iterative] = segment_mean
+
+        self.data_array = temparr
+        # Update fields
+        self._update_min_max()
+        if self.treshold != None:
+            self.calculate_treshold()
+
         return
 
 
