@@ -27,6 +27,7 @@ class Utils():
                 print(f"{json_key} has been fixed in {adress}")
             except Exception as e:
                 print(f"{json_key} could not have been fixed in {adress}\n{e}")
+        return
 
 
     @staticmethod
@@ -46,3 +47,18 @@ class Utils():
         except:
             Utils.fix_value_in_settings(adress, json_key, default_val)
             return default_val
+
+
+    @staticmethod
+    def change_setting_to_opposite(adress: str, json_key: str, default_val: str|bool) -> None:
+        setting_val = Utils.get_val_from_settings_fix(adress,
+                                                      json_key,
+                                                      default_val)
+
+        if isinstance(setting_val, bool):
+            setting_val = not setting_val
+        elif setting_val in ["size", "count"]:
+            setting_val = "size" if setting_val == "count" else "size"
+
+        Utils.save_value_to_settings(adress, json_key, setting_val)
+        return
