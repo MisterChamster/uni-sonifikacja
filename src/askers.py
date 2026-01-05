@@ -1,6 +1,5 @@
 import os
 from tkinter import filedialog
-import json
 from src.utils import Utils
 
 
@@ -155,10 +154,10 @@ class Askers():
 
         while True:
             print( "Choose an action:\n"
-                  f"cp - {cutting_option_paa}\n"
-                  f"cd - {cutting_option_dwelltimes}\n"
-                  f"sp - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
-                  f"sd - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
+                  f"cp   - {cutting_option_paa}\n"
+                  f"cd   - {cutting_option_dwelltimes}\n"
+                  f"sp   - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
+                  f"sd   - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
                    "exit - Exit\n>> ", end="")
             asker = input().strip()
 
