@@ -110,9 +110,13 @@ class Askers():
     @staticmethod
     def ask_settings() -> str:
         returns_dict = {
-            "c":    "change_cutting_setting",
+            "cp":   "change_cutting_setting_paa",
+            "cd":   "change_cutting_setting_dwelltimes",
+            "sp":   "change_segmenting_setting_paa",
+            "sd":   "change_segmenting_setting_dwelltimes",
             "exit": "exit"}
 
+        # Get string for cutting during PAA
         with open("src/settings.json") as f:
             config = json.load(f)
         try:
@@ -123,13 +127,14 @@ class Askers():
             Utils.fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
 
         if cut_string_paa:
-            cutting_option = "c    - Disable cutting remainder data during PAA (currently enabled)"
+            cutting_option_paa = "cp   - Disable cutting remainder data during PAA (currently enabled)"
         else:
-            cutting_option = "c    - Enable cutting remainder data during PAA (currently disabled)"
+            cutting_option_paa = "cp   - Enable cutting remainder data during PAA (currently disabled)"
+
 
         while True:
             print( "Choose an action:\n"
-                  f"{cutting_option}\n"
+                  f"{cutting_option_paa}\n"
                    "exit - Exit\n>> ", end="")
             asker = input().strip()
 

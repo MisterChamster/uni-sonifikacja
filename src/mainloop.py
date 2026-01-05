@@ -98,9 +98,19 @@ def mainloop() -> None:
                     cut_string_paa = default
                     Utils.fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
 
-                if asker_settings == "change_cutting_setting":
+                if asker_settings == "change_cutting_setting_paa":
                     cut_string_paa = not cut_string_paa
                     Utils.save_value_to_settings("src/settings.json", "CUT_REMAINDER_STRING_PAA", cut_string_paa)
+
+                elif asker_settings == "change_cutting_setting_dwelltimes":
+                    pass
+
+                elif asker_settings == "change_segmenting_setting_paa":
+                    pass
+
+                elif asker_settings == "change_segmenting_setting_dwelltimes":
+                    pass
+
                 print("\n")
 
             elif action_asker == "change_file":
