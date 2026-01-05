@@ -29,6 +29,24 @@ class Utils():
                 print(f"{json_key} could not have been fixed in {adress}\n{e}")
 
 
+    @staticmethod
+    def get_val_from_settings(adress: str, json_key: str) -> str|bool:
+        with open(adress) as f:
+            config = json.load(f)
+
+        temp = config[json_key]
+        return temp
+
+
+    @staticmethod
+    def get_val_from_settings_fix(adress: str, json_key: str, default_val: str|bool) -> str|bool:
+        try:
+            temp = Utils.get_val_from_settings(adress, json_key)
+            return temp
+        except:
+            Utils.fix_value_in_settings(adress, json_key, default_val)
+            return default_val
+
 
     # @staticmethod
     # def get_line_count(datafile_path: str):
