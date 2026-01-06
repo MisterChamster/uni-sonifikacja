@@ -119,10 +119,10 @@ class Askers():
 
         # Get current settings from settings.json
         cut_string_paa          = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                  "CUT_REMAINDER_STRING_PAA",
+                                                                  "CUT_REMAINDER_SAMPLES_PAA",
                                                                   True)
         cut_string_dwelltimes   = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                  "CUT_REMAINDER_STRING_DWELLTIMES",
+                                                                  "CUT_REMAINDER_SAMPLES_DWELLTIMES",
                                                                   True)
         segment_style_paa       = Utils.get_val_from_settings_fix("src/settings.json",
                                                                   "SEGMENTING_PAA",

@@ -154,7 +154,7 @@ class DataSonif():
         temparr: np.ndarray = np.empty(segment_count)
 
         cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
-                                                         "CUT_REMAINDER_STRING_PAA",
+                                                         "CUT_REMAINDER_SAMPLES_PAA",
                                                          True)
 
         # Cutting data array before segmenting
