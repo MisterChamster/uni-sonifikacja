@@ -52,20 +52,20 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "apply_paa":
-                segmenting_style_paa = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                       "SEGMENTING_STYLE_PAA",
-                                                                       "count")
+                segmenting_style = Utils.get_val_from_settings_fix("src/settings.json",
+                                                                   "SEGMENTING_STYLE_PAA",
+                                                                   "count")
 
-                asker_segment_value_paa = Askers.ask_segment_value_paa(loaded_data.get_sample_count(),
-                                                                       segmenting_style_paa)
-                if asker_segment_value_paa is None:
+                asker_segment_value = Askers.ask_segment_value(loaded_data.get_sample_count(),
+                                                               segmenting_style)
+                if asker_segment_value is None:
                     print()
                     continue
                 print()
 
                 print("Processing...")
-                loaded_data.apply_paa_aggregation(asker_segment_value_paa,
-                                                  segmenting_style_paa)
+                loaded_data.apply_paa_aggregation(asker_segment_value,
+                                                  segmenting_style)
                 print("Data successfully aggregated!\n\n")
 
             elif action_asker == "normalization":
