@@ -6,7 +6,8 @@ from src.utils import Utils
 
 class Askers():
     @staticmethod
-    def ask_path_filedialog(node_type: str, message: str) -> str:
+    def ask_path_filedialog(node_type: str,
+                            message:   str) -> str:
         original_path = os.getcwd()
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
         os.chdir(desktop_path)
@@ -86,7 +87,8 @@ class Askers():
 
 
     @staticmethod
-    def ask_segment_value(data_length: int, segmenting_style: str) -> str|None:
+    def ask_segment_value(data_length:      int,
+                          segmenting_style: str) -> str|None:
         if segmenting_style == "count":
             string1 = "number of segments"
         elif segmenting_style == "size":

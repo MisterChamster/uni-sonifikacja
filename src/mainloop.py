@@ -25,7 +25,7 @@ def mainloop() -> None:
         print("\n")
 
         datafile_path = Path(datafile_path)
-        loaded_data = DataSonif(datafile_path, asker_segment)
+        loaded_data   = DataSonif(datafile_path, asker_segment)
 
         while True:
             segment_info = "False" if asker_segment == 1  else str(asker_segment)

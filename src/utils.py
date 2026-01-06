@@ -6,7 +6,9 @@ import json
 
 class Utils():
     @staticmethod
-    def save_value_to_settings(adress: str, json_key: str, json_val: bool|str|int|float) -> None:
+    def save_value_to_settings(adress:   str,
+                               json_key: str,
+                               json_val: bool|str|int|float) -> None:
         with open(adress) as f:
             config = json.load(f)
 
@@ -16,7 +18,9 @@ class Utils():
 
 
     @staticmethod
-    def fix_value_in_settings(adress: str, json_key: str, default_val: bool|str|int|float) -> None:
+    def fix_value_in_settings(adress:      str,
+                              json_key:    str,
+                              default_val: bool|str|int|float) -> None:
         with open(adress) as f:
             config = json.load(f)
 
@@ -31,7 +35,8 @@ class Utils():
 
 
     @staticmethod
-    def get_val_from_settings(adress: str, json_key: str) -> str|bool:
+    def get_val_from_settings(adress:   str,
+                              json_key: str) -> str|bool:
         with open(adress) as f:
             config = json.load(f)
 
@@ -40,7 +45,9 @@ class Utils():
 
 
     @staticmethod
-    def get_val_from_settings_fix(adress: str, json_key: str, default_val: str|bool) -> str|bool:
+    def get_val_from_settings_fix(adress:      str,
+                                  json_key:    str,
+                                  default_val: str|bool) -> str|bool:
         try:
             temp = Utils.get_val_from_settings(adress, json_key)
             return temp
@@ -50,7 +57,9 @@ class Utils():
 
 
     @staticmethod
-    def change_setting_to_opposite(adress: str, json_key: str, default_val: str|bool) -> None:
+    def change_setting_to_opposite(adress:      str,
+                                   json_key:    str,
+                                   default_val: str|bool) -> None:
         setting_val = Utils.get_val_from_settings_fix(adress,
                                                       json_key,
                                                       default_val)

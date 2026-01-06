@@ -21,7 +21,9 @@ class DataSonif():
     converted_to_binary: bool
 
 
-    def __init__(self, file_path: Path, segment: int) -> None:
+    def __init__(self,
+                 file_path: Path,
+                 segment:   int) -> None:
         self.file_path  = file_path
         self.og_order   = True
         self.og_sign    = True
@@ -150,7 +152,9 @@ class DataSonif():
         return
 
 
-    def apply_paa_aggregation(self, segment_value: int, segmenting_style: str) -> None:
+    def apply_paa_aggregation(self,
+                              segment_value:    int,
+                              segmenting_style: str) -> None:
         cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
                                                          "CUT_REMAINDER_SAMPLES_PAA",
                                                          True)
@@ -230,7 +234,9 @@ class DataSonif():
         return
 
 
-    def convert_to_dwell_times(self, segment_value: int, segmenting_style: str) -> None:
+    def convert_to_dwell_times(self,
+                               segment_value:    int,
+                               segmenting_style: str) -> None:
         if not self.converted_to_binary:
             self.convert_data_to_binary()
 
