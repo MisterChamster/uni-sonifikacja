@@ -1,6 +1,7 @@
+from pathlib import Path
+import os
 from src.askers import Askers
 from src.datasonif import DataSonif
-from pathlib import Path
 from src.utils import Utils
 from src.settings_loop import settings_loop
 
@@ -113,6 +114,19 @@ def mainloop() -> None:
             elif action_asker == "settings":
                 settings_loop()
                 print("\n")
+
+            elif action_asker == "original_data":
+                if not os.path.exists(datafile_path):
+                    print(f"Chosen file no longer exists in path {datafile_path}")
+                    continue
+                print(datafile_path, "\n")
+
+                asker_segment = Askers.ask_initial_segmentation()
+                if not asker_segment:
+                    return
+                print("\n")
+
+                loaded_data = DataSonif(datafile_path, asker_segment)
 
             elif action_asker == "change_file":
                 break

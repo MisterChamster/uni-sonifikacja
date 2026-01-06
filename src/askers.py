@@ -58,6 +58,7 @@ class Askers():
             "c": "show_chart",
             "h": "show_histogram",
             "s": "settings",
+            "o": "original_data",
             "f": "change_file",
             "exit": "exit"}
 
@@ -73,6 +74,7 @@ class Askers():
                   "c - Show chart\n"
                   "h - Show histogram\n"
                   "s - Settings\n"
+                  "o - Revert to original data set\n"
                   "f - Change file\n"
                   "exit - Exit\n>> ", end="")
             asker = input().strip().lower()
