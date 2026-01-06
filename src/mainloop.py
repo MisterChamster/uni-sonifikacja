@@ -59,7 +59,8 @@ def mainloop() -> None:
                     continue
 
                 print("Processing...")
-                loaded_data.apply_paa_aggregation(asker_segment_paa)
+                loaded_data.apply_paa_aggregation(asker_segment_value_paa,
+                                                  segmenting_style_paa)
                 print("Data successfully aggregated!\n\n")
 
             elif action_asker == "normalization":

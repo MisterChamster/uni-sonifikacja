@@ -150,12 +150,25 @@ class DataSonif():
         return
 
 
-    def apply_paa_aggregation(self, segment_count: int) -> None:
-        temparr: np.ndarray = np.empty(segment_count)
-
+    def apply_paa_aggregation(self, segment_value: int, segmenting_style: str) -> None:
         cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
                                                          "CUT_REMAINDER_SAMPLES_PAA",
                                                          True)
+
+        if segmenting_style == "count":
+            segment_count = segment_value # That many real segments
+            if not cut_string_paa:
+                segment_size = len(self.data_array) // (segment_count-1)
+            else:
+                segment_size = len(self.data_array) // (segment_count)
+        elif segmenting_style == "size":
+            segment_size = segment_value
+            #vv That many FIXED-size segments vv
+            segment_count = len(self.data_array) // segment_size
+            if not cut_string_paa:
+                segment_count += 1 # That many real segments
+
+        temparr: np.ndarray = np.empty(segment_count)
 
         # Cutting data array before segmenting
         if cut_string_paa:
@@ -163,18 +176,16 @@ class DataSonif():
 
             if cut_length != 0: #Cut if there's something to cut
                 self.data_array = self.data_array[:-cut_length]
-        # For additional segment with cutoff data
+        # For additional segment with remaining data (calculated after the loop)
         else:
             segment_count -= 1
 
 
-        segment_size: int  = len(self.data_array) // segment_count
+        # Putting segment means to temparr
         index_segment: int = 0
         iterative: int     = 0
 
-        # Putting segment means to temparr
         while iterative < segment_count:
-            # print(str(iterative+1) + ".", index_segment, " - ", index_segment+segment_size-1)
             segment_sum: np.float64 = 0
             for i in range(index_segment, index_segment+segment_size):
                 segment_sum += self.data_array[i]
@@ -185,7 +196,7 @@ class DataSonif():
             index_segment += segment_size
             iterative += 1
 
-        # Calculating mean of the segment that wasn't cut off (if no cutting)
+        # Calculating mean of the segment with remaining data (no cutting route)
         if not cut_string_paa:
             segment_sum: np.float64 = 0
             for i in range(index_segment, len(self.data_array)):
@@ -216,6 +227,13 @@ class DataSonif():
 
         self._update_min_max()
         self.converted_to_binary = True
+        return
+
+
+    def convert_to_dwell_times(self) -> None:
+        if not self.converted_to_binary:
+            self.convert_data_to_binary()
+
         return
 
 
