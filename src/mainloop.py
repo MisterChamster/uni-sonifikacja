@@ -84,8 +84,20 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "convert_to_dwelltimes":
+                segmenting_style = Utils.get_val_from_settings_fix("src/settings.json",
+                                                                   "SEGMENTING_STYLE_DWELLTIMES",
+                                                                   "size")
+
+                asker_segment_value = Askers.ask_segment_value(loaded_data.get_sample_count(),
+                                                               segmenting_style)
+                if asker_segment_value is None:
+                    print()
+                    continue
+                print()
+
                 print("Converting data to dwell times...")
-                loaded_data.convert_to_dwell_times()
+                loaded_data.convert_to_dwell_times(asker_segment_value,
+                                                   segmenting_style)
                 print("Done!\n\n")
 
             elif action_asker == "show_chart":

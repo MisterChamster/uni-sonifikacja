@@ -230,7 +230,7 @@ class DataSonif():
         return
 
 
-    def convert_to_dwell_times(self) -> None:
+    def convert_to_dwell_times(self, segment_value: int, segmenting_style: str) -> None:
         if not self.converted_to_binary:
             self.convert_data_to_binary()
 
