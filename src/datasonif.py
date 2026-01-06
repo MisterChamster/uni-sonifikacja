@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from pathlib import Path
+from typing import Literal
 from src.utils import Utils
 
 
@@ -152,11 +153,18 @@ class DataSonif():
         return
 
 
-    def apply_paa_aggregation(self,
-                              segment_value:    int,
-                              segmenting_style: str) -> None:
+    def apply_paa_aggregation(
+        self,
+        segment_value:         int,
+        segmenting_style:      Literal["count", "size"],
+        settings_cut_variable: Literal[
+            "CUT_REMAINDER_SAMPLES_PAA",
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES"
+        ] = "CUT_REMAINDER_SAMPLES_PAA"
+    ) -> None:
+
         cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
-                                                         "CUT_REMAINDER_SAMPLES_PAA",
+                                                         settings_cut_variable,
                                                          True)
 
         if segmenting_style == "count":
@@ -234,9 +242,12 @@ class DataSonif():
         return
 
 
-    def convert_to_dwell_times(self,
-                               segment_value:    int,
-                               segmenting_style: str) -> None:
+    def convert_to_dwell_times(
+        self,
+        segment_value:    int,
+        segmenting_style: str
+    ) -> None:
+
         if not self.converted_to_binary:
             self.convert_data_to_binary()
 

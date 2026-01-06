@@ -1,13 +1,16 @@
 import os
 from tkinter import filedialog
+from typing import Literal
 from src.utils import Utils
 
 
 
 class Askers():
     @staticmethod
-    def ask_path_filedialog(node_type: str,
-                            message:   str) -> str:
+    def ask_path_filedialog(
+        node_type: str,
+        message:   str
+    ) -> str:
         original_path = os.getcwd()
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
         os.chdir(desktop_path)
@@ -87,8 +90,11 @@ class Askers():
 
 
     @staticmethod
-    def ask_segment_value(data_length:      int,
-                          segmenting_style: str) -> str|None:
+    def ask_segment_value(
+        data_length:      int,
+        segmenting_style: Literal["count", "size"]
+    ) -> str|None:
+
         if segmenting_style == "count":
             string1 = "number of segments"
         elif segmenting_style == "size":
@@ -127,18 +133,22 @@ class Askers():
             "exit": "exit"}
 
         # Get current settings from settings.json
-        cut_string_paa          = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                  "CUT_REMAINDER_SAMPLES_PAA",
-                                                                  True)
-        cut_string_dwelltimes   = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                  "CUT_REMAINDER_SAMPLES_DWELLTIMES",
-                                                                  True)
-        segment_style_paa       = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                  "SEGMENTING_STYLE_PAA",
-                                                                  "count")
-        segment_style_dwelltimes = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                  "SEGMENTING_STYLE_DWELLTIMES",
-                                                                  "size")
+        cut_string_paa          = Utils.get_val_from_settings_fix(
+            "src/settings.json",
+            "CUT_REMAINDER_SAMPLES_PAA",
+            True)
+        cut_string_dwelltimes   = Utils.get_val_from_settings_fix(
+            "src/settings.json",
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
+            True)
+        segment_style_paa       = Utils.get_val_from_settings_fix(
+            "src/settings.json",
+            "SEGMENTING_STYLE_PAA",
+            "count")
+        segment_style_dwelltimes = Utils.get_val_from_settings_fix(
+            "src/settings.json",
+            "SEGMENTING_STYLE_DWELLTIMES",
+            "size")
 
         if cut_string_paa:
             cutting_option_paa = "Disable cutting remainder data during PAA (currently enabled)"
