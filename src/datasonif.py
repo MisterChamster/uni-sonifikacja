@@ -251,6 +251,11 @@ class DataSonif():
         if not self.converted_to_binary:
             self.convert_data_to_binary()
 
+        self.apply_paa_aggregation(
+            segment_value,
+            segmenting_style,
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
+
         return
 
 
