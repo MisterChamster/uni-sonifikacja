@@ -53,7 +53,7 @@ def mainloop() -> None:
 
             elif action_asker == "apply_paa":
                 segmenting_style_paa = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                       "SEGMENTING_PAA",
+                                                                       "SEGMENTING_STYLE_PAA",
                                                                        "count")
 
                 asker_segment_value_paa = Askers.ask_segment_value_paa(loaded_data.get_sample_count(),

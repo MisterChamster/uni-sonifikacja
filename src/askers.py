@@ -130,10 +130,10 @@ class Askers():
                                                                   "CUT_REMAINDER_SAMPLES_DWELLTIMES",
                                                                   True)
         segment_style_paa       = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                  "SEGMENTING_PAA",
+                                                                  "SEGMENTING_STYLE_PAA",
                                                                   "count")
         segment_style_dwelltimes = Utils.get_val_from_settings_fix("src/settings.json",
-                                                                  "SEGMENTING_DWELLTIMES",
+                                                                  "SEGMENTING_STYLE_DWELLTIMES",
                                                                   "size")
 
         if cut_string_paa:
