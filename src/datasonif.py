@@ -19,7 +19,8 @@ class DataSonif():
     bins_count: int
     treshold:   float | None
     normalized: bool
-    converted_to_binary: bool
+    converted_to_binary:     bool
+    converted_to_dwelltimes: bool
 
 
     def __init__(self,
@@ -33,6 +34,7 @@ class DataSonif():
         self.treshold   = None
         self.normalized = False
         self.converted_to_binary = False
+        self.converted_to_dwelltimes = False
 
         if segment == 1:
             try:
@@ -255,7 +257,7 @@ class DataSonif():
             segment_value,
             segmenting_style,
             "CUT_REMAINDER_SAMPLES_DWELLTIMES")
-
+        self.converted_to_dwelltimes = True
         return
 
 
