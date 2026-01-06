@@ -27,9 +27,9 @@ class Askers():
             print("Segment data (Pick every n-th line of data. Max 10, optimal 5.)\n"
                   "Press Enter to skip. Input 'exit' to exit program.\n"
                   "n = ", end="")
-            asker = input().strip()
+            asker = input().strip().lower()
 
-            if asker == "":
+            if not asker:
                 return 1
             elif asker == "exit":
                 return
@@ -75,7 +75,7 @@ class Askers():
                   "s - Settings\n"
                   "f - Change file\n"
                   "exit - Exit\n>> ", end="")
-            asker = input().strip()
+            asker = input().strip().lower()
 
             if asker not in returns_dict:
                 print("Invalid input!\n")
@@ -88,7 +88,7 @@ class Askers():
         while True:
             print(f"Number of samples: {data_length}")
             print("Input a number of segments (type 'exit' to return):\n>> ", end="")
-            segment_count = input().strip()
+            segment_count = input().strip().lower()
 
             if segment_count == "exit":
                 return
@@ -159,7 +159,7 @@ class Askers():
                   f"sp   - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
                   f"sd   - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
                    "exit - Exit\n>> ", end="")
-            asker = input().strip()
+            asker = input().strip().lower()
 
             if asker not in returns_dict:
                 print("Invalid input!\n")
