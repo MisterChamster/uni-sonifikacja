@@ -52,11 +52,16 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "apply_paa":
-                asker_segment_paa = Askers.ask_segment_count_paa(loaded_data.get_sample_count())
-                print()
-                if asker_segment_paa is None:
+                segmenting_style_paa = Utils.get_val_from_settings_fix("src/settings.json",
+                                                                       "SEGMENTING_PAA",
+                                                                       "count")
+
+                asker_segment_value_paa = Askers.ask_segment_value_paa(loaded_data.get_sample_count(),
+                                                                       segmenting_style_paa)
+                if asker_segment_value_paa is None:
                     print()
                     continue
+                print()
 
                 print("Processing...")
                 loaded_data.apply_paa_aggregation(asker_segment_value_paa,

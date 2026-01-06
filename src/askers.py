@@ -84,28 +84,33 @@ class Askers():
 
 
     @staticmethod
-    def ask_segment_count_paa(data_length: int) -> str|None:
+    def ask_segment_value_paa(data_length: int, segmenting_style: str) -> str|None:
+        if segmenting_style == "count":
+            string1 = "number of segments"
+        elif segmenting_style == "size":
+            string1 = "size of a segment"
+
         while True:
             print(f"Number of samples: {data_length}")
-            print("Input a number of segments (type 'exit' to return):\n>> ", end="")
-            segment_count = input().strip().lower()
+            print(f"Input a {string1} (type 'exit' to return):\n>> ", end="")
+            segment_value = input().strip().lower()
 
-            if segment_count == "exit":
+            if segment_value == "exit":
                 return
 
-            if not segment_count.isdigit():
+            if not segment_value.isdigit():
                 print("Invalid input!\n")
                 continue
 
-            segment_count = int(segment_count)
-            if segment_count >= data_length:
+            segment_value = int(segment_value)
+            if segment_value >= data_length:
                 print("Invalid, chosen number is too high\n")
                 continue
-            elif segment_count <= 1:
+            elif segment_value <= 1:
                 print("Invalid, chosen number is too low\n")
                 continue
 
-            return segment_count
+            return segment_value
 
 
     @staticmethod
