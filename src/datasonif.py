@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from pathlib import Path
-import json
-from src.utils import fix_value_in_settingsjson
+from typing import Literal
+from src.utils import Utils
 
 
 
@@ -22,7 +22,9 @@ class DataSonif():
     converted_to_binary: bool
 
 
-    def __init__(self, file_path: Path, segment: int) -> None:
+    def __init__(self,
+                 file_path: Path,
+                 segment:   int) -> None:
         self.file_path  = file_path
         self.og_order   = True
         self.og_sign    = True
@@ -82,62 +84,6 @@ class DataSonif():
         self._update_min_max()
         if self.treshold:
             self.calculate_treshold()
-        return
-
-
-    def apply_paa_aggregation(self, segment_count: int) -> None:
-        temparr: np.ndarray = np.empty(segment_count)
-        with open("src/settings.json") as f:
-            config = json.load(f)
-        try:
-            cut_string = config["CUT_REMAINDER_STRING_PAA"]
-        except:
-            default: bool = True
-            cut_string = default
-            fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
-
-        # Cutting data array before segmenting
-        if cut_string:
-            cut_length: int = len(self.data_array) % segment_count
-
-            if cut_length != 0: #Cut if there's something to cut
-                self.data_array = self.data_array[:-cut_length]
-        # For additional segment with cutoff data
-        else:
-            segment_count -= 1
-
-
-        segment_size: int   = len(self.data_array) // segment_count
-        index_segment: int  = 0
-        iterative: int      = 0
-
-        # Putting segment means to temparr
-        while iterative < segment_count:
-            # print(str(iterative+1) + ".", index_segment, " - ", index_segment+segment_size-1)
-            segment_sum: np.float64 = 0
-            for i in range(index_segment, index_segment+segment_size):
-                segment_sum += self.data_array[i]
-
-            segment_mean: np.float64 = segment_sum / segment_size
-            temparr[iterative] = segment_mean
-
-            index_segment += segment_size
-            iterative += 1
-
-        # Calculating mean of the segment that wasn't cut off
-        if not cut_string:
-            segment_sum: np.float64 = 0
-            for i in range(index_segment, len(self.data_array)):
-                segment_sum += self.data_array[i]
-            segment_mean: np.float64 = segment_sum / segment_size
-            temparr[iterative] = segment_mean
-
-        self.data_array = temparr
-        # Update fields
-        self._update_min_max()
-        if self.treshold != None:
-            self.calculate_treshold()
-
         return
 
 
@@ -207,6 +153,77 @@ class DataSonif():
         return
 
 
+    def apply_paa_aggregation(
+        self,
+        segment_value:         int,
+        segmenting_style:      Literal["count", "size"],
+        settings_cut_variable: Literal[
+            "CUT_REMAINDER_SAMPLES_PAA",
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES"
+        ] = "CUT_REMAINDER_SAMPLES_PAA"
+    ) -> None:
+
+        cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
+                                                         settings_cut_variable,
+                                                         True)
+
+        if segmenting_style == "count":
+            segment_count = segment_value # That many real segments
+            if not cut_string_paa:
+                segment_size = len(self.data_array) // (segment_count-1)
+            else:
+                segment_size = len(self.data_array) // (segment_count)
+        elif segmenting_style == "size":
+            segment_size = segment_value
+            #vv That many FIXED-size segments vv
+            segment_count = len(self.data_array) // segment_size
+            if not cut_string_paa:
+                segment_count += 1 # That many real segments
+
+        temparr: np.ndarray = np.empty(segment_count)
+
+        # Cutting data array before segmenting
+        if cut_string_paa:
+            cut_length: int = len(self.data_array) % segment_count
+
+            if cut_length != 0: #Cut if there's something to cut
+                self.data_array = self.data_array[:-cut_length]
+        # For additional segment with remaining data (calculated after the loop)
+        else:
+            segment_count -= 1
+
+
+        # Putting segment means to temparr
+        index_segment: int = 0
+        iterative: int     = 0
+
+        while iterative < segment_count:
+            segment_sum: np.float64 = 0
+            for i in range(index_segment, index_segment+segment_size):
+                segment_sum += self.data_array[i]
+
+            segment_mean: np.float64 = segment_sum / segment_size
+            temparr[iterative] = segment_mean
+
+            index_segment += segment_size
+            iterative += 1
+
+        # Calculating mean of the segment with remaining data (no cutting route)
+        if not cut_string_paa:
+            segment_sum: np.float64 = 0
+            for i in range(index_segment, len(self.data_array)):
+                segment_sum += self.data_array[i]
+            segment_mean: np.float64 = segment_sum / segment_size
+            temparr[iterative] = segment_mean
+
+        self.data_array = temparr
+        # Update fields accordingly
+        self._update_min_max()
+        if self.treshold != None:
+            self.calculate_treshold()
+        return
+
+
     def convert_data_to_binary(self) -> None:
         if not self.normalized:
             self.normalize_data()
@@ -222,6 +239,23 @@ class DataSonif():
 
         self._update_min_max()
         self.converted_to_binary = True
+        return
+
+
+    def convert_to_dwell_times(
+        self,
+        segment_value:    int,
+        segmenting_style: str
+    ) -> None:
+
+        if not self.converted_to_binary:
+            self.convert_data_to_binary()
+
+        self.apply_paa_aggregation(
+            segment_value,
+            segmenting_style,
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
+
         return
 
 

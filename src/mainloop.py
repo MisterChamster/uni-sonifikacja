@@ -1,8 +1,9 @@
+from pathlib import Path
+import os
 from src.askers import Askers
 from src.datasonif import DataSonif
-from pathlib import Path
-import json
-from src.utils import save_value_to_settings, fix_value_in_settingsjson
+from src.utils import Utils
+from src.settings_loop import settings_loop
 
 
 
@@ -18,13 +19,13 @@ def mainloop() -> None:
             return
         print(datafile_path, "\n")
 
-        asker_segment = Askers.ask_segment()
+        asker_segment = Askers.ask_initial_segmentation()
         if not asker_segment:
             return
         print("\n")
 
         datafile_path = Path(datafile_path)
-        loaded_data = DataSonif(datafile_path, asker_segment)
+        loaded_data   = DataSonif(datafile_path, asker_segment)
 
         while True:
             segment_info = "False" if asker_segment == 1  else str(asker_segment)
@@ -52,14 +53,26 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "apply_paa":
-                segment_asker = Askers.ask_segments_paa(loaded_data.get_sample_count())
-                print()
-                if segment_asker is None:
+                segmenting_style = Utils.get_val_from_settings_fix(
+                    "src/settings.json",
+                    "SEGMENTING_STYLE_PAA",
+                    "count"
+                )
+
+                asker_segment_value = Askers.ask_segment_value(
+                    loaded_data.get_sample_count(),
+                    segmenting_style
+                )
+                if asker_segment_value is None:
                     print()
                     continue
+                print()
 
                 print("Processing...")
-                loaded_data.apply_paa_aggregation(segment_asker)
+                loaded_data.apply_paa_aggregation(
+                    asker_segment_value,
+                    segmenting_style
+                )
                 print("Data successfully aggregated!\n\n")
 
             elif action_asker == "normalization":
@@ -77,6 +90,29 @@ def mainloop() -> None:
                 loaded_data.convert_data_to_binary()
                 print("Done!\n\n")
 
+            elif action_asker == "convert_to_dwelltimes":
+                segmenting_style = Utils.get_val_from_settings_fix(
+                    "src/settings.json",
+                    "SEGMENTING_STYLE_DWELLTIMES",
+                    "size"
+                )
+
+                asker_segment_value = Askers.ask_segment_value(
+                    loaded_data.get_sample_count(),
+                    segmenting_style
+                )
+                if asker_segment_value is None:
+                    print()
+                    continue
+                print()
+
+                print("Converting data to dwell times...")
+                loaded_data.convert_to_dwell_times(
+                    asker_segment_value,
+                    segmenting_style
+                )
+                print("Done!\n\n")
+
             elif action_asker == "show_chart":
                 print("Preparing chart...\n")
                 loaded_data.show_chart()
@@ -88,20 +124,21 @@ def mainloop() -> None:
                 print()
 
             elif action_asker == "settings":
-                asker_settings: str = Askers.ask_settings()
-                with open("src/settings.json") as f:
-                    config = json.load(f)
-                try:
-                    cut_string = config["CUT_REMAINDER_STRING_PAA"]
-                except:
-                    default: bool = True
-                    cut_string = default
-                    fix_value_in_settingsjson("src/settings.json", "CUT_REMAINDER_STRING_PAA", default)
-
-                if asker_settings == "change_cutting_setting":
-                    cut_string = not cut_string
-                    save_value_to_settings("src/settings.json", "CUT_REMAINDER_STRING_PAA", cut_string)
+                settings_loop()
                 print("\n")
+
+            elif action_asker == "original_data":
+                if not os.path.exists(datafile_path):
+                    print(f"Chosen file no longer exists in path {datafile_path}")
+                    continue
+                print(datafile_path, "\n")
+
+                asker_segment = Askers.ask_initial_segmentation()
+                if not asker_segment:
+                    return
+                print("\n")
+
+                loaded_data = DataSonif(datafile_path, asker_segment)
 
             elif action_asker == "change_file":
                 break
