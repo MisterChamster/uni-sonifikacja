@@ -227,4 +227,3 @@ class Askers():
                 return
             else:
                 print("Invalid input!\n")
-        return

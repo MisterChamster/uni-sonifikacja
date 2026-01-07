@@ -124,7 +124,7 @@ def mainloop() -> None:
                 print()
 
             elif action_asker == "settings":
-                settings_loop("src/settings.json")
+                settings_loop("src/settings.json", "src/notes.json")
                 print("\n")
 
             elif action_asker == "original_data":
