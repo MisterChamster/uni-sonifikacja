@@ -89,3 +89,10 @@ class Utils():
 
         Utils.save_value_to_settings(adress, json_key, setting_val)
         return
+
+
+    @staticmethod
+    def get_keys_from_json(rel_adress: str) -> list[str]:
+        with open(rel_adress) as f:
+            dict_from_json = json.load(f)
+        return dict_from_json.keys()
