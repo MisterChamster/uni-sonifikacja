@@ -136,27 +136,27 @@ class Askers():
 
         # Get current settings from settings.json
         cut_string_paa          = Utils.get_val_from_settings_fix(
-            "src/settings.json",
+            settings_rel_adress,
             "CUT_REMAINDER_SAMPLES_PAA",
             True)
         cut_string_dwelltimes   = Utils.get_val_from_settings_fix(
-            "src/settings.json",
+            settings_rel_adress,
             "CUT_REMAINDER_SAMPLES_DWELLTIMES",
             True)
         segment_style_paa       = Utils.get_val_from_settings_fix(
-            "src/settings.json",
+            settings_rel_adress,
             "SEGMENTING_STYLE_PAA",
             "count")
         segment_style_dwelltimes = Utils.get_val_from_settings_fix(
-            "src/settings.json",
+            settings_rel_adress,
             "SEGMENTING_STYLE_DWELLTIMES",
             "size")
         binary_low_note = Utils.get_val_from_settings_fix(
-            "src/settings.json",
+            settings_rel_adress,
             "BINARY_SONIFICATION_LOW_NOTE",
             "D3")
         binary_high_note = Utils.get_val_from_settings_fix(
-            "src/settings.json",
+            settings_rel_adress,
             "BINARY_SONIFICATION_HIGH_NOTE",
             "A4")
 
