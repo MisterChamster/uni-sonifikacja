@@ -130,6 +130,8 @@ class Askers():
             "cd":   "change_cutting_setting_dwelltimes",
             "sp":   "change_segmenting_setting_paa",
             "sd":   "change_segmenting_setting_dwelltimes",
+            "bl":   "change_binary_low_note",
+            "bh":   "change_binary_high_note",
             "exit": "exit"}
 
         # Get current settings from settings.json
@@ -149,6 +151,14 @@ class Askers():
             "src/settings.json",
             "SEGMENTING_STYLE_DWELLTIMES",
             "size")
+        binary_low_note = Utils.get_val_from_settings_fix(
+            "src/settings.json",
+            "BINARY_SONIFICATION_LOW_NOTE",
+            "D3")
+        binary_high_note = Utils.get_val_from_settings_fix(
+            "src/settings.json",
+            "BINARY_SONIFICATION_HIGH_NOTE",
+            "A4")
 
         if cut_string_paa:
             cutting_option_paa = "Disable cutting remainder data during PAA (currently enabled)"
@@ -177,6 +187,8 @@ class Askers():
                   f"cd   - {cutting_option_dwelltimes}\n"
                   f"sp   - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
                   f"sd   - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
+                  f"bl   - Change low note in binary sonification (currently {binary_low_note})\n"
+                  f"bh   - Change high note in binary sonification (currently {binary_high_note})\n"
                    "exit - Exit\n>> ", end="")
             asker = input().strip().lower()
 

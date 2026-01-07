@@ -12,7 +12,6 @@ def settings_loop() -> None:
                 "src/settings.json",
                 "CUT_REMAINDER_STRING_PAA",
                 True)
-            print()
         elif asker_settings == "change_cutting_setting_dwelltimes":
             Utils.change_setting_to_opposite(
                 "src/settings.json",
@@ -28,6 +27,12 @@ def settings_loop() -> None:
                 "src/settings.json",
                 "SEGMENTING_DWELLTIMES",
                 "size")
+        elif asker_settings == "change_binary_low_note":
+            print("Now user should be asked to input a new note")
+            return
+        elif asker_settings == "change_binary_high_note":
+            print("Now user should be asked to input a new note")
+            return
         elif asker_settings == "exit":
             return
 
