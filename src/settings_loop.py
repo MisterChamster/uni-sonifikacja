@@ -3,28 +3,28 @@ from src.utils import Utils
 
 
 
-def settings_loop() -> None:
+def settings_loop(settings_rel_adress: str) -> None:
     while True:
-        asker_settings: str = Askers.ask_settings()
+        asker_settings: str = Askers.ask_settings(settings_rel_adress)
 
         if asker_settings == "change_cutting_setting_paa":
             Utils.change_setting_to_opposite(
-                "src/settings.json",
+                settings_rel_adress,
                 "CUT_REMAINDER_STRING_PAA",
                 True)
         elif asker_settings == "change_cutting_setting_dwelltimes":
             Utils.change_setting_to_opposite(
-                "src/settings.json",
+                settings_rel_adress,
                 "CUT_REMAINDER_STRING_DWELLTIMES",
                 True)
         elif asker_settings == "change_segmenting_setting_paa":
             Utils.change_setting_to_opposite(
-                "src/settings.json",
+                settings_rel_adress,
                 "SEGMENTING_PAA",
                 "size")
         elif asker_settings == "change_segmenting_setting_dwelltimes":
             Utils.change_setting_to_opposite(
-                "src/settings.json",
+                settings_rel_adress,
                 "SEGMENTING_DWELLTIMES",
                 "size")
         elif asker_settings == "change_binary_low_note":

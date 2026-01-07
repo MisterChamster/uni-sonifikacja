@@ -124,7 +124,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_settings() -> str:
+    def ask_settings(settings_rel_adress: str) -> str:
         returns_dict = {
             "cp":   "change_cutting_setting_paa",
             "cd":   "change_cutting_setting_dwelltimes",
