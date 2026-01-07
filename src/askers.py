@@ -196,3 +196,35 @@ class Askers():
                 print("Invalid input!\n")
             else:
                 return returns_dict[asker]
+
+
+    @staticmethod
+    def ask_note(
+        notes_rel_adress: str,
+        low_or_high:      Literal["low", "high"]
+    ) -> str|None:
+        available_notes = Utils.get_keys_from_json(notes_rel_adress)
+        lowest_note = available_notes[0]
+        highest_note = available_notes[-1]
+
+        temp_dict_key = "BINARY_SONIFICATION_LOW_NOTE" if low_or_high == "low" else "BINARY_SONIFICATION_HIGH_NOTE"
+        temp_default  = "D3" if low_or_high == "low" else "A4"
+        current_note  = Utils.get_val_from_settings_fix(
+            "src/settings.py",
+            temp_dict_key,
+            temp_default)
+        main_message = f"Choose a new {low_or_high} note for binary sonification (currently {current_note})"
+
+        while True:
+            print(main_message)
+            print(f"Available notes from {lowest_note} to {highest_note}")
+            print("(type exit to exit)\n>> ", end="")
+            asker = input().strip().upper() #Upper here is crucial!
+
+            if asker in available_notes:
+                return asker
+            elif asker == "EXIT":
+                return
+            else:
+                print("Invalid input!\n")
+        return
