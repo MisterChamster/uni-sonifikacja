@@ -59,6 +59,7 @@ class Askers():
             "p": "apply_paa",
             "b": "convert_to_bin",
             "d": "convert_to_dwelltimes",
+            "i": "sonify",
             "c": "show_chart",
             "h": "show_histogram",
             "s": "settings",
@@ -75,9 +76,10 @@ class Askers():
                   "p - Apply PAA downsampling\n"
                   "b - Convert data to binary\n"
                   "d - Convert data to dwell times\n"
+                  "i - Sonify data...\n"
                   "c - Show chart\n"
                   "h - Show histogram\n"
-                  "s - Settings\n"
+                  "s - Settings...\n"
                   "o - Revert to original data set\n"
                   "f - Change file\n"
                   "exit - Exit\n>> ", end="")

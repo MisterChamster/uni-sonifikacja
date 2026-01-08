@@ -265,6 +265,11 @@ class DataSonif():
         return
 
 
+    def sonify_loop(self) -> None:
+        print("You're in a sonify loop!! Grats")
+        return
+
+
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
