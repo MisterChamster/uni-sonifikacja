@@ -23,9 +23,11 @@ class DataSonif():
     converted_to_dwelltimes: bool
 
 
-    def __init__(self,
-                 file_path: Path,
-                 segment:   int) -> None:
+    def __init__(
+        self,
+        file_path: Path,
+        segment:   int
+    ) -> None:
         self.file_path  = file_path
         self.og_order   = True
         self.og_sign    = True
@@ -39,20 +41,20 @@ class DataSonif():
         if segment == 1:
             try:
                 self.data_array = pd.read_csv(
-                                    self.file_path,
-                                    header=None,
-                                    names=["values"],
-                                    skipinitialspace=True)
+                    self.file_path,
+                    header=None,
+                    names=["values"],
+                    skipinitialspace=True)
             except:
                 raise Exception("Data loading has failed.\n")
         else:
             try:
                 self.data_array = pd.read_csv(
-                                    self.file_path,
-                                    header=None,
-                                    names=["values"],
-                                    skiprows=lambda i: i % segment != 0,
-                                    skipinitialspace=True)
+                    self.file_path,
+                    header=None,
+                    names=["values"],
+                    skiprows=lambda i: i % segment != 0,
+                    skipinitialspace=True)
             except:
                 raise Exception("Data loading has failed.\n")
 
@@ -112,7 +114,8 @@ class DataSonif():
     # Getting treshold as average between two sample count peaks (open and closed)
     def calculate_treshold(self) -> None:
         # Returns two ndarrays
-        sample_count, voltage_val = np.histogram(self.data_array, bins=self.bins_count)
+        sample_count, voltage_val = np.histogram(self.data_array,
+                                                 bins=self.bins_count)
         halfarr = int(self.bins_count/2)
 
         first_peak_index  = np.argmax(sample_count[:halfarr])
@@ -165,9 +168,10 @@ class DataSonif():
         ] = "CUT_REMAINDER_SAMPLES_PAA"
     ) -> None:
 
-        cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
-                                                         settings_cut_variable,
-                                                         True)
+        cut_string_paa = Utils.get_val_from_settings_fix(
+            "src/settings.json",
+            settings_cut_variable,
+            True)
 
         if segmenting_style == "count":
             segment_count = segment_value # That many real segments
@@ -271,7 +275,9 @@ class DataSonif():
         #     for i in range(len(peak_ys)):
         #         peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
         # plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
-        plt.scatter(np.arange(self.data_array.shape[0]), self.data_array, s=1)
+        plt.scatter(np.arange(self.data_array.shape[0]),
+                              self.data_array,
+                              s=1)
 
         # Treshold line
         if self.treshold:
