@@ -266,7 +266,11 @@ class DataSonif():
         return
 
 
-    def sonify_loop(self) -> None:
+    def sonify_loop(
+        self,
+        settings_rel_adress: str,
+        notes_rel_adress: str
+    ) -> None:
         asker_sonif_type = Askers.ask_sonif_type(
             self.converted_to_binary,
             False)
@@ -274,13 +278,18 @@ class DataSonif():
         if not asker_sonif_type:
             return
         if asker_sonif_type == "binary":
-            # CONTINUE WRITING HERE
+            self.binary_sonif(settings_rel_adress, notes_rel_adress)
             return
         elif asker_sonif_type == "analog":
             # CONTINUE WRITING HERE
             return
 
 
+    def binary_sonif(
+        self,
+        settings_rel_adress: str,
+        notes_rel_adress: str
+    ) -> None:
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)

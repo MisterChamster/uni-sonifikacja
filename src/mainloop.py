@@ -116,7 +116,10 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "sonify":
-                loaded_data.sonify_loop()
+                loaded_data.sonify_loop(
+                    settings_rel_path,
+                    notes_rel_path
+                )
                 print()
 
             elif action_asker == "show_chart":
