@@ -233,8 +233,33 @@ class Askers():
 
     @staticmethod
     def ask_sonif_type(
-        bin_available: bool,
-        analog: bool
+        bin_available:    bool,
+        analog_available: bool
     ) -> Literal["binary", "analog", None]:
-        print("I'm here to ask you sonif type, but i'm not ready ok?")
-        return
+        returns_dict = {
+            "b": "binary",
+            "a": "analog"
+        }
+
+        while True:
+            bin_msg    = (
+                "b - Sonify binary data..."
+                if bin_available
+                else "b - Sonify binary data... (UNAVAILABLE)")
+            analog_msg = (
+                "a - Sonify analog data..."
+                if analog_available
+                else "a - Sonify analog data... (UNAVAILABLE)")
+
+            print("Choose a method of sonification:")
+            print(bin_msg)
+            print(analog_msg)
+            print(">> ", end="")
+            asker = input().strip().lower()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            elif asker == "exit":
+                return
+            else:
+                return returns_dict[asker]

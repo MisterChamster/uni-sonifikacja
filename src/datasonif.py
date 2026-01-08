@@ -267,8 +267,18 @@ class DataSonif():
 
 
     def sonify_loop(self) -> None:
-        asker_sonif_type = Askers.ask_sonif_type(None, None)
-        return
+        asker_sonif_type = Askers.ask_sonif_type(
+            self.converted_to_binary,
+            False)
+
+        if not asker_sonif_type:
+            return
+        if asker_sonif_type == "binary":
+            # CONTINUE WRITING HERE
+            return
+        elif asker_sonif_type == "analog":
+            # CONTINUE WRITING HERE
+            return
 
 
     def show_chart(self) -> None:
