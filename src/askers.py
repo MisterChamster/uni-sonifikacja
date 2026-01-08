@@ -261,5 +261,18 @@ class Askers():
                 print("Invalid input!\n")
             elif asker == "exit":
                 return
-            else:
-                return returns_dict[asker]
+            elif asker in returns_dict:
+                if asker == "b":
+                    if not bin_available:
+                        print("Option unavailable; data has to be converted to binary first")
+                    else:
+                        return returns_dict[asker]
+                elif asker == "a":
+                    if not bin_available:
+                        #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
+                        # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
+                        #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
+                        # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
+                        print("Option unavailable; FOR A REASON????????????")
+                    else:
+                        return returns_dict[asker]
