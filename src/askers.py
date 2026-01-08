@@ -229,3 +229,12 @@ class Askers():
                 return
             else:
                 print("Invalid input!\n")
+
+
+    @staticmethod
+    def ask_sonif_type(
+        bin_available: bool,
+        analog: bool
+    ) -> Literal["binary", "analog", None]:
+        print("I'm here to ask you sonif type, but i'm not ready ok?")
+        return

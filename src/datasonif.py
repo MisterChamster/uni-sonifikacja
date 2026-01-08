@@ -5,6 +5,7 @@ from matplotlib.ticker import MultipleLocator
 from pathlib import Path
 from typing import Literal
 from src.utils import Utils
+from src.askers import Askers
 
 
 
@@ -266,7 +267,7 @@ class DataSonif():
 
 
     def sonify_loop(self) -> None:
-        print("You're in a sonify loop!! Grats")
+        asker_sonif_type = Askers.ask_sonif_type(None, None)
         return
 
 
