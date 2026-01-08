@@ -295,6 +295,32 @@ class DataSonif():
         settings_rel_adress: str,
         notes_rel_adress: str
     ) -> None:
+        sample_rate: int = Utils.get_val_from_settings_fix(
+            settings_rel_adress,
+            "SAMPLE_RATE",
+            44100)
+        low_note_name: str = Utils.get_val_from_settings_fix(
+            settings_rel_adress,
+            "BINARY_SONIFICATION_LOW_NOTE",
+            "D3")
+        high_note_name: str = Utils.get_val_from_settings_fix(
+            settings_rel_adress,
+            "BINARY_SONIFICATION_HIGH_NOTE",
+            "A4")
+        note_len_milis: int = Utils.get_val_from_settings_fix(
+            settings_rel_adress,
+            "BINARY_SONIFICATION_NOTE_LENGTH_MILIS",
+            "300")
+
+        while True:
+            print("Sonification type: Binary")
+            print("")
+            print("Lol")
+            break
+
+        return
+
+
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
