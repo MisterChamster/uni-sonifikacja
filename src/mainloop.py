@@ -44,7 +44,7 @@ def mainloop() -> None:
             action_asker = Askers.ask_action()
             print()
 
-            if action_asker == "reverse_order":
+            if action_asker   == "reverse_order":
                 print("Reversing order...")
                 loaded_data.reverse_data_order()
                 print("Done!\n\n")
@@ -52,6 +52,16 @@ def mainloop() -> None:
             elif action_asker == "reverse_sign":
                 print("Reversing order...")
                 loaded_data.reverse_data_sign()
+                print("Done!\n\n")
+
+            elif action_asker == "normalization":
+                print("Normalizing...")
+                loaded_data.normalize_data()
+                print("Done!\n\n")
+
+            elif action_asker == "calculate_threshold":
+                print("Calculating treshold...")
+                loaded_data.calculate_treshold()
                 print("Done!\n\n")
 
             elif action_asker == "apply_paa":
@@ -76,16 +86,6 @@ def mainloop() -> None:
                     segmenting_style
                 )
                 print("Data successfully aggregated!\n\n")
-
-            elif action_asker == "normalization":
-                print("Normalizing...")
-                loaded_data.normalize_data()
-                print("Done!\n\n")
-
-            elif action_asker == "calculate_threshold":
-                print("Calculating treshold...")
-                loaded_data.calculate_treshold()
-                print("Done!\n\n")
 
             elif action_asker == "convert_to_bin":
                 print("Converting data to binary...")
