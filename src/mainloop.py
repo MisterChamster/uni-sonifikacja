@@ -8,6 +8,8 @@ from src.settings_loop import settings_loop
 
 
 def mainloop() -> None:
+    settings_rel_path = "src/settings.json"
+    notes_rel_path = "src/notes.json"
     while True:
         print("Choose data file in txt/csv format:")
         datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
@@ -54,7 +56,7 @@ def mainloop() -> None:
 
             elif action_asker == "apply_paa":
                 segmenting_style = Utils.get_val_from_settings_fix(
-                    "src/settings.json",
+                    settings_rel_path,
                     "SEGMENTING_STYLE_PAA",
                     "count"
                 )
@@ -92,7 +94,7 @@ def mainloop() -> None:
 
             elif action_asker == "convert_to_dwelltimes":
                 segmenting_style = Utils.get_val_from_settings_fix(
-                    "src/settings.json",
+                    settings_rel_path,
                     "SEGMENTING_STYLE_DWELLTIMES",
                     "size"
                 )
@@ -124,7 +126,7 @@ def mainloop() -> None:
                 print()
 
             elif action_asker == "settings":
-                settings_loop("src/settings.json", "src/notes.json")
+                settings_loop(settings_rel_path, notes_rel_path)
                 print("\n")
 
             elif action_asker == "original_data":
