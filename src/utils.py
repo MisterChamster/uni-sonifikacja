@@ -44,7 +44,7 @@ class Utils():
     def get_val_from_settings(
         adress:   str,
         json_key: str
-    ) -> str|bool:
+    ) -> str|bool|int|float:
 
         with open(adress) as f:
             config = json.load(f)
@@ -57,8 +57,8 @@ class Utils():
     def get_val_from_settings_fix(
         adress:      str,
         json_key:    str,
-        default_val: str|bool
-    ) -> str|bool:
+        default_val: str|bool|int|float
+    ) -> str|bool|int|float:
 
         try:
             temp = Utils.get_val_from_settings(adress, json_key)
