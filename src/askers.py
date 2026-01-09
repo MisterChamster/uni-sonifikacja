@@ -220,7 +220,7 @@ class Askers():
         while True:
             print(main_message)
             print(f"Available notes from {lowest_note} to {highest_note}")
-            print("(type exit to exit)\n>> ", end="")
+            print("(type 'exit' to exit)\n>> ", end="")
             asker = input().strip().upper() #Upper here is crucial!
 
             if asker in available_notes:
@@ -251,7 +251,7 @@ class Askers():
                 if analog_available
                 else "a - Sonify analog data... (UNAVAILABLE)")
 
-            print("Choose a method of sonification (type exit to exit):")
+            print("Choose a method of sonification (type 'exit' to exit):")
             print(bin_msg)
             print(analog_msg)
             print(">> ", end="")

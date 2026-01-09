@@ -159,6 +159,7 @@ class DataSonif():
         return
 
 
+# ============================== PAA AGGREGATION ==============================
     def apply_paa_aggregation(
         self,
         segment_value:         int,
@@ -227,6 +228,7 @@ class DataSonif():
         return
 
 
+# ============================ BINARY CONVERSION ==============================
     def convert_data_to_binary(self) -> None:
         if not self.normalized:
             self.normalize_data()
@@ -245,6 +247,7 @@ class DataSonif():
         return
 
 
+# ================================ DWELL TIMES ================================
     def __paa_but_binary(
         self,
         segment_value:         int,
@@ -335,6 +338,7 @@ class DataSonif():
         return
 
 
+# ============================ BINARY SONIFICATION ============================
     def binary_sonif_loop(
         self,
         settings_rel_adress: str,
@@ -358,19 +362,33 @@ class DataSonif():
             300)
 
         while True:
+            final_length_milis: int = (note_duration_milis * 
+                                       self.get_sample_count())
+            audio_len_human = Utils.human_read_milis(final_length_milis)
             print("Sonification type: Binary")
             print(f"Low note:    {low_note_name}")
             print(f"High note:   {high_note_name}")
             print(f"Note duration (ms): {note_duration_milis}")
             print(f"Sample rate: {sample_rate}")
             print(f"Amount of notes: {self.get_sample_count()}")
-            # print(f"Final length (ms/s/min/h): {}")
-            print("")
-            break
+            print(f"Final audio length: {audio_len_human}")
+            print("\n")
+            print("Choose an action (type 'exit' to exit):")
+            print("c - Change note length (ms)")
+            print("s - Sonify\n>> ")
+            asker = input().strip().lower()
 
-        return
+            if asker == "exit":
+                return
+            elif asker == "c":
+                pass
+            elif asker == "s":
+                pass
+            else:
+                print("Invalid input.\n")
 
 
+# ================================= PLOTTING ==================================
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
@@ -423,5 +441,6 @@ class DataSonif():
         return
 
 
+# ================================== GETTERS ==================================
     def get_sample_count(self) -> int:
         return len(self.data_array)
