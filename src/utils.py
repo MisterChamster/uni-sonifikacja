@@ -96,3 +96,20 @@ class Utils():
         with open(rel_adress) as f:
             dict_from_json = json.load(f)
         return dict_from_json.keys()
+
+
+    @staticmethod
+    def human_read_milis(milis: int) -> str:
+        seconds = milis // 1000
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+
+        parts = []
+        if hours:
+            parts.append(f"{hours} hour(s)")
+        if minutes:
+            parts.append(f"{minutes} minute(s)")
+        if seconds:
+            parts.append(f"{seconds} second(s)")
+
+        return ", ".join(parts) or "0 seconds"
