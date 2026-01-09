@@ -18,7 +18,7 @@ class DataSonif():
     min_val:    float
     max_val:    float
     bins_count: int
-    treshold:   float | None
+    threshold:   float | None
     normalized: bool
     converted_to_binary:     bool
     converted_to_dwelltimes: bool
@@ -34,7 +34,7 @@ class DataSonif():
         self.og_sign    = True
 
         self.bins_count = 200
-        self.treshold   = None
+        self.threshold   = None
         self.normalized = False
         self.converted_to_binary = False
         self.converted_to_dwelltimes = False
@@ -87,8 +87,8 @@ class DataSonif():
             self.data_sign = "-"
 
         self._update_min_max()
-        if self.treshold:
-            self.calculate_treshold()
+        if self.threshold:
+            self.calculate_threshold()
         return
 
 
@@ -100,20 +100,20 @@ class DataSonif():
         difference = self.max_val - self.min_val
         self.data_array = (self.data_array - self.min_val)/(difference)
 
-        # Normalize treshold
-        if self.treshold:
-            # Method calculate_treshold could be used, but calculating 
+        # Normalize threshold
+        if self.threshold:
+            # Method calculate_threshold could be used, but calculating 
             # manually saves a ton of computing.
-            # self.calculate_treshold()
-            self.treshold = (self.treshold - self.min_val)/(difference)
+            # self.calculate_threshold()
+            self.threshold = (self.threshold - self.min_val)/(difference)
 
         self._update_min_max()
         self.normalized = True
         return
 
 
-    # Getting treshold as average between two sample count peaks (open and closed)
-    def calculate_treshold(self) -> None:
+    # Getting threshold as average between two sample count peaks (open and closed)
+    def calculate_threshold(self) -> None:
         # Returns two ndarrays
         sample_count, voltage_val = np.histogram(self.data_array,
                                                  bins=self.bins_count)
@@ -122,7 +122,7 @@ class DataSonif():
         first_peak_index  = np.argmax(sample_count[:halfarr])
         second_peak_index = np.argmax(sample_count[halfarr:]) + halfarr
 
-        treshold_index = (first_peak_index + second_peak_index)/2
+        threshold_index = (first_peak_index + second_peak_index)/2
 
         # There are more voltages than sample counts. So, if mid index between
         # two peaks is odd, we have to round it up. If midpoint is even, we need
@@ -143,19 +143,19 @@ class DataSonif():
         # 4V has index 2, but as we see 2000 samples are between 4 and 6V.
         # Thus, calculating (4+6)/2 = 5V returns us a truest average voltage
         # between two peaks. Keep in mind that average voltage is still not an
-        # accurate treshold between open/closed states!!
+        # accurate threshold between open/closed states!!
 
-        if treshold_index != int(treshold_index):
-            treshold_index = int(treshold_index + 0.5)
-            treshold_val = voltage_val[treshold_index]
+        if threshold_index != int(threshold_index):
+            threshold_index = int(threshold_index + 0.5)
+            threshold_val = voltage_val[threshold_index]
 
-        elif treshold_index == int(treshold_index):
-            treshold_index = int(treshold_index)
-            tempval1 = voltage_val[treshold_index]
-            tempval2 = voltage_val[treshold_index+1]
-            treshold_val = (tempval1+tempval2)/2
+        elif threshold_index == int(threshold_index):
+            threshold_index = int(threshold_index)
+            tempval1 = voltage_val[threshold_index]
+            tempval2 = voltage_val[threshold_index+1]
+            threshold_val = (tempval1+tempval2)/2
 
-        self.treshold = treshold_val
+        self.threshold = threshold_val
         return
 
 
@@ -222,8 +222,8 @@ class DataSonif():
         self.data_array = temparr
         # Update fields accordingly
         self._update_min_max()
-        if self.treshold != None:
-            self.calculate_treshold()
+        if self.threshold != None:
+            self.calculate_threshold()
         return
 
 
@@ -231,13 +231,13 @@ class DataSonif():
         if not self.normalized:
             self.normalize_data()
 
-        if not self.treshold:
-            self.calculate_treshold()
+        if not self.threshold:
+            self.calculate_threshold()
 
         for i in range(len(self.data_array)):
             self.data_array[i] = (
                 0
-                if self.data_array[i] <= self.treshold
+                if self.data_array[i] <= self.threshold
                 else 1)
 
         self._update_min_max()
@@ -255,8 +255,8 @@ class DataSonif():
             "src/settings.json",
             "CUT_REMAINDER_SAMPLES_DWELLTIMES",
             True)
-        if not self.treshold:
-            self.calculate_treshold()
+        if not self.threshold:
+            self.calculate_threshold()
 
         if segmenting_style == "count":
             segment_count = segment_value # That many real segments
@@ -294,7 +294,7 @@ class DataSonif():
                 segment_sum += self.data_array[i]
 
             segment_mean: float = segment_sum / segment_size
-            segment_bin_val = 0 if segment_mean <= self.treshold else 1
+            segment_bin_val = 0 if segment_mean <= self.threshold else 1
             temparr[iterative] = segment_bin_val
 
             index_segment += segment_size
@@ -307,13 +307,13 @@ class DataSonif():
                 segment_sum += self.data_array[i]
 
             segment_mean: float = segment_sum / segment_size
-            segment_bin_val = 0 if segment_mean <= self.treshold else 1
+            segment_bin_val = 0 if segment_mean <= self.threshold else 1
             temparr[iterative] = segment_bin_val
 
         self.data_array = temparr
         # Update fields accordingly
         self._update_min_max()
-        self.calculate_treshold()
+        self.calculate_threshold()
         return
 
 
@@ -404,9 +404,9 @@ class DataSonif():
                               self.data_array,
                               s=1)
 
-        # Treshold line
-        if self.treshold:
-            plt.axhline(y=self.treshold, color="red")
+        # Threshold line
+        if self.threshold:
+            plt.axhline(y=self.threshold, color="red")
 
         # plt.gca().xaxis.set_major_locator(MultipleLocator(len(self.data_array)/10))
         y_locators = 0.1 if self.normalized == True else 1
@@ -427,9 +427,9 @@ class DataSonif():
     def show_histogram(self) -> None:
         plt.hist(self.data_array, bins=self.bins_count)
 
-        # Treshold line
-        if self.treshold is not None:
-            plt.axvline(x=self.treshold, color="red")
+        # Threshold line
+        if self.threshold is not None:
+            plt.axvline(x=self.threshold, color="red")
 
         plt.ylabel("Sample count")
         if self.normalized == True:

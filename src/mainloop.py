@@ -40,7 +40,7 @@ def mainloop() -> None:
             print(f"Data sign (y):      {sign}")
             print(f"Data normalization: {loaded_data.normalized}")
             print(f"Num of bins (hist): {loaded_data.bins_count}")
-            print(f"State treshold:     {loaded_data.treshold}\n")
+            print(f"State threshold:     {loaded_data.threshold}\n")
             action_asker = Askers.ask_action()
             print()
 
@@ -60,8 +60,8 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "calculate_threshold":
-                print("Calculating treshold...")
-                loaded_data.calculate_treshold()
+                print("Calculating threshold...")
+                loaded_data.calculate_threshold()
                 print("Done!\n\n")
 
             elif action_asker == "apply_paa":
