@@ -352,10 +352,16 @@ class DataSonif():
             settings_rel_adress,
             "BINARY_SONIFICATION_LOW_NOTE",
             "D3")
+        low_note_freq: int = Utils.get_val_from_settings(
+            notes_rel_adress,
+            low_note_name)
         high_note_name: str = Utils.get_val_from_settings_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_HIGH_NOTE",
             "A4")
+        high_note_freq: int = Utils.get_val_from_settings(
+            notes_rel_adress,
+            high_note_name)
         note_duration_milis: int = Utils.get_val_from_settings_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
@@ -366,8 +372,8 @@ class DataSonif():
                                        self.get_sample_count())
             audio_len_human = Utils.human_read_milis(final_length_milis)
             print("Sonification type: Binary")
-            print(f"Low note:    {low_note_name}")
-            print(f"High note:   {high_note_name}")
+            print(f"Low note:    {low_note_name} ({low_note_freq} Hz)")
+            print(f"High note:   {high_note_name} ({high_note_freq} Hz)")
             print(f"Note duration (ms): {note_duration_milis}")
             print(f"Sample rate: {sample_rate}")
             print(f"Amount of notes: {self.get_sample_count()}")
