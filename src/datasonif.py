@@ -381,7 +381,7 @@ class DataSonif():
             if asker == "exit":
                 return
             elif asker == "c":
-                pass
+                new_note_duration = Askers.ask_note_duration()
             elif asker == "s":
                 pass
             else:

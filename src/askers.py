@@ -276,3 +276,23 @@ class Askers():
                         print("Option unavailable; FOR A REASON????????????.\n\n")
                     else:
                         return returns_dict[asker]
+
+
+    def ask_note_duration() -> int|None:
+        while True:
+            print("Input new note duration (ms):")
+            print("(type 'exit' to exit)\n>> ", end="")
+            asker = input().strip()
+
+            if asker == "exit":
+                return
+            if not asker.isdigit():
+                print("Invalid input.\n")
+                continue
+
+            asker = int(asker)
+            if asker > 4000:
+                print("Number is too big (max 4000)\n")
+                continue
+            else:
+                return asker
