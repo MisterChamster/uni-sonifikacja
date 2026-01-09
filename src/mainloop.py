@@ -68,13 +68,12 @@ def mainloop() -> None:
                 segmenting_style = Utils.get_val_from_json_fix(
                     settings_rel_path,
                     "SEGMENTING_STYLE_PAA",
-                    "count"
-                )
+                    "count")
 
                 asker_segment_value = Askers.ask_segment_value(
                     loaded_data.get_sample_count(),
-                    segmenting_style
-                )
+                    segmenting_style)
+
                 if asker_segment_value is None:
                     print()
                     continue
@@ -95,13 +94,12 @@ def mainloop() -> None:
                 segmenting_style = Utils.get_val_from_json_fix(
                     settings_rel_path,
                     "SEGMENTING_STYLE_DWELLTIMES",
-                    "size"
-                )
+                    "size")
 
                 asker_segment_value = Askers.ask_segment_value(
                     loaded_data.get_sample_count(),
-                    segmenting_style
-                )
+                    segmenting_style)
+
                 if asker_segment_value is None:
                     print()
                     continue
@@ -110,8 +108,7 @@ def mainloop() -> None:
                 print("Converting data to dwell times...")
                 loaded_data.convert_to_dwell_times(
                     asker_segment_value,
-                    segmenting_style
-                )
+                    segmenting_style)
                 print("Done!\n\n")
 
             elif action_asker == "sonify":
