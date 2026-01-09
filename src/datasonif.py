@@ -380,10 +380,20 @@ class DataSonif():
 
             if asker == "exit":
                 return
+
             elif asker == "c":
                 new_note_duration = Askers.ask_note_duration()
+                if not new_note_duration:
+                    continue
+                Utils.save_value_to_settings(
+                    settings_rel_adress,
+                    "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
+                    new_note_duration
+                )
+
             elif asker == "s":
                 pass
+
             else:
                 print("Invalid input.\n")
 
