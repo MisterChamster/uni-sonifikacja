@@ -34,7 +34,7 @@ class Askers():
         while True:
             print("Segment data (Pick every n-th line of data)\n"
                   "Max value is 10, but highest reasonable is 5.\n"
-                  f"Press Enter to skip{stroing}.\n"
+                  f"Press Enter to skip.{stroing}\n"
                   "n = ", end="")
             asker = input().strip().lower()
 

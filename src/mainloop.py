@@ -34,13 +34,15 @@ def mainloop() -> None:
             ordering = "Original" if loaded_data.og_order else "Reverse"
             sign     = "Original" if loaded_data.og_sign  else "Opposite"
 
-            print(f"Chosen file:        {loaded_data.file_path}")
-            print(f"Data segmentation:  {segment_info}")
-            print(f"Data order (x):     {ordering}")
-            print(f"Data sign (y):      {sign}")
-            print(f"Data normalization: {loaded_data.normalized}")
-            print(f"Num of bins (hist): {loaded_data.bins_count}")
-            print(f"State threshold:    {loaded_data.threshold}\n")
+            print(f"Chosen file:           {loaded_data.file_path}")
+            print(f"Data segmentation:     {segment_info}")
+            print(f"Data order (x):        {ordering}")
+            print(f"Data sign (y):         {sign}")
+            print(f"Data normalization:    {loaded_data.normalized}")
+            print(f"Num of bins (hist):    {loaded_data.bins_count}")
+            print(f"State threshold:       {loaded_data.threshold}")
+            print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
+            print()
             action_asker = Askers.ask_action()
             print()
 

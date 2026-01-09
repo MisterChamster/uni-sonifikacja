@@ -74,8 +74,10 @@ class DataSonif():
         new_sample_count: int = self.get_sample_count() // n
         temparr: np.ndarray = np.empty(new_sample_count)
 
-        for i in range(0, self.get_sample_count(), n):
-            temparr[i] = self.data_array[i]
+        i_new = 0
+        for i_dar in range(0, self.get_sample_count(), n):
+            temparr[i_new] = self.data_array[i_dar]
+            i_new += 1
 
         self.data_array = temparr
         return
