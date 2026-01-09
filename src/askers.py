@@ -26,27 +26,33 @@ class Askers():
 
 
     @staticmethod
-    def ask_initial_segmentation() -> int|None:
+    def ask_segmentation(is_initial: bool = False) -> int|None:
+        stroing = (" Input 'exit' to exit program."
+                   if is_initial
+                   else "")
+
         while True:
-            print("Segment data (Pick every n-th line of data. Max 10, optimal 5.)\n"
-                  "Press Enter to skip. Input 'exit' to exit program.\n"
+            print("Segment data (Pick every n-th line of data)\n"
+                  "Max value is 10, but highest reasonable is 5.\n"
+                  f"Press Enter to skip.{stroing}\n"
                   "n = ", end="")
             asker = input().strip().lower()
 
             if not asker:
                 return 1
-            elif asker == "exit":
+            if asker == "exit" and is_initial:
                 return
-            elif not asker.isdigit():
+            if not asker.isdigit():
                 print("Incorrect input.\n\n")
+                continue
+
+            asker = int(asker)
+            if asker < 1:
+                return 1
+            elif asker > 10:
+                print("Input too high.\n\n")
             else:
-                asker = int(asker)
-                if asker <= 1:
-                    return 1
-                elif asker > 10:
-                    print("Input too high.\n\n")
-                else:
-                    return asker
+                return asker
 
 
     @staticmethod
@@ -56,6 +62,7 @@ class Askers():
             "y": "reverse_sign",
             "n": "normalization",
             "t": "calculate_threshold",
+            "e": "segment_data",
             "p": "apply_paa",
             "b": "convert_to_bin",
             "d": "convert_to_dwelltimes",
@@ -73,6 +80,7 @@ class Askers():
                   "y - Reverse data sign\n"
                   "n - Normalize data\n"
                   "t - Calculate threshold\n"
+                  "e - Segment data\n"
                   "p - Apply PAA downsampling\n"
                   "b - Convert data to binary\n"
                   "d - Convert data to dwell times\n"
@@ -280,6 +288,7 @@ class Askers():
                         return returns_dict[asker]
 
 
+    @staticmethod
     def ask_note_duration() -> int|None:
         while True:
             print("Input new note duration (ms):")

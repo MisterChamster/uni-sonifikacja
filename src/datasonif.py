@@ -19,7 +19,7 @@ class DataSonif():
     min_val:    float
     max_val:    float
     bins_count: int
-    threshold:   float | None
+    threshold:  float | None
     normalized: bool
     converted_to_binary:     bool
     converted_to_dwelltimes: bool
@@ -64,6 +64,23 @@ class DataSonif():
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
 
         self._update_min_max()
+
+
+    def segment_data(self, n: int) -> None:
+        if n > self.get_sample_count():
+            print("n is higher than the current number of loaded samples!\n")
+            return
+
+        new_sample_count: int = self.get_sample_count() // n
+        temparr: np.ndarray = np.empty(new_sample_count)
+
+        i_new = 0
+        for i_dar in range(0, self.get_sample_count(), n):
+            temparr[i_new] = self.data_array[i_dar]
+            i_new += 1
+
+        self.data_array = temparr
+        return
 
 
     def _update_min_max(self) -> None:

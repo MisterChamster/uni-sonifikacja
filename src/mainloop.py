@@ -21,7 +21,7 @@ def mainloop() -> None:
             return
         print(datafile_path, "\n")
 
-        asker_segment = Askers.ask_initial_segmentation()
+        asker_segment = Askers.ask_segmentation(True)
         if not asker_segment:
             return
         print("\n")
@@ -34,13 +34,15 @@ def mainloop() -> None:
             ordering = "Original" if loaded_data.og_order else "Reverse"
             sign     = "Original" if loaded_data.og_sign  else "Opposite"
 
-            print(f"Chosen file:        {loaded_data.file_path}")
-            print(f"Data segmentation:  {segment_info}")
-            print(f"Data order (x):     {ordering}")
-            print(f"Data sign (y):      {sign}")
-            print(f"Data normalization: {loaded_data.normalized}")
-            print(f"Num of bins (hist): {loaded_data.bins_count}")
-            print(f"State threshold:    {loaded_data.threshold}\n")
+            print(f"Chosen file:           {loaded_data.file_path}")
+            print(f"Data segmentation:     {segment_info}")
+            print(f"Data order (x):        {ordering}")
+            print(f"Data sign (y):         {sign}")
+            print(f"Data normalization:    {loaded_data.normalized}")
+            print(f"Num of bins (hist):    {loaded_data.bins_count}")
+            print(f"State threshold:       {loaded_data.threshold}")
+            print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
+            print()
             action_asker = Askers.ask_action()
             print()
 
@@ -64,17 +66,23 @@ def mainloop() -> None:
                 loaded_data.calculate_threshold()
                 print("Done!\n\n")
 
+            elif action_asker == "segment_data":
+                asker_segment = Askers.ask_segmentation()
+                if asker_segment is None or asker_segment == 1:
+                    continue
+
+                loaded_data.segment_data(asker_segment)
+
             elif action_asker == "apply_paa":
                 segmenting_style = Utils.get_val_from_json_fix(
                     settings_rel_path,
                     "SEGMENTING_STYLE_PAA",
-                    "count"
-                )
+                    "count")
 
                 asker_segment_value = Askers.ask_segment_value(
                     loaded_data.get_sample_count(),
-                    segmenting_style
-                )
+                    segmenting_style)
+
                 if asker_segment_value is None:
                     print()
                     continue
@@ -95,13 +103,12 @@ def mainloop() -> None:
                 segmenting_style = Utils.get_val_from_json_fix(
                     settings_rel_path,
                     "SEGMENTING_STYLE_DWELLTIMES",
-                    "size"
-                )
+                    "size")
 
                 asker_segment_value = Askers.ask_segment_value(
                     loaded_data.get_sample_count(),
-                    segmenting_style
-                )
+                    segmenting_style)
+
                 if asker_segment_value is None:
                     print()
                     continue
@@ -110,8 +117,7 @@ def mainloop() -> None:
                 print("Converting data to dwell times...")
                 loaded_data.convert_to_dwell_times(
                     asker_segment_value,
-                    segmenting_style
-                )
+                    segmenting_style)
                 print("Done!\n\n")
 
             elif action_asker == "sonify":
