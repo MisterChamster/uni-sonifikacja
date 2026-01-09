@@ -388,6 +388,8 @@ class DataSonif():
             print(f"High note:   {high_note_name}")
             print(f"Note duration (ms): {note_duration_milis}")
             print(f"Sample rate: {sample_rate}")
+            print(f"Amount of notes: {self.get_sample_count()}")
+            # print(f"Final length (ms/s/min/h): {}")
             print("")
             break
 
