@@ -377,16 +377,16 @@ class DataSonif():
             settings_rel_adress,
             "BINARY_SONIFICATION_HIGH_NOTE",
             "A4")
-        note_len_milis: int = Utils.get_val_from_settings_fix(
+        note_duration_milis: int = Utils.get_val_from_settings_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_NOTE_LENGTH_MILIS",
+            "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
             "300")
 
         while True:
             print("Sonification type: Binary")
             print(f"Low note:    {low_note_name}")
             print(f"High note:   {high_note_name}")
-            print(f"Note duration (ms): {note_len_milis}")
+            print(f"Note duration (ms): {note_duration_milis}")
             print(f"Sample rate: {sample_rate}")
             print("")
             break
