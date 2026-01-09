@@ -251,20 +251,20 @@ class Askers():
                 if analog_available
                 else "a - Sonify analog data... (UNAVAILABLE)")
 
-            print("Choose a method of sonification:")
+            print("Choose a method of sonification (type exit to exit):")
             print(bin_msg)
             print(analog_msg)
             print(">> ", end="")
             asker = input().strip().lower()
 
-            if asker not in returns_dict:
-                print("Invalid input!\n")
-            elif asker == "exit":
+            if asker == "exit":
                 return
+            elif asker not in returns_dict:
+                print("Invalid input!\n")
             elif asker in returns_dict:
                 if asker == "b":
                     if not bin_available:
-                        print("Option unavailable; data has to be converted to binary first")
+                        print("Option unavailable; data has to be converted to binary first.\n\n")
                     else:
                         return returns_dict[asker]
                 elif asker == "a":
@@ -273,6 +273,6 @@ class Askers():
                         # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
                         #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
                         # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                        print("Option unavailable; FOR A REASON????????????")
+                        print("Option unavailable; FOR A REASON????????????.\n\n")
                     else:
                         return returns_dict[asker]

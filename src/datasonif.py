@@ -347,6 +347,7 @@ class DataSonif():
             #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
             # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
             False)
+        print("\n\n")
 
         if not asker_sonif_type:
             return
@@ -383,8 +384,11 @@ class DataSonif():
 
         while True:
             print("Sonification type: Binary")
+            print(f"Low note:    {low_note_name}")
+            print(f"High note:   {high_note_name}")
+            print(f"Note duration (ms): {note_len_milis}")
+            print(f"Sample rate: {sample_rate}")
             print("")
-            print("Lol")
             break
 
         return
