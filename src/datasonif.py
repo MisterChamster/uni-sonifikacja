@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from pathlib import Path
 from typing import Literal
+from scipy.io.wavfile import write
 from src.utils import Utils
 from src.askers import Askers
 
@@ -346,6 +347,24 @@ class DataSonif():
         low_note_freq:       float,
         high_note_freq:      float
     ) -> None:
+        note_duration_sec = note_duration_milis / 1000
+        audio: list = []
+
+        for val in self.data_array:
+            t = np.linspace(
+                0,
+                note_duration_sec,
+                int(sample_rate * note_duration_sec),
+                endpoint=False)
+            freq = (
+                high_note_freq
+                if val == 1
+                else low_note_freq)
+            tone = np.sin(2 * np.pi * freq * t)
+            audio.append(tone)
+
+        audio = np.concatenate(audio).astype(np.float32)
+        write("output/output.wav", sample_rate, audio)
         return
 
 
@@ -389,10 +408,12 @@ class DataSonif():
             print(f"Sample rate:        {sample_rate}")
             print(f"Amount of notes:    {self.get_sample_count()}")
             print(f"Final audio length: {audio_len_human}")
+            # print(f"Final audio length (MILI): {final_length_milis}")
             print()
-            print("Choose an action (type 'exit' to exit):")
+            print("Choose an action:")
             print("c - Change note length (ms)")
-            print("s - Sonify\n>> ", end="")
+            print("s - Sonify")
+            print("exit - Exit menu\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == "exit":
@@ -407,17 +428,19 @@ class DataSonif():
                 Utils.save_value_to_settings(
                     settings_rel_adress,
                     "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
-                    new_note_duration
-                )
+                    new_note_duration)
 
             elif asker == "s":
                 print()
-                self.binary_sonification(
-                    sample_rate,
-                    note_duration_milis,
-                    low_note_freq,
-                    high_note_freq
-                )
+                try:
+                    self.binary_sonification(
+                        sample_rate,
+                        note_duration_milis,
+                        low_note_freq,
+                        high_note_freq)
+                except Exception as e:
+                    print("An exception occurred during binary sonification")
+                    print(e)
                 continue
 
             else:
