@@ -62,6 +62,7 @@ class Askers():
             "y": "reverse_sign",
             "n": "normalization",
             "t": "calculate_threshold",
+            "e": "segment_data",
             "p": "apply_paa",
             "b": "convert_to_bin",
             "d": "convert_to_dwelltimes",
@@ -79,6 +80,7 @@ class Askers():
                   "y - Reverse data sign\n"
                   "n - Normalize data\n"
                   "t - Calculate threshold\n"
+                  "e - Segment data\n"
                   "p - Apply PAA downsampling\n"
                   "b - Convert data to binary\n"
                   "d - Convert data to dwell times\n"
@@ -286,6 +288,7 @@ class Askers():
                         return returns_dict[asker]
 
 
+    @staticmethod
     def ask_note_duration() -> int|None:
         while True:
             print("Input new note duration (ms):")

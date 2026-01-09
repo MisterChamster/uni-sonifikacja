@@ -19,7 +19,7 @@ class DataSonif():
     min_val:    float
     max_val:    float
     bins_count: int
-    threshold:   float | None
+    threshold:  float | None
     normalized: bool
     converted_to_binary:     bool
     converted_to_dwelltimes: bool
@@ -64,6 +64,10 @@ class DataSonif():
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
 
         self._update_min_max()
+
+
+    def segment_data(self, n: int):
+        return
 
 
     def _update_min_max(self) -> None:

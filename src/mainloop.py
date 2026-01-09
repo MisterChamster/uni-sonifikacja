@@ -64,6 +64,13 @@ def mainloop() -> None:
                 loaded_data.calculate_threshold()
                 print("Done!\n\n")
 
+            elif action_asker == "segment_data":
+                asker_segment = Askers.ask_segmentation()
+                if asker_segment is None or asker_segment == "1":
+                    continue
+
+                loaded_data.segment_data(asker_segment)
+
             elif action_asker == "apply_paa":
                 segmenting_style = Utils.get_val_from_json_fix(
                     settings_rel_path,
