@@ -380,7 +380,7 @@ class DataSonif():
         note_duration_milis: int = Utils.get_val_from_settings_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
-            "300")
+            300)
 
         while True:
             print("Sonification type: Binary")
