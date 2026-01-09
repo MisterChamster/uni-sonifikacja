@@ -40,7 +40,7 @@ def mainloop() -> None:
             print(f"Data sign (y):      {sign}")
             print(f"Data normalization: {loaded_data.normalized}")
             print(f"Num of bins (hist): {loaded_data.bins_count}")
-            print(f"State threshold:     {loaded_data.threshold}\n")
+            print(f"State threshold:    {loaded_data.threshold}\n")
             action_asker = Askers.ask_action()
             print()
 
@@ -128,10 +128,11 @@ def mainloop() -> None:
                     continue
                 elif asker_sonif_type == "binary":
                     loaded_data.binary_sonif_loop(settings_rel_path, notes_rel_path)
+                    print("\n\n")
                 elif asker_sonif_type == "analog":
                     # CONTINUE WRITING HERE
                     # self.analog_sonif_loop(settings_rel_adress, notes_rel_adress)
-                    pass
+                    print("\n\n")
 
             elif action_asker == "show_chart":
                 print("Preparing chart...\n")

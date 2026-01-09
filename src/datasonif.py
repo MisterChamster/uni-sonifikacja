@@ -341,10 +341,10 @@ class DataSonif():
 # ============================ BINARY SONIFICATION ============================
     def binary_sonification(
         self,
-        sample_rate: int,
+        sample_rate:         int,
         note_duration_milis: int,
-        low_note_freq: int,
-        high_note_freq: int
+        low_note_freq:       float,
+        high_note_freq:      float
     ) -> None:
         return
 
@@ -358,47 +358,50 @@ class DataSonif():
             settings_rel_adress,
             "BINARY_SONIFICATION_LOW_NOTE",
             "D3")
-        low_note_freq: int = Utils.get_val_from_json(
+        low_note_freq: float = Utils.get_val_from_json(
             notes_rel_adress,
             low_note_name)
         high_note_name: str = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_HIGH_NOTE",
             "A4")
-        high_note_freq: int = Utils.get_val_from_json(
+        high_note_freq: float = Utils.get_val_from_json(
             notes_rel_adress,
             high_note_name)
         sample_rate: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "SAMPLE_RATE",
             44100)
-        note_duration_milis: int = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
-            300)
 
         while True:
+            note_duration_milis: int = Utils.get_val_from_json_fix(
+                settings_rel_adress,
+                "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
+                300)
+
             final_length_milis: int = (note_duration_milis * 
                                        self.get_sample_count())
             audio_len_human = Utils.human_read_milis(final_length_milis)
-            print("Sonification type: Binary")
-            print(f"Low note:    {low_note_name} ({low_note_freq} Hz)")
-            print(f"High note:   {high_note_name} ({high_note_freq} Hz)")
+            print( "Sonification type:  Binary")
+            print(f"Low note:           {low_note_name} ({low_note_freq} Hz)")
+            print(f"High note:          {high_note_name} ({high_note_freq} Hz)")
             print(f"Note duration (ms): {note_duration_milis}")
-            print(f"Sample rate: {sample_rate}")
-            print(f"Amount of notes: {self.get_sample_count()}")
+            print(f"Sample rate:        {sample_rate}")
+            print(f"Amount of notes:    {self.get_sample_count()}")
             print(f"Final audio length: {audio_len_human}")
-            print("\n")
+            print()
             print("Choose an action (type 'exit' to exit):")
             print("c - Change note length (ms)")
-            print("s - Sonify\n>> ")
+            print("s - Sonify\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == "exit":
                 return
 
             elif asker == "c":
+                print()
                 new_note_duration = Askers.ask_note_duration()
+                print("\n\n")
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
@@ -408,6 +411,7 @@ class DataSonif():
                 )
 
             elif asker == "s":
+                print()
                 self.binary_sonification(
                     sample_rate,
                     note_duration_milis,

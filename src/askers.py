@@ -265,15 +265,17 @@ class Askers():
                 if asker == "b":
                     if not bin_available:
                         print("Option unavailable; data has to be converted to binary first.\n\n")
+                        continue
                     else:
                         return returns_dict[asker]
                 elif asker == "a":
-                    if not bin_available:
+                    if not analog_available:
                         #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
                         # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
                         #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
                         # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
                         print("Option unavailable; FOR A REASON????????????.\n\n")
+                        continue
                     else:
                         return returns_dict[asker]
 
