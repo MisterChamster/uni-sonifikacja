@@ -66,7 +66,7 @@ def mainloop() -> None:
 
             elif action_asker == "segment_data":
                 asker_segment = Askers.ask_segmentation()
-                if asker_segment is None or asker_segment == "1":
+                if asker_segment is None or asker_segment == 1:
                     continue
 
                 loaded_data.segment_data(asker_segment)

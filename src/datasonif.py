@@ -66,7 +66,18 @@ class DataSonif():
         self._update_min_max()
 
 
-    def segment_data(self, n: int):
+    def segment_data(self, n: int) -> None:
+        if n > self.get_sample_count():
+            print("n is higher than the current number of loaded samples!\n")
+            return
+
+        new_sample_count: int = self.get_sample_count() // n
+        temparr: np.ndarray = np.empty(new_sample_count)
+
+        for i in range(0, self.get_sample_count(), n):
+            temparr[i] = self.data_array[i]
+
+        self.data_array = temparr
         return
 
 
