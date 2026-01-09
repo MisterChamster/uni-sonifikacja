@@ -41,7 +41,7 @@ class Utils():
 
 
     @staticmethod
-    def get_val_from_settings(
+    def get_val_from_json(
         adress:   str,
         json_key: str
     ) -> str|bool|int|float:
@@ -54,14 +54,14 @@ class Utils():
 
 
     @staticmethod
-    def get_val_from_settings_fix(
+    def get_val_from_json_fix(
         adress:      str,
         json_key:    str,
         default_val: str|bool|int|float
     ) -> str|bool|int|float:
 
         try:
-            temp = Utils.get_val_from_settings(adress, json_key)
+            temp = Utils.get_val_from_json(adress, json_key)
             return temp
         except:
             Utils.fix_value_in_settings(adress, json_key, default_val)
@@ -75,7 +75,7 @@ class Utils():
         default_val: str|bool
     ) -> None:
 
-        setting_val = Utils.get_val_from_settings_fix(
+        setting_val = Utils.get_val_from_json_fix(
             adress,
             json_key,
             default_val)

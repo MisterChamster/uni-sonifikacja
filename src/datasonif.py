@@ -166,7 +166,7 @@ class DataSonif():
         segmenting_style:      Literal["count", "size"]
     ) -> None:
 
-        cut_string_paa = Utils.get_val_from_settings_fix(
+        cut_string_paa = Utils.get_val_from_json_fix(
             "src/settings.json",
             "CUT_REMAINDER_SAMPLES_PAA",
             True)
@@ -254,7 +254,7 @@ class DataSonif():
         segmenting_style:      Literal["count", "size"]
     ) -> None:
 
-        cut_string_paa = Utils.get_val_from_settings_fix(
+        cut_string_paa = Utils.get_val_from_json_fix(
             "src/settings.json",
             "CUT_REMAINDER_SAMPLES_DWELLTIMES",
             True)
@@ -344,25 +344,25 @@ class DataSonif():
         settings_rel_adress: str,
         notes_rel_adress: str
     ) -> None:
-        sample_rate: int = Utils.get_val_from_settings_fix(
+        sample_rate: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "SAMPLE_RATE",
             44100)
-        low_note_name: str = Utils.get_val_from_settings_fix(
+        low_note_name: str = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_LOW_NOTE",
             "D3")
-        low_note_freq: int = Utils.get_val_from_settings(
+        low_note_freq: int = Utils.get_val_from_json(
             notes_rel_adress,
             low_note_name)
-        high_note_name: str = Utils.get_val_from_settings_fix(
+        high_note_name: str = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_HIGH_NOTE",
             "A4")
-        high_note_freq: int = Utils.get_val_from_settings(
+        high_note_freq: int = Utils.get_val_from_json(
             notes_rel_adress,
             high_note_name)
-        note_duration_milis: int = Utils.get_val_from_settings_fix(
+        note_duration_milis: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
             300)

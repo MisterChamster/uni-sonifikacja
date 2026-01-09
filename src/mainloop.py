@@ -65,7 +65,7 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "apply_paa":
-                segmenting_style = Utils.get_val_from_settings_fix(
+                segmenting_style = Utils.get_val_from_json_fix(
                     settings_rel_path,
                     "SEGMENTING_STYLE_PAA",
                     "count"
@@ -92,7 +92,7 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "convert_to_dwelltimes":
-                segmenting_style = Utils.get_val_from_settings_fix(
+                segmenting_style = Utils.get_val_from_json_fix(
                     settings_rel_path,
                     "SEGMENTING_STYLE_DWELLTIMES",
                     "size"
