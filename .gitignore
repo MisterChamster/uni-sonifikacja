@@ -4,5 +4,6 @@
 
 __pycache__
 data/
+output/
 
 priv_notes.txt

@@ -8,6 +8,8 @@ from src.settings_loop import settings_loop
 
 
 def mainloop() -> None:
+    settings_rel_path = "src/settings.json"
+    notes_rel_path = "src/notes.json"
     while True:
         print("Choose data file in txt/csv format:")
         datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
@@ -38,11 +40,11 @@ def mainloop() -> None:
             print(f"Data sign (y):      {sign}")
             print(f"Data normalization: {loaded_data.normalized}")
             print(f"Num of bins (hist): {loaded_data.bins_count}")
-            print(f"State treshold:     {loaded_data.treshold}\n")
+            print(f"State threshold:    {loaded_data.threshold}\n")
             action_asker = Askers.ask_action()
             print()
 
-            if action_asker == "reverse_order":
+            if action_asker   == "reverse_order":
                 print("Reversing order...")
                 loaded_data.reverse_data_order()
                 print("Done!\n\n")
@@ -52,9 +54,19 @@ def mainloop() -> None:
                 loaded_data.reverse_data_sign()
                 print("Done!\n\n")
 
+            elif action_asker == "normalization":
+                print("Normalizing...")
+                loaded_data.normalize_data()
+                print("Done!\n\n")
+
+            elif action_asker == "calculate_threshold":
+                print("Calculating threshold...")
+                loaded_data.calculate_threshold()
+                print("Done!\n\n")
+
             elif action_asker == "apply_paa":
-                segmenting_style = Utils.get_val_from_settings_fix(
-                    "src/settings.json",
+                segmenting_style = Utils.get_val_from_json_fix(
+                    settings_rel_path,
                     "SEGMENTING_STYLE_PAA",
                     "count"
                 )
@@ -71,19 +83,8 @@ def mainloop() -> None:
                 print("Processing...")
                 loaded_data.apply_paa_aggregation(
                     asker_segment_value,
-                    segmenting_style
-                )
+                    segmenting_style)
                 print("Data successfully aggregated!\n\n")
-
-            elif action_asker == "normalization":
-                print("Normalizing...")
-                loaded_data.normalize_data()
-                print("Done!\n\n")
-
-            elif action_asker == "calculate_threshold":
-                print("Calculating treshold...")
-                loaded_data.calculate_treshold()
-                print("Done!\n\n")
 
             elif action_asker == "convert_to_bin":
                 print("Converting data to binary...")
@@ -91,8 +92,8 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "convert_to_dwelltimes":
-                segmenting_style = Utils.get_val_from_settings_fix(
-                    "src/settings.json",
+                segmenting_style = Utils.get_val_from_json_fix(
+                    settings_rel_path,
                     "SEGMENTING_STYLE_DWELLTIMES",
                     "size"
                 )
@@ -113,6 +114,26 @@ def mainloop() -> None:
                 )
                 print("Done!\n\n")
 
+            elif action_asker == "sonify":
+                asker_sonif_type = Askers.ask_sonif_type(
+                    loaded_data.converted_to_binary,
+                    #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
+                    # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
+                    #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
+                    # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
+                    False)
+                print("\n\n")
+
+                if not asker_sonif_type:
+                    continue
+                elif asker_sonif_type == "binary":
+                    loaded_data.binary_sonif_loop(settings_rel_path, notes_rel_path)
+                    print("\n\n")
+                elif asker_sonif_type == "analog":
+                    # CONTINUE WRITING HERE
+                    # self.analog_sonif_loop(settings_rel_adress, notes_rel_adress)
+                    print("\n\n")
+
             elif action_asker == "show_chart":
                 print("Preparing chart...\n")
                 loaded_data.show_chart()
@@ -124,7 +145,7 @@ def mainloop() -> None:
                 print()
 
             elif action_asker == "settings":
-                settings_loop()
+                settings_loop(settings_rel_path, notes_rel_path)
                 print("\n")
 
             elif action_asker == "original_data":

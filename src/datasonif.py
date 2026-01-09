@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from pathlib import Path
 from typing import Literal
+from scipy.io.wavfile import write
 from src.utils import Utils
+from src.askers import Askers
 
 
 
@@ -17,21 +19,23 @@ class DataSonif():
     min_val:    float
     max_val:    float
     bins_count: int
-    treshold:   float | None
+    threshold:   float | None
     normalized: bool
     converted_to_binary:     bool
     converted_to_dwelltimes: bool
 
 
-    def __init__(self,
-                 file_path: Path,
-                 segment:   int) -> None:
+    def __init__(
+        self,
+        file_path: Path,
+        segment:   int
+    ) -> None:
         self.file_path  = file_path
         self.og_order   = True
         self.og_sign    = True
 
         self.bins_count = 200
-        self.treshold   = None
+        self.threshold   = None
         self.normalized = False
         self.converted_to_binary = False
         self.converted_to_dwelltimes = False
@@ -39,20 +43,20 @@ class DataSonif():
         if segment == 1:
             try:
                 self.data_array = pd.read_csv(
-                                    self.file_path,
-                                    header=None,
-                                    names=["values"],
-                                    skipinitialspace=True)
+                    self.file_path,
+                    header=None,
+                    names=["values"],
+                    skipinitialspace=True)
             except:
                 raise Exception("Data loading has failed.\n")
         else:
             try:
                 self.data_array = pd.read_csv(
-                                    self.file_path,
-                                    header=None,
-                                    names=["values"],
-                                    skiprows=lambda i: i % segment != 0,
-                                    skipinitialspace=True)
+                    self.file_path,
+                    header=None,
+                    names=["values"],
+                    skiprows=lambda i: i % segment != 0,
+                    skipinitialspace=True)
             except:
                 raise Exception("Data loading has failed.\n")
 
@@ -84,8 +88,8 @@ class DataSonif():
             self.data_sign = "-"
 
         self._update_min_max()
-        if self.treshold:
-            self.calculate_treshold()
+        if self.threshold:
+            self.calculate_threshold()
         return
 
 
@@ -97,28 +101,29 @@ class DataSonif():
         difference = self.max_val - self.min_val
         self.data_array = (self.data_array - self.min_val)/(difference)
 
-        # Normalize treshold
-        if self.treshold:
-            # Method calculate_treshold could be used, but calculating 
+        # Normalize threshold
+        if self.threshold:
+            # Method calculate_threshold could be used, but calculating 
             # manually saves a ton of computing.
-            # self.calculate_treshold()
-            self.treshold = (self.treshold - self.min_val)/(difference)
+            # self.calculate_threshold()
+            self.threshold = (self.threshold - self.min_val)/(difference)
 
         self._update_min_max()
         self.normalized = True
         return
 
 
-    # Getting treshold as average between two sample count peaks (open and closed)
-    def calculate_treshold(self) -> None:
+    # Getting threshold as average between two sample count peaks (open and closed)
+    def calculate_threshold(self) -> None:
         # Returns two ndarrays
-        sample_count, voltage_val = np.histogram(self.data_array, bins=self.bins_count)
+        sample_count, voltage_val = np.histogram(self.data_array,
+                                                 bins=self.bins_count)
         halfarr = int(self.bins_count/2)
 
         first_peak_index  = np.argmax(sample_count[:halfarr])
         second_peak_index = np.argmax(sample_count[halfarr:]) + halfarr
 
-        treshold_index = (first_peak_index + second_peak_index)/2
+        threshold_index = (first_peak_index + second_peak_index)/2
 
         # There are more voltages than sample counts. So, if mid index between
         # two peaks is odd, we have to round it up. If midpoint is even, we need
@@ -139,42 +144,40 @@ class DataSonif():
         # 4V has index 2, but as we see 2000 samples are between 4 and 6V.
         # Thus, calculating (4+6)/2 = 5V returns us a truest average voltage
         # between two peaks. Keep in mind that average voltage is still not an
-        # accurate treshold between open/closed states!!
+        # accurate threshold between open/closed states!!
 
-        if treshold_index != int(treshold_index):
-            treshold_index = int(treshold_index + 0.5)
-            treshold_val = voltage_val[treshold_index]
+        if threshold_index != int(threshold_index):
+            threshold_index = int(threshold_index + 0.5)
+            threshold_val = voltage_val[threshold_index]
 
-        elif treshold_index == int(treshold_index):
-            treshold_index = int(treshold_index)
-            tempval1 = voltage_val[treshold_index]
-            tempval2 = voltage_val[treshold_index+1]
-            treshold_val = (tempval1+tempval2)/2
+        elif threshold_index == int(threshold_index):
+            threshold_index = int(threshold_index)
+            tempval1 = voltage_val[threshold_index]
+            tempval2 = voltage_val[threshold_index+1]
+            threshold_val = (tempval1+tempval2)/2
 
-        self.treshold = treshold_val
+        self.threshold = threshold_val
         return
 
 
+# ============================== PAA AGGREGATION ==============================
     def apply_paa_aggregation(
         self,
         segment_value:         int,
-        segmenting_style:      Literal["count", "size"],
-        settings_cut_variable: Literal[
-            "CUT_REMAINDER_SAMPLES_PAA",
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES"
-        ] = "CUT_REMAINDER_SAMPLES_PAA"
+        segmenting_style:      Literal["count", "size"]
     ) -> None:
 
-        cut_string_paa = Utils.get_val_from_settings_fix("src/settings.json",
-                                                         settings_cut_variable,
-                                                         True)
+        cut_string_paa = Utils.get_val_from_json_fix(
+            "src/settings.json",
+            "CUT_REMAINDER_SAMPLES_PAA",
+            True)
 
         if segmenting_style == "count":
             segment_count = segment_value # That many real segments
-            if not cut_string_paa:
-                segment_size = len(self.data_array) // (segment_count-1)
-            else:
-                segment_size = len(self.data_array) // (segment_count)
+            segment_size = (len(self.data_array) // (segment_count-1)
+                            if not cut_string_paa
+                            else len(self.data_array) // (segment_count))
+
         elif segmenting_style == "size":
             segment_size = segment_value
             #vv That many FIXED-size segments vv
@@ -221,26 +224,100 @@ class DataSonif():
         self.data_array = temparr
         # Update fields accordingly
         self._update_min_max()
-        if self.treshold != None:
-            self.calculate_treshold()
+        if self.threshold != None:
+            self.calculate_threshold()
         return
 
 
+# ============================ BINARY CONVERSION ==============================
     def convert_data_to_binary(self) -> None:
         if not self.normalized:
             self.normalize_data()
 
-        if not self.treshold:
-            self.calculate_treshold()
+        if not self.threshold:
+            self.calculate_threshold()
 
         for i in range(len(self.data_array)):
-            if self.data_array[i] <= self.treshold:
-                self.data_array[i] = 0
-            else:
-                self.data_array[i] = 1
+            self.data_array[i] = (
+                0
+                if self.data_array[i] <= self.threshold
+                else 1)
 
         self._update_min_max()
         self.converted_to_binary = True
+        return
+
+
+# ================================ DWELL TIMES ================================
+    def __paa_but_binary(
+        self,
+        segment_value:         int,
+        segmenting_style:      Literal["count", "size"]
+    ) -> None:
+
+        cut_string_paa = Utils.get_val_from_json_fix(
+            "src/settings.json",
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
+            True)
+        if not self.threshold:
+            self.calculate_threshold()
+
+        if segmenting_style == "count":
+            segment_count = segment_value # That many real segments
+            segment_size = (len(self.data_array) // (segment_count-1)
+                            if not cut_string_paa
+                            else len(self.data_array) // (segment_count))
+
+        elif segmenting_style == "size":
+            segment_size = segment_value
+            #vv That many FIXED-size segments vv
+            segment_count = len(self.data_array) // segment_size
+            if not cut_string_paa:
+                segment_count += 1 # That many real segments
+
+        temparr: np.ndarray = np.empty(segment_count)
+
+        # Cutting data array before segmenting
+        if cut_string_paa:
+            cut_length: int = len(self.data_array) % segment_count
+
+            if cut_length != 0: #Cut if there's something to cut
+                self.data_array = self.data_array[:-cut_length]
+        # For additional segment with remaining data (calculated after the loop)
+        else:
+            segment_count -= 1
+
+
+        # Putting segment means to temparr
+        index_segment: int = 0
+        iterative: int     = 0
+
+        while iterative < segment_count:
+            segment_sum: int = 0
+            for i in range(index_segment, index_segment+segment_size):
+                segment_sum += self.data_array[i]
+
+            segment_mean: float = segment_sum / segment_size
+            segment_bin_val = 0 if segment_mean <= self.threshold else 1
+            temparr[iterative] = segment_bin_val
+
+            index_segment += segment_size
+            iterative += 1
+
+        # Calculating mean of the segment with remaining data (no cutting route)
+        if not cut_string_paa:
+            segment_sum: int = 0
+            for i in range(index_segment, index_segment+segment_size):
+                segment_sum += self.data_array[i]
+
+            segment_mean: float = segment_sum / segment_size
+            segment_bin_val = 0 if segment_mean <= self.threshold else 1
+            temparr[iterative] = segment_bin_val
+
+        self.data_array = temparr
+        # Update fields accordingly
+        self._update_min_max()
+        self.calculate_threshold()
         return
 
 
@@ -253,14 +330,124 @@ class DataSonif():
         if not self.converted_to_binary:
             self.convert_data_to_binary()
 
-        self.apply_paa_aggregation(
+        # PAA SHOULD NOT BE USED HERE YOU DUMDUM
+
+        self.__paa_but_binary(
             segment_value,
-            segmenting_style,
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
+            segmenting_style)
         self.converted_to_dwelltimes = True
         return
 
 
+# ============================ BINARY SONIFICATION ============================
+    def binary_sonification(
+        self,
+        sample_rate:         int,
+        note_duration_milis: int,
+        low_note_freq:       float,
+        high_note_freq:      float
+    ) -> None:
+        note_duration_sec = note_duration_milis / 1000
+        audio: list = []
+
+        for val in self.data_array:
+            t = np.linspace(
+                0,
+                note_duration_sec,
+                int(sample_rate * note_duration_sec),
+                endpoint=False)
+            freq = (
+                high_note_freq
+                if val == 1
+                else low_note_freq)
+            tone = np.sin(2 * np.pi * freq * t)
+            audio.append(tone)
+
+        audio = np.concatenate(audio).astype(np.float32)
+        write("output/output.wav", sample_rate, audio)
+        return
+
+
+    def binary_sonif_loop(
+        self,
+        settings_rel_adress: str,
+        notes_rel_adress: str
+    ) -> None:
+        low_note_name: str = Utils.get_val_from_json_fix(
+            settings_rel_adress,
+            "BINARY_SONIFICATION_LOW_NOTE",
+            "D3")
+        low_note_freq: float = Utils.get_val_from_json(
+            notes_rel_adress,
+            low_note_name)
+        high_note_name: str = Utils.get_val_from_json_fix(
+            settings_rel_adress,
+            "BINARY_SONIFICATION_HIGH_NOTE",
+            "A4")
+        high_note_freq: float = Utils.get_val_from_json(
+            notes_rel_adress,
+            high_note_name)
+        sample_rate: int = Utils.get_val_from_json_fix(
+            settings_rel_adress,
+            "SAMPLE_RATE",
+            44100)
+
+        while True:
+            note_duration_milis: int = Utils.get_val_from_json_fix(
+                settings_rel_adress,
+                "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
+                300)
+
+            final_length_milis: int = (note_duration_milis * 
+                                       self.get_sample_count())
+            audio_len_human = Utils.human_read_milis(final_length_milis)
+            print( "Sonification type:  Binary")
+            print(f"Low note:           {low_note_name} ({low_note_freq} Hz)")
+            print(f"High note:          {high_note_name} ({high_note_freq} Hz)")
+            print(f"Note duration (ms): {note_duration_milis}")
+            print(f"Sample rate:        {sample_rate}")
+            print(f"Amount of notes:    {self.get_sample_count()}")
+            print(f"Final audio length: {audio_len_human}")
+            # print(f"Final audio length (MILI): {final_length_milis}")
+            print()
+            print("Choose an action:")
+            print("c - Change note length (ms)")
+            print("s - Sonify")
+            print("exit - Exit menu\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == "exit":
+                return
+
+            elif asker == "c":
+                print()
+                new_note_duration = Askers.ask_note_duration()
+                print("\n\n")
+                if not new_note_duration:
+                    continue
+                Utils.save_value_to_settings(
+                    settings_rel_adress,
+                    "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
+                    new_note_duration)
+
+            elif asker == "s":
+                print()
+                try:
+                    self.binary_sonification(
+                        sample_rate,
+                        note_duration_milis,
+                        low_note_freq,
+                        high_note_freq)
+                except Exception as e:
+                    print("An exception occurred during binary sonification")
+                    print(e)
+                continue
+
+            else:
+                print("Invalid input.\n")
+
+
+# ================================= PLOTTING ==================================
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
@@ -271,11 +458,13 @@ class DataSonif():
         #     for i in range(len(peak_ys)):
         #         peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
         # plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
-        plt.scatter(np.arange(self.data_array.shape[0]), self.data_array, s=1)
+        plt.scatter(np.arange(self.data_array.shape[0]),
+                              self.data_array,
+                              s=1)
 
-        # Treshold line
-        if self.treshold:
-            plt.axhline(y=self.treshold, color="red")
+        # Threshold line
+        if self.threshold:
+            plt.axhline(y=self.threshold, color="red")
 
         # plt.gca().xaxis.set_major_locator(MultipleLocator(len(self.data_array)/10))
         y_locators = 0.1 if self.normalized == True else 1
@@ -296,9 +485,9 @@ class DataSonif():
     def show_histogram(self) -> None:
         plt.hist(self.data_array, bins=self.bins_count)
 
-        # Treshold line
-        if self.treshold is not None:
-            plt.axvline(x=self.treshold, color="red")
+        # Threshold line
+        if self.threshold is not None:
+            plt.axvline(x=self.threshold, color="red")
 
         plt.ylabel("Sample count")
         if self.normalized == True:
@@ -311,5 +500,6 @@ class DataSonif():
         return
 
 
+# ================================== GETTERS ==================================
     def get_sample_count(self) -> int:
         return len(self.data_array)

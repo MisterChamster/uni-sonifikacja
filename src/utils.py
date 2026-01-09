@@ -41,10 +41,10 @@ class Utils():
 
 
     @staticmethod
-    def get_val_from_settings(
+    def get_val_from_json(
         adress:   str,
         json_key: str
-    ) -> str|bool:
+    ) -> str|bool|int|float:
 
         with open(adress) as f:
             config = json.load(f)
@@ -54,14 +54,14 @@ class Utils():
 
 
     @staticmethod
-    def get_val_from_settings_fix(
+    def get_val_from_json_fix(
         adress:      str,
         json_key:    str,
-        default_val: str|bool
-    ) -> str|bool:
+        default_val: str|bool|int|float
+    ) -> str|bool|int|float:
 
         try:
-            temp = Utils.get_val_from_settings(adress, json_key)
+            temp = Utils.get_val_from_json(adress, json_key)
             return temp
         except:
             Utils.fix_value_in_settings(adress, json_key, default_val)
@@ -74,8 +74,7 @@ class Utils():
         json_key:    str,
         default_val: str|bool
     ) -> None:
-
-        setting_val = Utils.get_val_from_settings_fix(
+        setting_val = Utils.get_val_from_json_fix(
             adress,
             json_key,
             default_val)
@@ -89,3 +88,27 @@ class Utils():
 
         Utils.save_value_to_settings(adress, json_key, setting_val)
         return
+
+
+    @staticmethod
+    def get_keys_from_json(rel_adress: str) -> list[str]:
+        with open(rel_adress) as f:
+            dict_from_json = json.load(f)
+        return dict_from_json.keys()
+
+
+    @staticmethod
+    def human_read_milis(milis: int) -> str:
+        seconds = milis // 1000
+        minutes, seconds = divmod(seconds, 60)
+        hours, minutes = divmod(minutes, 60)
+
+        parts = []
+        if hours:
+            parts.append(f"{hours} hour(s)")
+        if minutes:
+            parts.append(f"{minutes} minute(s)")
+        if seconds:
+            parts.append(f"{seconds} second(s)")
+
+        return ", ".join(parts) or "0 seconds"
