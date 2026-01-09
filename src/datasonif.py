@@ -176,10 +176,10 @@ class DataSonif():
 
         if segmenting_style == "count":
             segment_count = segment_value # That many real segments
-            if not cut_string_paa:
-                segment_size = len(self.data_array) // (segment_count-1)
-            else:
-                segment_size = len(self.data_array) // (segment_count)
+            segment_size = (len(self.data_array) // (segment_count-1)
+                            if not cut_string_paa
+                            else len(self.data_array) // (segment_count))
+
         elif segmenting_style == "size":
             segment_size = segment_value
             #vv That many FIXED-size segments vv
@@ -239,10 +239,10 @@ class DataSonif():
             self.calculate_treshold()
 
         for i in range(len(self.data_array)):
-            if self.data_array[i] <= self.treshold:
-                self.data_array[i] = 0
-            else:
-                self.data_array[i] = 1
+            self.data_array[i] = (
+                0
+                if self.data_array[i] <= self.treshold
+                else 1)
 
         self._update_min_max()
         self.converted_to_binary = True
