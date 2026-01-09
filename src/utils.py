@@ -74,7 +74,6 @@ class Utils():
         json_key:    str,
         default_val: str|bool
     ) -> None:
-
         setting_val = Utils.get_val_from_json_fix(
             adress,
             json_key,

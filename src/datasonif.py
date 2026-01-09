@@ -339,15 +339,21 @@ class DataSonif():
 
 
 # ============================ BINARY SONIFICATION ============================
+    def binary_sonification(
+        self,
+        sample_rate: int,
+        note_duration_milis: int,
+        low_note_freq: int,
+        high_note_freq: int
+    ) -> None:
+        return
+
+
     def binary_sonif_loop(
         self,
         settings_rel_adress: str,
         notes_rel_adress: str
     ) -> None:
-        sample_rate: int = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "SAMPLE_RATE",
-            44100)
         low_note_name: str = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_LOW_NOTE",
@@ -362,6 +368,10 @@ class DataSonif():
         high_note_freq: int = Utils.get_val_from_json(
             notes_rel_adress,
             high_note_name)
+        sample_rate: int = Utils.get_val_from_json_fix(
+            settings_rel_adress,
+            "SAMPLE_RATE",
+            44100)
         note_duration_milis: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
@@ -398,7 +408,13 @@ class DataSonif():
                 )
 
             elif asker == "s":
-                pass
+                self.binary_sonification(
+                    sample_rate,
+                    note_duration_milis,
+                    low_note_freq,
+                    high_note_freq
+                )
+                continue
 
             else:
                 print("Invalid input.\n")
