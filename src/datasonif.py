@@ -162,16 +162,12 @@ class DataSonif():
     def apply_paa_aggregation(
         self,
         segment_value:         int,
-        segmenting_style:      Literal["count", "size"],
-        settings_cut_variable: Literal[
-            "CUT_REMAINDER_SAMPLES_PAA",
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES"
-        ] = "CUT_REMAINDER_SAMPLES_PAA"
+        segmenting_style:      Literal["count", "size"]
     ) -> None:
 
         cut_string_paa = Utils.get_val_from_settings_fix(
             "src/settings.json",
-            settings_cut_variable,
+            "CUT_REMAINDER_SAMPLES_PAA",
             True)
 
         if segmenting_style == "count":

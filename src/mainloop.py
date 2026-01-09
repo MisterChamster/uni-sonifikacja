@@ -83,8 +83,7 @@ def mainloop() -> None:
                 print("Processing...")
                 loaded_data.apply_paa_aggregation(
                     asker_segment_value,
-                    segmenting_style
-                )
+                    segmenting_style)
                 print("Data successfully aggregated!\n\n")
 
             elif action_asker == "convert_to_bin":
