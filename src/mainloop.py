@@ -115,11 +115,23 @@ def mainloop() -> None:
                 print("Done!\n\n")
 
             elif action_asker == "sonify":
-                loaded_data.sonify_loop(
-                    settings_rel_path,
-                    notes_rel_path
-                )
-                print()
+                asker_sonif_type = Askers.ask_sonif_type(
+                    loaded_data.converted_to_binary,
+                    #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
+                    # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
+                    #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
+                    # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
+                    False)
+                print("\n\n")
+
+                if not asker_sonif_type:
+                    continue
+                elif asker_sonif_type == "binary":
+                    loaded_data.binary_sonif_loop(settings_rel_path, notes_rel_path)
+                elif asker_sonif_type == "analog":
+                    # CONTINUE WRITING HERE
+                    # self.analog_sonif_loop(settings_rel_adress, notes_rel_adress)
+                    pass
 
             elif action_asker == "show_chart":
                 print("Preparing chart...\n")

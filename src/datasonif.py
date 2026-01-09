@@ -335,31 +335,6 @@ class DataSonif():
         return
 
 
-    def sonify_loop(
-        self,
-        settings_rel_adress: str,
-        notes_rel_adress: str
-    ) -> None:
-        asker_sonif_type = Askers.ask_sonif_type(
-            self.converted_to_binary,
-            #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-            # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-            #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-            # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-            False)
-        print("\n\n")
-
-        if not asker_sonif_type:
-            return
-        if asker_sonif_type == "binary":
-            self.binary_sonif_loop(settings_rel_adress, notes_rel_adress)
-            return
-        elif asker_sonif_type == "analog":
-            # CONTINUE WRITING HERE
-            # self.analog_sonif_loop(settings_rel_adress, notes_rel_adress)
-            return
-
-
     def binary_sonif_loop(
         self,
         settings_rel_adress: str,
