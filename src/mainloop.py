@@ -46,93 +46,102 @@ def mainloop() -> None:
             action_asker = Askers.ask_action()
             print()
 
-            if action_asker   == "reverse_order":
-                print("Reversing order...")
-                loaded_data.reverse_data_order()
-                print("Done!\n\n")
+            # ========================== DATA ALTERING =========================
+            if action_asker == "alter_data":
+                alter_asker = Askers.ask_alter_data()
 
-            elif action_asker == "reverse_sign":
-                print("Reversing order...")
-                loaded_data.reverse_data_sign()
-                print("Done!\n\n")
+                if alter_asker   == "reverse_order":
+                    print("Reversing order...")
+                    loaded_data.reverse_data_order()
+                    print("Done!\n\n")
 
-            elif action_asker == "normalization":
-                print("Normalizing...")
-                loaded_data.normalize_data()
-                print("Done!\n\n")
+                elif alter_asker == "reverse_sign":
+                    print("Reversing order...")
+                    loaded_data.reverse_data_sign()
+                    print("Done!\n\n")
 
-            elif action_asker == "calculate_threshold":
-                print("Calculating threshold...")
-                loaded_data.calculate_threshold()
-                print("Done!\n\n")
+                elif alter_asker == "normalization":
+                    print("Normalizing...")
+                    loaded_data.normalize_data()
+                    print("Done!\n\n")
 
-            elif action_asker == "segment_data":
-                asker_segment = Askers.ask_segmentation()
-                if asker_segment is None or asker_segment == 1:
-                    continue
+                elif alter_asker == "calculate_threshold":
+                    print("Calculating threshold...")
+                    loaded_data.calculate_threshold()
+                    print("Done!\n\n")
 
-                loaded_data.segment_data(asker_segment)
+                elif alter_asker == "segment_data":
+                    asker_segment = Askers.ask_segmentation()
+                    if asker_segment is None or asker_segment == 1:
+                        continue
 
-            elif action_asker == "apply_paa":
-                segmenting_style = Utils.get_val_from_json_fix(
-                    settings_rel_path,
-                    "SEGMENTING_STYLE_PAA",
-                    "count")
+                    loaded_data.segment_data(asker_segment)
 
-                asker_segment_value = Askers.ask_segment_value(
-                    loaded_data.get_sample_count(),
-                    segmenting_style)
+                elif alter_asker == "apply_paa":
+                    segmenting_style = Utils.get_val_from_json_fix(
+                        settings_rel_path,
+                        "SEGMENTING_STYLE_PAA",
+                        "count")
 
-                if asker_segment_value is None:
+                    asker_segment_value = Askers.ask_segment_value(
+                        loaded_data.get_sample_count(),
+                        segmenting_style)
+
+                    if asker_segment_value is None:
+                        print()
+                        continue
                     print()
-                    continue
-                print()
 
-                print("Processing...")
-                loaded_data.apply_paa_aggregation(
-                    asker_segment_value,
-                    segmenting_style)
-                print("Data successfully aggregated!\n\n")
+                    print("Processing...")
+                    loaded_data.apply_paa_aggregation(
+                        asker_segment_value,
+                        segmenting_style)
+                    print("Data successfully aggregated!\n\n")
 
-            elif action_asker == "convert_to_bin":
-                print("Converting data to binary...")
-                loaded_data.convert_data_to_binary()
-                print("Done!\n\n")
+                elif alter_asker == "convert_to_bin":
+                    print("Converting data to binary...")
+                    loaded_data.convert_data_to_binary()
+                    print("Done!\n\n")
 
-            elif action_asker == "convert_to_dwelltimes":
-                segmenting_style = Utils.get_val_from_json_fix(
-                    settings_rel_path,
-                    "SEGMENTING_STYLE_DWELLTIMES",
-                    "size")
+                elif alter_asker == "convert_to_dwelltimes":
+                    segmenting_style = Utils.get_val_from_json_fix(
+                        settings_rel_path,
+                        "SEGMENTING_STYLE_DWELLTIMES",
+                        "size")
 
-                asker_segment_value = Askers.ask_segment_value(
-                    loaded_data.get_sample_count(),
-                    segmenting_style)
+                    asker_segment_value = Askers.ask_segment_value(
+                        loaded_data.get_sample_count(),
+                        segmenting_style)
 
-                if asker_segment_value is None:
+                    if asker_segment_value is None:
+                        print()
+                        continue
                     print()
+
+                    print("Converting data to dwell times...")
+                    loaded_data.convert_to_dwell_times(
+                        asker_segment_value,
+                        segmenting_style)
+                    print("Done!\n\n")
+
+                elif alter_asker == "original_data":
+                    if not os.path.exists(datafile_path):
+                        print(f"Chosen file no longer exists in path {datafile_path}")
+                        continue
+                    print(datafile_path, "\n")
+
+                    asker_segment = Askers.ask_initial_segmentation()
+                    if not asker_segment:
+                        return
+                    print("\n")
+
+                    loaded_data = DataSonif(datafile_path, asker_segment)
+
+                elif alter_asker == "exit":
+                    print("\n")
                     continue
-                print()
 
-                print("Converting data to dwell times...")
-                loaded_data.convert_to_dwell_times(
-                    asker_segment_value,
-                    segmenting_style)
-                print("Done!\n\n")
-
-            elif action_asker == "original_data":
-                if not os.path.exists(datafile_path):
-                    print(f"Chosen file no longer exists in path {datafile_path}")
-                    continue
-                print(datafile_path, "\n")
-
-                asker_segment = Askers.ask_initial_segmentation()
-                if not asker_segment:
-                    return
-                print("\n")
-
-                loaded_data = DataSonif(datafile_path, asker_segment)
-
+            # ========================== OTHER OPTIONS =========================
             elif action_asker == "sonify":
                 asker_sonif_type = Askers.ask_sonif_type(
                     loaded_data.converted_to_binary,
@@ -172,3 +181,6 @@ def mainloop() -> None:
 
             elif action_asker == "exit":
                 return
+
+            else:
+                print("Invallid input.\n\n")

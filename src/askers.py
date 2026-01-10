@@ -58,6 +58,34 @@ class Askers():
     @staticmethod
     def ask_action() -> str:
         returns_dict = {
+            "a": "alter_data",
+            "i": "sonify",
+            "c": "show_chart",
+            "h": "show_histogram",
+            "s": "settings",
+            "f": "change_file",
+            "exit": "exit"}
+
+        while True:
+            print("Choose an action:\n"
+                  "a - Alter data...\n"
+                  "i - Sonify data...\n"
+                  "c - Show chart\n"
+                  "h - Show histogram\n"
+                  "s - Settings...\n"
+                  "f - Change file\n"
+                  "exit - Exit\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]
+
+
+    @staticmethod
+    def ask_alter_data() -> str|None:
+        returns_dict = {
             "x": "reverse_order",
             "y": "reverse_sign",
             "n": "normalization",
@@ -67,11 +95,6 @@ class Askers():
             "b": "convert_to_bin",
             "d": "convert_to_dwelltimes",
             "o": "original_data",
-            "i": "sonify",
-            "c": "show_chart",
-            "h": "show_histogram",
-            "s": "settings",
-            "f": "change_file",
             "exit": "exit"}
 
         while True:
@@ -85,12 +108,7 @@ class Askers():
                   "b - Convert data to binary\n"
                   "d - Convert data to dwell times\n"
                   "o - Revert to original data set\n"
-                  "i - Sonify data...\n"
-                  "c - Show chart\n"
-                  "h - Show histogram\n"
-                  "s - Settings...\n"
-                  "f - Change file\n"
-                  "exit - Exit\n>> ", end="")
+                  "exit - Exit to main menu\n>> ", end="")
             asker = input().strip().lower()
 
             if asker not in returns_dict:
