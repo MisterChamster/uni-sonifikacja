@@ -105,7 +105,7 @@ def mainloop() -> None:
                         loaded_data.convert_data_to_binary()
                         print("Done!\n\n")
 
-                    elif alter_asker == "convert_to_dwelltimes":
+                    elif alter_asker == "convert_to_dwelltimes_condensed":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
                             "SEGMENTING_STYLE_DWELLTIMES",
@@ -120,8 +120,8 @@ def mainloop() -> None:
                             continue
                         print()
 
-                        print("Converting data to dwell times...")
-                        loaded_data.convert_to_dwell_times(
+                        print("Converting data to condensed dwell times...")
+                        loaded_data.convert_to_dwell_times_CONDENSED(
                             asker_segment_value,
                             segmenting_style)
                         print("Done!\n\n")
