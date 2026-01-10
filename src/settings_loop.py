@@ -13,28 +13,28 @@ def settings_loop(
         if asker_settings == "change_cutting_setting_paa":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "CUT_REMAINDER_STRING_PAA",
+                "CUT_REMAINDER_SAMPLES_PAA",
                 True)
             print("Value successfully changed\n")
 
         elif asker_settings == "change_cutting_setting_dwelltimes":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "CUT_REMAINDER_STRING_DWELLTIMES",
+                "CUT_REMAINDER_SAMPLES_DWELLTIMES",
                 True)
             print("Value successfully changed\n")
 
         elif asker_settings == "change_segmenting_setting_paa":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "SEGMENTING_PAA",
+                "SEGMENTING_STYLE_PAA",
                 "size")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_segmenting_setting_dwelltimes":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "SEGMENTING_DWELLTIMES",
+                "SEGMENTING_STYLE_DWELLTIMES",
                 "size")
             print("Value successfully changed\n")
 
