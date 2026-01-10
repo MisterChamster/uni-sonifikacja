@@ -132,8 +132,9 @@ class DataSonif():
     # Getting threshold as average between two sample count peaks (open and closed)
     def calculate_threshold(self) -> None:
         # Returns two ndarrays
-        sample_count, voltage_val = np.histogram(self.data_array,
-                                                 bins=self.bins_count)
+        sample_count, voltage_val = np.histogram(
+            self.data_array,
+            bins=self.bins_count)
         halfarr = int(self.bins_count/2)
 
         first_peak_index  = np.argmax(sample_count[:halfarr])
@@ -267,8 +268,8 @@ class DataSonif():
 # ================================ DWELL TIMES ================================
     def __paa_but_binary(
         self,
-        segment_value:         int,
-        segmenting_style:      Literal["count", "size"]
+        segment_value:    int,
+        segmenting_style: Literal["count", "size"]
     ) -> None:
 
         cut_string_paa = Utils.get_val_from_json_fix(
