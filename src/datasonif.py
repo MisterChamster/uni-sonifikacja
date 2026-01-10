@@ -265,6 +265,14 @@ class DataSonif():
         return
 
 
+# ================================ DWELL TIMES ================================
+    def convert_to_dwell_times(
+        self,
+        segment_value:    int,
+        segmenting_style: str
+    ) -> None:
+        return
+
 # =========================== CONDENSED DWELL TIMES ===========================
     def __paa_but_binary(
         self,
