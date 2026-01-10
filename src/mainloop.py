@@ -49,6 +49,15 @@ def mainloop() -> None:
             # ========================== DATA ALTERING =========================
             if action_asker == "alter_data":
                 while True:
+                    print(f"Chosen file:           {loaded_data.file_path}")
+                    print(f"Data segmentation:     {segment_info}")
+                    print(f"Data order (x):        {ordering}")
+                    print(f"Data sign (y):         {sign}")
+                    print(f"Data normalization:    {loaded_data.normalized}")
+                    print(f"Num of bins (hist):    {loaded_data.bins_count}")
+                    print(f"State threshold:       {loaded_data.threshold}")
+                    print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
+                    print()
                     alter_asker = Askers.ask_alter_data()
                     print()
 
