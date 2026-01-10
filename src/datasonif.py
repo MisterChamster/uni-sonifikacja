@@ -97,7 +97,6 @@ class DataSonif():
 
     def reverse_data_sign(self) -> None:
         self.data_array = -self.data_array
-        self.show_chart()
 
         if self.data_sign == "-":
             self.data_sign = "+"
