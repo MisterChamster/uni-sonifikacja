@@ -94,7 +94,8 @@ class Utils():
     def get_keys_from_json(rel_adress: str) -> list[str]:
         with open(rel_adress) as f:
             dict_from_json = json.load(f)
-        return dict_from_json.keys()
+
+        return list(dict_from_json.keys())
 
 
     @staticmethod

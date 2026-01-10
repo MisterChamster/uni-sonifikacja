@@ -232,8 +232,8 @@ class Askers():
         low_or_high:      Literal["low", "high"]
     ) -> str|None:
         available_notes = Utils.get_keys_from_json(notes_rel_adress)
-        lowest_note = available_notes[0]
-        highest_note = available_notes[-1]
+        lowest_note     = available_notes[0]
+        highest_note    = available_notes[-1]
 
         temp_dict_key = "BINARY_SONIFICATION_LOW_NOTE" if low_or_high == "low" else "BINARY_SONIFICATION_HIGH_NOTE"
         temp_default  = "D3" if low_or_high == "low" else "A4"
