@@ -186,8 +186,7 @@ def mainloop() -> None:
                     loaded_data.binary_sonif_loop(settings_rel_path, notes_rel_path)
                     print("\n\n")
                 elif asker_sonif_type == "analog":
-                    # CONTINUE WRITING HERE
-                    # self.analog_sonif_loop(settings_rel_adress, notes_rel_adress)
+                    loaded_data.analog_sonif_loop(settings_rel_path, notes_rel_path)
                     print("\n\n")
 
             elif action_asker == "show_chart":

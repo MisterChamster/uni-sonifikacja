@@ -534,6 +534,19 @@ class DataSonif():
                 print("Invalid input.\n")
 
 
+# ============================ ANALOG SONIFICATION ============================
+    def analog_sonif_loop(
+        self,
+        settings_rel_adress: str,
+        notes_rel_adress: str
+    ) -> None:
+        sample_rate: int = Utils.get_val_from_json_fix(
+            settings_rel_adress,
+            "SAMPLE_RATE",
+            44100)
+        return
+
+
 # ================================= PLOTTING ==================================
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
