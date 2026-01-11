@@ -489,16 +489,16 @@ class DataSonif():
                                        self.get_sample_count())
             audio_len_human = Utils.human_read_milis(final_length_milis)
             print( "Sonification type:  Binary")
-            print(f"Low note:           {low_note_name} ({low_note_freq} Hz)")
-            print(f"High note:          {high_note_name} ({high_note_freq} Hz)")
-            print(f"Note duration (ms): {note_duration_milis}")
-            print(f"Sample rate:        {sample_rate}")
-            print(f"Amount of notes:    {self.get_sample_count()}")
-            print(f"Final audio length: {audio_len_human}")
+            print(f"Low note:             {low_note_name} ({low_note_freq} Hz)")
+            print(f"High note:            {high_note_name} ({high_note_freq} Hz)")
+            print(f"Note duration (ms):   {note_duration_milis}")
+            print(f"Sample rate:          {sample_rate}")
+            print(f"Amount of notes:      {self.get_sample_count()}")
+            print(f"Final audio duration: {audio_len_human}")
             # print(f"Final audio length (MILI): {final_length_milis}")
             print()
             print("Choose an action:")
-            print("l - Change note length (ms)")
+            print("d - Change note duration (ms)")
             print("s - Sonify")
             print("r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
@@ -506,7 +506,7 @@ class DataSonif():
             if asker == "r":
                 return
 
-            elif asker == "l":
+            elif asker == "d":
                 print()
                 new_note_duration = Askers.ask_note_duration()
                 print("\n\n")
@@ -573,10 +573,10 @@ class DataSonif():
             print(f"Amount of used notes: {notes_used_count}")
             print(f"Sample rate:          {sample_rate}")
             print(f"Amount of notes:      {self.get_sample_count()}")
-            print(f"Final audio length:   {audio_len_human}")
+            print(f"Final audio duration: {audio_len_human}")
             print()
             print("Choose an action:")
-            print("l - Change note length (ms)")
+            print("d - Change note duration (ms)")
             print("v - Change the lowest note value")
             print("a - Change amount of notes for sonification")
             print("s - Sonify")
@@ -586,7 +586,7 @@ class DataSonif():
             if asker == "r":
                 return
 
-            elif asker == "l":
+            elif asker == "d":
                 pass
 
             elif asker == "v":
