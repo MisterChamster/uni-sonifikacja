@@ -272,7 +272,7 @@ class DataSonif():
         return
 
 # =========================== CONDENSED DWELL TIMES ===========================
-    def __paa_but_binary(
+    def __binary_to_dwelltimes_CONDENSED(
         self,
         segment_value:    int,
         segmenting_style: Literal["count", "size"]
@@ -355,7 +355,7 @@ class DataSonif():
 
         # PAA SHOULD NOT BE USED HERE YOU DUMDUM
 
-        self.__paa_but_binary(
+        self.__binary_to_dwelltimes_CONDENSED(
             segment_value,
             segmenting_style)
         return
