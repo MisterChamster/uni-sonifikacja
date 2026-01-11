@@ -540,30 +540,44 @@ class DataSonif():
         settings_rel_adress: str,
         notes_rel_adress: str
     ) -> None:
-        lowest_note_name: str = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "ANAL_SONIFICATION_LOWEST_NOTE",
-            "D3")
-        lowest_note_freq: float = Utils.get_val_from_json(
-            notes_rel_adress,
-            lowest_note_name)
+        impossible_anal_message = (
+            "Analog sonification cannot be performed.\n"
+            "The issue results from messed settings.json or notes.json.\n"
+            "Program does not allow messing these up, so it's likely due to writing directly in these files.\n"
+            "To fix it, download both settings.json and notes.json files from repo and replace them in src directory of the project\n"
+            "And do not edit these files yourself in the future!")
         sample_rate: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "SAMPLE_RATE",
             44100)
 
         notes_dict = Utils.get_dict_from_json(notes_rel_adress)
-        notes = Utils.get_keys_from_json(notes_rel_adress)
+        notes      = Utils.get_keys_from_json(notes_rel_adress)
 
         while True:
+            lowest_note_name: str = Utils.get_val_from_json_fix(
+                settings_rel_adress,
+                "ANAL_SONIFICATION_LOWEST_NOTE",
+                "D3")
+            lowest_note_freq: float = Utils.get_val_from_json(
+                notes_rel_adress,
+                lowest_note_name)
             note_duration_milis: int = Utils.get_val_from_json_fix(
                 settings_rel_adress,
                 "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
                 300)
-            notes_used_count: int = Utils.get_val_from_json_fix(
+            notes_used_amount: int = Utils.get_val_from_json_fix(
                 settings_rel_adress,
                 "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
                 20)
+
+            is_anal_possible = Utils.is_anal_possible(
+                notes,
+                lowest_note_name,
+                notes_used_amount)
+            if not is_anal_possible:
+                print(impossible_anal_message)
+                break
 
             final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
@@ -572,7 +586,7 @@ class DataSonif():
             print(f"Lowest note:          {lowest_note_name} ({lowest_note_freq} Hz)")
             # ALSO INCLUDE HIGHEST NOTE HERE!!!!!!!!!!!!
             print(f"Note duration (ms):   {note_duration_milis}")
-            print(f"Amount of used notes: {notes_used_count}")
+            print(f"Amount of used notes: {notes_used_amount}")
             print(f"Sample rate:          {sample_rate}")
             print(f"Amount of notes:      {self.get_sample_count()}")
             print(f"Final audio duration: {audio_len_human}")

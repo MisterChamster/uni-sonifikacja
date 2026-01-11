@@ -121,3 +121,20 @@ class Utils():
             parts.append(f"{seconds} second(s)")
 
         return ", ".join(parts) or "0 seconds"
+
+
+    @staticmethod
+    def is_anal_possible(
+        notes:        list[str],
+        lowest_note:  str,
+        notes_anount: int
+    ) -> bool:
+        if not lowest_note in notes:
+            return False
+
+        lowest_note_index: int  = notes.index(lowest_note)
+        highest_note_index: int = lowest_note_index + notes_anount - 1
+        if highest_note_index+1 > len(notes):
+            return False
+
+        return True
