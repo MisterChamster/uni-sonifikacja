@@ -177,11 +177,7 @@ def mainloop() -> None:
             elif action_asker == "sonify":
                 asker_sonif_type = Askers.ask_sonif_type(
                     loaded_data.is_converted_to_binary,
-                    #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-                    # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                    #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-                    # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                    False)
+                    loaded_data.is_normalized)
                 print("\n\n")
 
                 if not asker_sonif_type:

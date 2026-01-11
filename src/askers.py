@@ -263,7 +263,7 @@ class Askers():
     def ask_sonif_type(
         bin_available:    bool,
         analog_available: bool
-    ) -> Literal["binary", "analog", None]:
+    ) -> Literal["binary", "analog"] | None:
         returns_dict = {
             "b": "binary",
             "a": "analog"
@@ -298,11 +298,7 @@ class Askers():
                         return returns_dict[asker]
                 elif asker == "a":
                     if not analog_available:
-                        #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-                        # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                        #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-                        # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                        print("Option unavailable; FOR A REASON????????????.\n\n")
+                        print("Option unavailable; data has to be normalized first.\n\n")
                         continue
                     else:
                         return returns_dict[asker]

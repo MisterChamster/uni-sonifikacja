@@ -14,15 +14,15 @@ from src.chunk  import Chunk
 
 
 class DataSonif():
-    file_path:  Path
-    data_array: np.ndarray[np.float64]
-    data_sign:  str
-    is_og_order:   bool
-    is_og_sign:    bool
-    min_val:    float
-    max_val:    float
-    bins_count: int
-    threshold:  float | None
+    file_path:   Path
+    data_array:  np.ndarray[np.float64]
+    data_sign:   str
+    is_og_order: bool
+    is_og_sign:  bool
+    min_val:     float
+    max_val:     float
+    bins_count:  int
+    threshold:   float | None
     is_normalized: bool
     is_converted_to_binary: bool
 
@@ -32,9 +32,9 @@ class DataSonif():
         file_path: Path,
         segment:   int
     ) -> None:
-        self.file_path  = file_path
-        self.is_og_order   = True
-        self.is_og_sign    = True
+        self.file_path   = file_path
+        self.is_og_order = True
+        self.is_og_sign  = True
 
         self.bins_count = 200
         self.threshold  = None
