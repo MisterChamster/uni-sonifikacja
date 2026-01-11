@@ -485,7 +485,7 @@ class DataSonif():
                 "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
                 300)
 
-            final_length_milis: int = (note_duration_milis * 
+            final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
             audio_len_human = Utils.human_read_milis(final_length_milis)
             print( "Sonification type:  Binary")
@@ -540,11 +540,39 @@ class DataSonif():
         settings_rel_adress: str,
         notes_rel_adress: str
     ) -> None:
+        lowest_note_name: str = Utils.get_val_from_json_fix(
+            settings_rel_adress,
+            "ANAL_SONIFICATION_LOWEST_NOTE",
+            "D3")
+        lowest_note_freq: float = Utils.get_val_from_json(
+            notes_rel_adress,
+            lowest_note_name)
         sample_rate: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "SAMPLE_RATE",
             44100)
-        return
+
+        while True:
+            note_duration_milis: int = Utils.get_val_from_json_fix(
+                settings_rel_adress,
+                "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
+                300)
+            notes_used_count: int = Utils.get_val_from_json_fix(
+                settings_rel_adress,
+                "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                20)
+
+            final_length_milis: int = (note_duration_milis *
+                                       self.get_sample_count())
+            audio_len_human = Utils.human_read_milis(final_length_milis)
+            print( "Sonification type:    Analog")
+            print(f"Lowest note:          {lowest_note_name} ({lowest_note_freq} Hz)")
+            print(f"Note duration (ms):   {note_duration_milis}")
+            print(f"Amount of used notes: {notes_used_count}")
+            print(f"Sample rate:          {sample_rate}")
+            print(f"Amount of notes:      {self.get_sample_count()}")
+            print(f"Final audio length:   {audio_len_human}")
+            return
 
 
 # ================================= PLOTTING ==================================
