@@ -70,7 +70,7 @@ class DataSonif():
             return
 
         new_sample_count: int = self.get_sample_count() // n
-        temparr: np.ndarray = np.empty(new_sample_count)
+        temparr: np.ndarray   = np.empty(new_sample_count)
 
         i_new = 0
         for i_dar in range(0, self.get_sample_count(), n):
@@ -104,6 +104,7 @@ class DataSonif():
         self._update_min_max()
         if self.threshold:
             self.calculate_threshold()
+            self.og_sign = not self.og_sign
         return
 
 
