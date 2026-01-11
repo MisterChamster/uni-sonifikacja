@@ -6,14 +6,14 @@ class Chunk():
     index_start:    int
     index_end:      int
     num_of_samples: int
-    data_mean:      np.float64 | None
-    __data_array:   np.ndarray[np.float64] | None
+    data_mean:      np.float64 | float | None
+    __data_array:   np.ndarray[np.float64] | np.ndarray[bool] | None
 
     def __init__(
         self,
         in_start:      int,
         in_end:        int,
-        in_data_array: np.ndarray[np.float64] | None = None
+        in_data_array: np.ndarray[np.float64] | np.ndarray[bool] | None = None
     ) -> None:
         self.index_start    = in_start
         self.index_end      = in_end
@@ -40,7 +40,7 @@ class Chunk():
         return
 
 
-    def input_data_array(self, new_array: np.ndarray[np.float64]) -> None:
+    def input_data_array(self, new_array: np.ndarray[np.float64] | np.ndarray[bool]) -> None:
         if len(new_array) != self.num_of_samples:
             raise Exception("CODE IS BROKEN. INCORRECT ARRAY LENGTH COMPARED TO INDEX VALUES!")
 
@@ -48,5 +48,5 @@ class Chunk():
         return
 
 
-    def get_data_mean(self) -> np.float64 | None:
+    def get_data_mean(self) -> np.float64 | float | None:
         return self.data_mean
