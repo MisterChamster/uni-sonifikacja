@@ -20,14 +20,14 @@ class Chunk():
         self.num_of_samples = in_end - in_start + 1
         self.__data_array   = in_data_array
 
-        if not in_data_array:
+        if in_data_array is None:
             self.data_mean = None
         else:
             self.calculate_mean_from_data()
 
 
     def calculate_mean_from_data(self) -> None:
-        if not self.__data_array:
+        if self.__data_array is None:
             print("Cannot calculate chunk mean - no data present in instance")
             return
 
