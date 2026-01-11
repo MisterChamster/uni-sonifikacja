@@ -96,7 +96,7 @@ class Askers():
             "d": "convert_to_dwelltimes",
             "c": "convert_to_dwelltimes_condensed",
             "o": "original_data",
-            "exit": "exit"}
+            "r": "return"}
 
         while True:
             print("Choose an action:\n"
@@ -110,7 +110,7 @@ class Askers():
                   "d - Convert data to dwell times\n"
                   "c - Convert data to condensed dwell times\n"
                   "o - Revert to original data set\n"
-                  "exit - Exit to main menu\n>> ", end="")
+                  "r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
             if asker not in returns_dict:

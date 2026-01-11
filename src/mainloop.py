@@ -169,7 +169,7 @@ def mainloop() -> None:
 
                         loaded_data = DataSonif(datafile_path, asker_segment)
 
-                    elif alter_asker == "exit":
+                    elif alter_asker == "return":
                         print("\n")
                         break
 
