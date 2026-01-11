@@ -49,6 +49,15 @@ def mainloop() -> None:
             # ========================== DATA ALTERING =========================
             if action_asker == "alter_data":
                 while True:
+                    print(f"Chosen file:           {loaded_data.file_path}")
+                    print(f"Data segmentation:     {segment_info}")
+                    print(f"Data order (x):        {ordering}")
+                    print(f"Data sign (y):         {sign}")
+                    print(f"Data normalization:    {loaded_data.normalized}")
+                    print(f"Num of bins (hist):    {loaded_data.bins_count}")
+                    print(f"State threshold:       {loaded_data.threshold}")
+                    print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
+                    print()
                     alter_asker = Askers.ask_alter_data()
                     print()
 
@@ -115,13 +124,34 @@ def mainloop() -> None:
                             loaded_data.get_sample_count(),
                             segmenting_style)
 
-                        if asker_segment_value is None:
+                        if not asker_segment_value:
                             print()
                             continue
                         print()
 
                         print("Converting data to dwell times...")
                         loaded_data.convert_to_dwell_times(
+                            asker_segment_value,
+                            segmenting_style)
+                        print("Done!\n\n")
+
+                    elif alter_asker == "convert_to_dwelltimes_condensed":
+                        segmenting_style = Utils.get_val_from_json_fix(
+                            settings_rel_path,
+                            "SEGMENTING_STYLE_DWELLTIMES",
+                            "size")
+
+                        asker_segment_value = Askers.ask_segment_value(
+                            loaded_data.get_sample_count(),
+                            segmenting_style)
+
+                        if not asker_segment_value:
+                            print()
+                            continue
+                        print()
+
+                        print("Converting data to condensed dwell times...")
+                        loaded_data.convert_to_dwell_times_CONDENSED(
                             asker_segment_value,
                             segmenting_style)
                         print("Done!\n\n")

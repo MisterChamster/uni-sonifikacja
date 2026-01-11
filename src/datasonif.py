@@ -22,7 +22,6 @@ class DataSonif():
     threshold:  float | None
     normalized: bool
     converted_to_binary:     bool
-    converted_to_dwelltimes: bool
 
 
     def __init__(
@@ -38,7 +37,6 @@ class DataSonif():
         self.threshold   = None
         self.normalized = False
         self.converted_to_binary = False
-        self.converted_to_dwelltimes = False
 
         if segment == 1:
             try:
@@ -132,8 +130,9 @@ class DataSonif():
     # Getting threshold as average between two sample count peaks (open and closed)
     def calculate_threshold(self) -> None:
         # Returns two ndarrays
-        sample_count, voltage_val = np.histogram(self.data_array,
-                                                 bins=self.bins_count)
+        sample_count, voltage_val = np.histogram(
+            self.data_array,
+            bins=self.bins_count)
         halfarr = int(self.bins_count/2)
 
         first_peak_index  = np.argmax(sample_count[:halfarr])
@@ -265,10 +264,97 @@ class DataSonif():
 
 
 # ================================ DWELL TIMES ================================
-    def __paa_but_binary(
+    def __binary_to_dwelltimes(
         self,
-        segment_value:         int,
-        segmenting_style:      Literal["count", "size"]
+        segment_value:    int,
+        segmenting_style: Literal["count", "size"]
+    ) -> None:
+
+        cut_string_paa = Utils.get_val_from_json_fix(
+            "src/settings.json",
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
+            True)
+        if not self.threshold:
+            self.calculate_threshold()
+
+        if segmenting_style == "count":
+            segment_count = segment_value # That many real segments
+            segment_size = (len(self.data_array) // (segment_count-1)
+                            if not cut_string_paa
+                            else len(self.data_array) // (segment_count))
+
+        elif segmenting_style == "size":
+            segment_size = segment_value
+            #vv That many FIXED-size segments vv
+            segment_count = len(self.data_array) // segment_size
+            if not cut_string_paa:
+                segment_count += 1 # That many real segments
+
+        # Cutting data array before segmenting
+        if cut_string_paa:
+            cut_length: int = len(self.data_array) % segment_count
+
+            if cut_length != 0: #Cut if there's something to cut
+                self.data_array = self.data_array[:-cut_length]
+        # For additional segment with remaining data (calculated after the loop)
+        else:
+            segment_count -= 1
+
+
+        # Putting segment means to temparr
+        index_segment: int = 0
+        iterative: int     = 0
+
+        while iterative < segment_count:
+            segment_sum: int = 0
+            for i in range(index_segment, index_segment+segment_size):
+                segment_sum += self.data_array[i]
+
+            segment_mean: float = segment_sum / segment_size
+            segment_val = 0 if segment_mean <= self.threshold else 1
+            for i in range(index_segment, index_segment+segment_size):
+                self.data_array[i] = segment_val
+
+
+            index_segment += segment_size
+            iterative += 1
+
+        # Calculating mean of the segment with remaining data (no cutting route)
+        if not cut_string_paa:
+            segment_sum: int = 0
+            for i in range(index_segment, index_segment+segment_size):
+                segment_sum += self.data_array[i]
+
+            segment_mean: float = segment_sum / segment_size
+            segment_val = 0 if segment_mean <= self.threshold else 1
+            for i in range(index_segment, index_segment+segment_size):
+                self.data_array[i] = segment_val
+
+        # Update fields accordingly
+        self._update_min_max()
+        self.calculate_threshold()
+        return
+
+
+    def convert_to_dwell_times(
+        self,
+        segment_value:    int,
+        segmenting_style: str
+    ) -> None:
+
+        if not self.converted_to_binary:
+            self.convert_data_to_binary()
+
+        self.__binary_to_dwelltimes(
+            segment_value,
+            segmenting_style)
+        return
+
+# =========================== CONDENSED DWELL TIMES ===========================
+    def __binary_to_dwelltimes_CONDENSED(
+        self,
+        segment_value:    int,
+        segmenting_style: Literal["count", "size"]
     ) -> None:
 
         cut_string_paa = Utils.get_val_from_json_fix(
@@ -337,7 +423,7 @@ class DataSonif():
         return
 
 
-    def convert_to_dwell_times(
+    def convert_to_dwell_times_CONDENSED(
         self,
         segment_value:    int,
         segmenting_style: str
@@ -346,12 +432,9 @@ class DataSonif():
         if not self.converted_to_binary:
             self.convert_data_to_binary()
 
-        # PAA SHOULD NOT BE USED HERE YOU DUMDUM
-
-        self.__paa_but_binary(
+        self.__binary_to_dwelltimes_CONDENSED(
             segment_value,
             segmenting_style)
-        self.converted_to_dwelltimes = True
         return
 
 
