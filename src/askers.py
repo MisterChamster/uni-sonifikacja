@@ -74,7 +74,7 @@ class Askers():
                   "h - Show histogram\n"
                   "s - Settings...\n"
                   "f - Change file\n"
-                  "exit - Exit\n>> ", end="")
+                  "exit - Exit program\n>> ", end="")
             asker = input().strip().lower()
 
             if asker not in returns_dict:
@@ -132,10 +132,10 @@ class Askers():
 
         while True:
             print(f"Number of samples: {data_length}")
-            print(f"Input a {string1} (type 'exit' to return):\n>> ", end="")
+            print(f"Input a {string1} (type 'r' to return):\n>> ", end="")
             segment_value = input().strip().lower()
 
-            if segment_value == "exit":
+            if segment_value == "r":
                 return
 
             if not segment_value.isdigit():
@@ -156,13 +156,13 @@ class Askers():
     @staticmethod
     def ask_settings(settings_rel_adress: str) -> str:
         returns_dict = {
-            "cp":   "change_cutting_setting_paa",
-            "cd":   "change_cutting_setting_dwelltimes",
-            "sp":   "change_segmenting_setting_paa",
-            "sd":   "change_segmenting_setting_dwelltimes",
-            "bl":   "change_binary_low_note",
-            "bh":   "change_binary_high_note",
-            "exit": "exit"}
+            "cp": "change_cutting_setting_paa",
+            "cd": "change_cutting_setting_dwelltimes",
+            "sp": "change_segmenting_setting_paa",
+            "sd": "change_segmenting_setting_dwelltimes",
+            "bl": "change_binary_low_note",
+            "bh": "change_binary_high_note",
+            "r":  "return"}
 
         # Get current settings from settings.json
         cut_string_paa          = Utils.get_val_from_json_fix(
@@ -213,13 +213,13 @@ class Askers():
 
         while True:
             print( "Choose an action:\n"
-                  f"cp   - {cutting_option_paa}\n"
-                  f"cd   - {cutting_option_dwelltimes}\n"
-                  f"sp   - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
-                  f"sd   - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
-                  f"bl   - Change low note in binary sonification (currently {binary_low_note})\n"
-                  f"bh   - Change high note in binary sonification (currently {binary_high_note})\n"
-                   "exit - Exit\n>> ", end="")
+                  f"cp - {cutting_option_paa}\n"
+                  f"cd - {cutting_option_dwelltimes}\n"
+                  f"sp - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
+                  f"sd - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
+                  f"bl - Change low note in binary sonification (currently {binary_low_note})\n"
+                  f"bh - Change high note in binary sonification (currently {binary_high_note})\n"
+                   "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
             if asker not in returns_dict:
@@ -248,12 +248,12 @@ class Askers():
         while True:
             print(main_message)
             print(f"Available notes from {lowest_note} to {highest_note}")
-            print("(type 'exit' to exit)\n>> ", end="")
+            print("(type 'r' to return)\n>> ", end="")
             asker = input().strip().upper() #Upper here is crucial!
 
             if asker in available_notes:
                 return asker
-            elif asker == "EXIT":
+            elif asker == "R":
                 return
             else:
                 print("Invalid input!\n")
