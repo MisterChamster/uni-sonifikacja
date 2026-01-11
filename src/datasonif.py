@@ -9,6 +9,7 @@ from scipy.io.wavfile  import write
 
 from src.utils  import Utils
 from src.askers import Askers
+from src.chunk  import Chunk
 
 
 
@@ -221,23 +222,18 @@ class DataSonif():
         iterative:     int = 0
 
         while iterative < segment_count:
-            segment_sum: np.float64 = 0
-            for i in range(index_segment, index_segment+segment_size):
-                segment_sum += self.data_array[i]
-
-            segment_mean: np.float64 = segment_sum / segment_size
-            temparr[iterative] = segment_mean
+            chunk_end: int     = index_segment + segment_size
+            temp_chunk         = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
+            temparr[iterative] = temp_chunk.get_data_mean()
 
             index_segment += segment_size
             iterative += 1
 
         # Calculating mean of the segment with remaining data (no cutting route)
         if not cut_string_paa:
-            segment_sum: np.float64 = 0
-            for i in range(index_segment, len(self.data_array)):
-                segment_sum += self.data_array[i]
-            segment_mean: np.float64 = segment_sum / segment_size
-            temparr[iterative] = segment_mean
+            chunk_end: int     = index_segment + segment_size
+            temp_chunk         = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
+            temparr[iterative] = temp_chunk.get_data_mean()
 
         self.data_array = temparr
         # Update fields accordingly
@@ -309,26 +305,23 @@ class DataSonif():
         iterative: int     = 0
 
         while iterative < segment_count:
-            segment_sum: int = 0
-            for i in range(index_segment, index_segment+segment_size):
-                segment_sum += self.data_array[i]
+            chunk_end: int = index_segment + segment_size
+            temp_chunk     = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
+            segment_mean   = temp_chunk.get_data_mean()
 
-            segment_mean: float = segment_sum / segment_size
             segment_val = 0 if segment_mean <= self.threshold else 1
             for i in range(index_segment, index_segment+segment_size):
                 self.data_array[i] = segment_val
-
 
             index_segment += segment_size
             iterative += 1
 
         # Calculating mean of the segment with remaining data (no cutting route)
         if not cut_string_paa:
-            segment_sum: int = 0
-            for i in range(index_segment, index_segment+segment_size):
-                segment_sum += self.data_array[i]
+            chunk_end: int = index_segment + segment_size
+            temp_chunk     = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
+            segment_mean   = temp_chunk.get_data_mean()
 
-            segment_mean: float = segment_sum / segment_size
             segment_val = 0 if segment_mean <= self.threshold else 1
             for i in range(index_segment, index_segment+segment_size):
                 self.data_array[i] = segment_val
@@ -398,26 +391,18 @@ class DataSonif():
         iterative: int     = 0
 
         while iterative < segment_count:
-            segment_sum: int = 0
-            for i in range(index_segment, index_segment+segment_size):
-                segment_sum += self.data_array[i]
-
-            segment_mean: float = segment_sum / segment_size
-            segment_bin_val = 0 if segment_mean <= self.threshold else 1
-            temparr[iterative] = segment_bin_val
+            chunk_end: int     = index_segment + segment_size
+            temp_chunk         = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
+            temparr[iterative] = temp_chunk.get_data_mean()
 
             index_segment += segment_size
             iterative += 1
 
         # Calculating mean of the segment with remaining data (no cutting route)
         if not cut_string_paa:
-            segment_sum: int = 0
-            for i in range(index_segment, index_segment+segment_size):
-                segment_sum += self.data_array[i]
-
-            segment_mean: float = segment_sum / segment_size
-            segment_bin_val = 0 if segment_mean <= self.threshold else 1
-            temparr[iterative] = segment_bin_val
+            chunk_end: int     = index_segment + segment_size
+            temp_chunk         = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
+            temparr[iterative] = temp_chunk.get_data_mean()
 
         self.data_array = temparr
         # Update fields accordingly
