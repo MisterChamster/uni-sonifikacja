@@ -22,7 +22,6 @@ class DataSonif():
     threshold:  float | None
     normalized: bool
     converted_to_binary:     bool
-    converted_to_dwelltimes: bool
 
 
     def __init__(
@@ -38,7 +37,6 @@ class DataSonif():
         self.threshold   = None
         self.normalized = False
         self.converted_to_binary = False
-        self.converted_to_dwelltimes = False
 
         if segment == 1:
             try:
@@ -360,7 +358,6 @@ class DataSonif():
         self.__paa_but_binary(
             segment_value,
             segmenting_style)
-        self.converted_to_dwelltimes = True
         return
 
 
