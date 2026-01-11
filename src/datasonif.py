@@ -552,6 +552,7 @@ class DataSonif():
             "SAMPLE_RATE",
             44100)
 
+        notes_dict = Utils.get_dict_from_json(notes_rel_adress)
         notes = Utils.get_keys_from_json(notes_rel_adress)
 
         while True:

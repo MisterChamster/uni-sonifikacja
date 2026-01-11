@@ -99,6 +99,14 @@ class Utils():
 
 
     @staticmethod
+    def get_dict_from_json(rel_adress: str) -> dict[str]:
+        with open(rel_adress) as f:
+            dict_from_json = json.load(f)
+
+        return dict_from_json
+
+
+    @staticmethod
     def human_read_milis(milis: int) -> str:
         seconds = milis // 1000
         minutes, seconds = divmod(seconds, 60)
