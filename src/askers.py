@@ -308,10 +308,10 @@ class Askers():
     def ask_note_duration() -> int|None:
         while True:
             print("Input new note duration (ms):")
-            print("(type 'exit' to exit)\n>> ", end="")
+            print("(type 'r' to return)\n>> ", end="")
             asker = input().strip()
 
-            if asker == "exit":
+            if asker == "r":
                 return
             if not asker.isdigit():
                 print("Invalid input.\n")
@@ -319,7 +319,10 @@ class Askers():
 
             asker = int(asker)
             if asker > 4000:
-                print("Number is too big (max 4000)\n")
+                print("Duration is too long (max 4000)\n")
+                continue
+            elif asker < 1:
+                print("Duration is too short (min 1)\n")
                 continue
             else:
                 return asker

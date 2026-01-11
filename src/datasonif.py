@@ -587,7 +587,15 @@ class DataSonif():
                 return
 
             elif asker == "d":
-                pass
+                print()
+                new_note_duration = Askers.ask_note_duration()
+                print("\n\n")
+                if not new_note_duration:
+                    continue
+                Utils.save_value_to_settings(
+                    settings_rel_adress,
+                    "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
+                    new_note_duration)
 
             elif asker == "v":
                 pass
