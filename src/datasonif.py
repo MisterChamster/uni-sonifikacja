@@ -498,15 +498,15 @@ class DataSonif():
             # print(f"Final audio length (MILI): {final_length_milis}")
             print()
             print("Choose an action:")
-            print("c - Change note length (ms)")
+            print("l - Change note length (ms)")
             print("s - Sonify")
-            print("exit - Exit menu\n>> ", end="")
+            print("r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
-            if asker == "exit":
+            if asker == "r":
                 return
 
-            elif asker == "c":
+            elif asker == "l":
                 print()
                 new_note_duration = Askers.ask_note_duration()
                 print("\n\n")
@@ -572,6 +572,13 @@ class DataSonif():
             print(f"Sample rate:          {sample_rate}")
             print(f"Amount of notes:      {self.get_sample_count()}")
             print(f"Final audio length:   {audio_len_human}")
+            print()
+            print("Choose an action:")
+            print("l - Change note length (ms)")
+            print("a - Change amount of notes for sonification")
+            print("s - Sonify")
+            print("exit - Exit menu\n>> ", end="")
+            asker = input().strip().lower()
             return
 
 

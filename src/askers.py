@@ -59,20 +59,20 @@ class Askers():
     def ask_action() -> str:
         returns_dict = {
             "a": "alter_data",
-            "i": "sonify",
+            "s": "sonify",
             "c": "show_chart",
             "h": "show_histogram",
-            "s": "settings",
+            "t": "settings",
             "f": "change_file",
             "exit": "exit"}
 
         while True:
             print("Choose an action:\n"
                   "a - Alter data...\n"
-                  "i - Sonify data...\n"
+                  "s - Sonify data...\n"
                   "c - Show chart\n"
                   "h - Show histogram\n"
-                  "s - Settings...\n"
+                  "t - Settings...\n"
                   "f - Change file\n"
                   "exit - Exit program\n>> ", end="")
             asker = input().strip().lower()
