@@ -1,11 +1,13 @@
 import pandas as pd
-import numpy as np
+import numpy  as np
 import matplotlib.pyplot as plt
+
 from matplotlib.ticker import MultipleLocator
-from pathlib import Path
-from typing import Literal
-from scipy.io.wavfile import write
-from src.utils import Utils
+from pathlib           import Path
+from typing            import Literal
+from scipy.io.wavfile  import write
+
+from src.utils  import Utils
 from src.askers import Askers
 
 
