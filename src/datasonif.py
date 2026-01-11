@@ -12,7 +12,7 @@ from src.askers import Askers
 
 class DataSonif():
     file_path:  Path
-    data_array: np.ndarray
+    data_array: np.ndarray[np.float64]
     data_sign:  str
     og_order:   bool
     og_sign:    bool
@@ -21,7 +21,7 @@ class DataSonif():
     bins_count: int
     threshold:  float | None
     normalized: bool
-    converted_to_binary:     bool
+    converted_to_binary: bool
 
 
     def __init__(
@@ -164,7 +164,7 @@ class DataSonif():
 
         if threshold_index != int(threshold_index):
             threshold_index = int(threshold_index + 0.5)
-            threshold_val = voltage_val[threshold_index]
+            threshold_val   = voltage_val[threshold_index]
 
         elif threshold_index == int(threshold_index):
             threshold_index = int(threshold_index)
@@ -179,8 +179,8 @@ class DataSonif():
 # ============================== PAA AGGREGATION ==============================
     def apply_paa_aggregation(
         self,
-        segment_value:         int,
-        segmenting_style:      Literal["count", "size"]
+        segment_value:    int,
+        segmenting_style: Literal["count", "size"]
     ) -> None:
 
         cut_string_paa = Utils.get_val_from_json_fix(
@@ -216,7 +216,7 @@ class DataSonif():
 
         # Putting segment means to temparr
         index_segment: int = 0
-        iterative: int     = 0
+        iterative:     int = 0
 
         while iterative < segment_count:
             segment_sum: np.float64 = 0
@@ -240,7 +240,7 @@ class DataSonif():
         self.data_array = temparr
         # Update fields accordingly
         self._update_min_max()
-        if self.threshold != None:
+        if self.threshold:
             self.calculate_threshold()
         return
 

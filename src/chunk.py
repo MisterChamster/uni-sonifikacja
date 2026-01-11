@@ -6,7 +6,7 @@ class Chunk():
     index_start: int
     index_end:   int
     data_mean:   float | None
-    data_array:  np.ndarray | None
+    data_array:  np.ndarray[np.float64] | None
 
     def __init__(self, in_start: int, in_end: int):
         self.index_start = in_start
