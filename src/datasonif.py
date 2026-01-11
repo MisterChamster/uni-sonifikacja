@@ -575,7 +575,7 @@ class DataSonif():
             plt.ylabel("Normalised Voltage")
         else:
             plt.ylabel("Voltage [V]")
-        plt.title('Open and closed states of the ion canal in time (perceived in samples)')
+        plt.title('Open and closed states of the ion channel in time (perceived in samples)')
 
         plt.show()
 

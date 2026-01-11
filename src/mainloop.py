@@ -19,7 +19,7 @@ def mainloop() -> None:
         if not datafile_path.endswith((".txt", ".csv")):
             print("Wrong file format.")
             return
-        print(datafile_path, "\n")
+        print(f"{datafile_path}\n\n")
 
         asker_segment = Askers.ask_segmentation(True)
         if not asker_segment:
@@ -59,7 +59,7 @@ def mainloop() -> None:
                     print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
                     print()
                     alter_asker = Askers.ask_alter_data()
-                    print()
+                    print("\n")
 
                     if alter_asker   == "reverse_order":
                         print("Reversing order...")
