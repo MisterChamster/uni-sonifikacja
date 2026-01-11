@@ -531,7 +531,7 @@ class DataSonif():
                 continue
 
             else:
-                print("Invalid input.\n")
+                print("Invalid input.\n\n")
 
 
 # ============================ ANALOG SONIFICATION ============================
@@ -551,6 +551,8 @@ class DataSonif():
             settings_rel_adress,
             "SAMPLE_RATE",
             44100)
+
+        notes = Utils.get_keys_from_json(notes_rel_adress)
 
         while True:
             note_duration_milis: int = Utils.get_val_from_json_fix(
@@ -575,11 +577,29 @@ class DataSonif():
             print()
             print("Choose an action:")
             print("l - Change note length (ms)")
+            print("v - Change the lowest note value")
             print("a - Change amount of notes for sonification")
             print("s - Sonify")
-            print("exit - Exit menu\n>> ", end="")
+            print("r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
-            return
+
+            if asker == "r":
+                return
+
+            elif asker == "l":
+                pass
+
+            elif asker == "v":
+                pass
+
+            elif asker == "a":
+                pass
+
+            elif asker == "s":
+                pass
+
+            else:
+                print("Invalid input.\n\n")
 
 
 # ================================= PLOTTING ==================================
