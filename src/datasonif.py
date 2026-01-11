@@ -17,14 +17,14 @@ class DataSonif():
     file_path:  Path
     data_array: np.ndarray[np.float64]
     data_sign:  str
-    og_order:   bool
-    og_sign:    bool
+    is_og_order:   bool
+    is_og_sign:    bool
     min_val:    float
     max_val:    float
     bins_count: int
     threshold:  float | None
-    normalized: bool
-    converted_to_binary: bool
+    is_normalized: bool
+    is_converted_to_binary: bool
 
 
     def __init__(
@@ -33,13 +33,13 @@ class DataSonif():
         segment:   int
     ) -> None:
         self.file_path  = file_path
-        self.og_order   = True
-        self.og_sign    = True
+        self.is_og_order   = True
+        self.is_og_sign    = True
 
         self.bins_count = 200
-        self.threshold   = None
-        self.normalized = False
-        self.converted_to_binary = False
+        self.threshold  = None
+        self.is_normalized = False
+        self.is_converted_to_binary = False
 
         if segment == 1:
             try:
@@ -92,7 +92,7 @@ class DataSonif():
 
     def reverse_data_order(self) -> None:
         self.data_array = self.data_array[::-1]
-        self.og_order = not self.og_order
+        self.is_og_order = not self.is_og_order
         return
 
 
@@ -107,13 +107,13 @@ class DataSonif():
         self._update_min_max()
         if self.threshold:
             self.calculate_threshold()
-            self.og_sign = not self.og_sign
+            self.is_og_sign = not self.is_og_sign
         return
 
 
     # Normalization xnorm = (x-xmin)/(xmax-xmin)
     def normalize_data(self) -> None:
-        if self.normalized == True:
+        if self.is_normalized == True:
             return
 
         difference = self.max_val - self.min_val
@@ -127,7 +127,7 @@ class DataSonif():
             self.threshold = (self.threshold - self.min_val)/(difference)
 
         self._update_min_max()
-        self.normalized = True
+        self.is_normalized = True
         return
 
 
@@ -245,7 +245,7 @@ class DataSonif():
 
 # ============================ BINARY CONVERSION ==============================
     def convert_data_to_binary(self) -> None:
-        if not self.normalized:
+        if not self.is_normalized:
             self.normalize_data()
 
         if not self.threshold:
@@ -258,7 +258,7 @@ class DataSonif():
                 else 1)
 
         self._update_min_max()
-        self.converted_to_binary = True
+        self.is_converted_to_binary = True
         return
 
 
@@ -338,7 +338,7 @@ class DataSonif():
         segmenting_style: str
     ) -> None:
 
-        if not self.converted_to_binary:
+        if not self.is_converted_to_binary:
             self.convert_data_to_binary()
 
         self.__binary_to_dwelltimes(
@@ -417,7 +417,7 @@ class DataSonif():
         segmenting_style: str
     ) -> None:
 
-        if not self.converted_to_binary:
+        if not self.is_converted_to_binary:
             self.convert_data_to_binary()
 
         self.__binary_to_dwelltimes_CONDENSED(
@@ -540,7 +540,7 @@ class DataSonif():
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
         # peak_xes = [a[0] for a in peak_coords]
         # peak_ys  = [a[1] for a in peak_coords]
-        # if self.normalized == True:
+        # if self.is_normalized == True:
         #     difference = self.max_val - self.min_val
         #     for i in range(len(peak_ys)):
         #         peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
@@ -554,11 +554,11 @@ class DataSonif():
             plt.axhline(y=self.threshold, color="red")
 
         # plt.gca().xaxis.set_major_locator(MultipleLocator(len(self.data_array)/10))
-        y_locators = 0.1 if self.normalized == True else 1
+        y_locators = 0.1 if self.is_normalized == True else 1
         plt.gca().yaxis.set_major_locator(MultipleLocator(y_locators))
 
         plt.xlabel("Sample index")
-        if self.normalized:
+        if self.is_normalized:
             plt.ylabel("Normalised Voltage")
         else:
             plt.ylabel("Voltage [V]")
@@ -577,7 +577,7 @@ class DataSonif():
             plt.axvline(x=self.threshold, color="red")
 
         plt.ylabel("Sample count")
-        if self.normalized == True:
+        if self.is_normalized == True:
             plt.xlabel("Normalised Voltage")
         else:
             plt.xlabel("Voltage [V]")

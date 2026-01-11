@@ -30,15 +30,15 @@ def mainloop() -> None:
         loaded_data   = DataSonif(datafile_path, asker_segment)
 
         while True:
-            segment_info = "False" if asker_segment == 1  else str(asker_segment)
-            ordering = "Original" if loaded_data.og_order else "Reverse"
-            sign     = "Original" if loaded_data.og_sign  else "Opposite"
+            segment_info = "False" if asker_segment == 1      else str(asker_segment)
+            ordering  = "Original" if loaded_data.is_og_order else "Reverse"
+            sign      = "Original" if loaded_data.is_og_sign  else "Opposite"
 
             print(f"Chosen file:           {loaded_data.file_path}")
             print(f"Data segmentation:     {segment_info}")
             print(f"Data order (x):        {ordering}")
             print(f"Data sign (y):         {sign}")
-            print(f"Data normalization:    {loaded_data.normalized}")
+            print(f"Data normalization:    {loaded_data.is_normalized}")
             print(f"Num of bins (hist):    {loaded_data.bins_count}")
             print(f"State threshold:       {loaded_data.threshold}")
             print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
@@ -53,7 +53,7 @@ def mainloop() -> None:
                     print(f"Data segmentation:     {segment_info}")
                     print(f"Data order (x):        {ordering}")
                     print(f"Data sign (y):         {sign}")
-                    print(f"Data normalization:    {loaded_data.normalized}")
+                    print(f"Data normalization:    {loaded_data.is_normalized}")
                     print(f"Num of bins (hist):    {loaded_data.bins_count}")
                     print(f"State threshold:       {loaded_data.threshold}")
                     print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
@@ -176,7 +176,7 @@ def mainloop() -> None:
             # ========================== OTHER OPTIONS =========================
             elif action_asker == "sonify":
                 asker_sonif_type = Askers.ask_sonif_type(
-                    loaded_data.converted_to_binary,
+                    loaded_data.is_converted_to_binary,
                     #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
                     # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
                     #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
