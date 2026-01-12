@@ -327,7 +327,7 @@ class Askers():
     ) -> str | None:
         lowest_lowest_note_possible: str = notes[0]
         highest_possible_index = notes.index(highest_lowest_note_possible)
-        available_notes = notes[:highest_possible_index]
+        available_notes = notes[:highest_possible_index+1]
         while True:
             print(f"Choose a new lowest note for analog sonification (currently {current_lowest_note_name})")
             print(f"Available notes from {lowest_lowest_note_possible} to {highest_lowest_note_possible}")

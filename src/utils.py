@@ -204,6 +204,6 @@ class Utils():
         notes:        list[str],
         notes_amount: int
     ) -> str:
-        highest_lowest_note_index = len(notes) - notes_amount + 1
+        highest_lowest_note_index = len(notes) - notes_amount
         highest_lowest_note = notes[highest_lowest_note_index]
         return highest_lowest_note

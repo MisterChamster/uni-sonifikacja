@@ -495,12 +495,12 @@ class DataSonif():
             print("s - Sonify")
             print("r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
+            print("\n")
 
             if asker == "r":
                 return
 
             elif asker == "d":
-                print()
                 new_note_duration = Askers.ask_note_duration()
                 print("\n\n")
                 if not new_note_duration:
@@ -511,7 +511,6 @@ class DataSonif():
                     new_note_duration)
 
             elif asker == "s":
-                print()
                 try:
                     self.binary_sonification(
                         sample_rate,
@@ -560,7 +559,7 @@ class DataSonif():
                 settings_rel_adress,
                 "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES")
 
-            highest_note_name = Utils.is_anal_possible(
+            highest_note_name = Utils.get_highest_note_anal_safe(
                 notes,
                 lowest_note_name,
                 notes_used_amount)
@@ -575,10 +574,10 @@ class DataSonif():
                                        self.get_sample_count())
             audio_len_human = Utils.human_read_milis(final_length_milis)
             print( "Sonification type:    Analog")
+            print(f"Amount of used notes: {notes_used_amount}")
             print(f"Lowest note:          {lowest_note_name} ({lowest_note_freq} Hz)")
             print(f"Highest note:         {highest_note_name} ({highest_note_freq} Hz)")
             print(f"Note duration (ms):   {note_duration_milis}")
-            print(f"Amount of used notes: {notes_used_amount}")
             print(f"Sample rate:          {sample_rate}")
             print(f"Amount of notes:      {self.get_sample_count()}")
             print(f"Final audio duration: {audio_len_human}")
@@ -590,12 +589,13 @@ class DataSonif():
             print("s - Sonify")
             print("r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
+            print("\n\n")
+
 
             if asker == "r":
                 return
 
             elif asker == "d":
-                print()
                 new_note_duration = Askers.ask_note_duration()
                 print("\n\n")
                 if not new_note_duration:
@@ -613,6 +613,7 @@ class DataSonif():
                     lowest_note_name,
                     highest_lowest_note,
                     notes)
+                print("\n\n")
                 if not new_lowest_note:
                     continue
 
