@@ -154,13 +154,13 @@ class Utils():
     def _is_anal_possible(
         notes:        list[str],
         lowest_note:  str,
-        notes_anount: int
+        notes_amount: int
     ) -> bool:
         if not lowest_note in notes:
             return False
 
         lowest_note_index: int  = notes.index(lowest_note)
-        highest_note_index: int = lowest_note_index + notes_anount - 1
+        highest_note_index: int = lowest_note_index + notes_amount - 1
         if highest_note_index+1 > len(notes):
             return False
 
@@ -171,10 +171,10 @@ class Utils():
     def _get_highest_note_anal(
         notes:        list[str],
         lowest_note:  str,
-        notes_anount: int
+        notes_amount: int
     ) -> str:
         lowest_note_index: int  = notes.index(lowest_note)
-        highest_note_index: int = lowest_note_index + notes_anount - 1
+        highest_note_index: int = lowest_note_index + notes_amount - 1
         return notes[highest_note_index]
 
 
@@ -182,12 +182,12 @@ class Utils():
     def get_highest_note_anal_safe(
         notes:        list[str],
         lowest_note:  str,
-        notes_anount: int
+        notes_amount: int
     ) -> str | None:
         is_anal_possible = Utils._is_anal_possible(
             notes,
             lowest_note,
-            notes_anount)
+            notes_amount)
 
         if not is_anal_possible:
             return
@@ -195,5 +195,5 @@ class Utils():
         highest_note_name = Utils._get_highest_note_anal(
             notes,
             lowest_note,
-            notes_anount)
+            notes_amount)
         return highest_note_name

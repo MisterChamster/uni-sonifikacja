@@ -297,7 +297,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_note_duration() -> int|None:
+    def ask_note_duration() -> int | None:
         while True:
             print("Input new note duration (ms):")
             print("(type 'r' to return)\n>> ", end="")

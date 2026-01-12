@@ -543,7 +543,7 @@ class DataSonif():
             settings_rel_adress,
             "SAMPLE_RATE")
 
-        notes_dict = Utils.get_dict_from_json(notes_rel_adress)
+        # notes_dict = Utils.get_dict_from_json(notes_rel_adress)
         notes      = Utils.get_keys_from_json(notes_rel_adress)
 
         while True:
@@ -567,7 +567,6 @@ class DataSonif():
             if not highest_note_name:
                 print(impossible_anal_message)
                 break
-
             highest_note_freq: float = Utils.get_val_from_json(
                 notes_rel_adress,
                 highest_note_name)
@@ -586,7 +585,7 @@ class DataSonif():
             print()
             print("Choose an action:")
             print("d - Change note duration (ms)")
-            print("v - Change the lowest note value")
+            print("l - Change the lowest note name")
             print("a - Change amount of notes for sonification")
             print("s - Sonify")
             print("r - Return to main menu\n>> ", end="")
@@ -606,8 +605,10 @@ class DataSonif():
                     "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
                     new_note_duration)
 
-            elif asker == "v":
-                pass
+            elif asker == "l":
+                new_lowest_note = Askers.ask_lowest_note_anal(
+                    lowest_note_name,
+                    notes_used_amount)
 
             elif asker == "a":
                 pass
