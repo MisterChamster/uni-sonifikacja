@@ -203,8 +203,6 @@ class DataSonif():
             if not cut_string_paa:
                 segment_count += 1 # That many real segments
 
-        temparr: np.ndarray = np.empty(segment_count)
-
         # Cutting data array before segmenting
         if cut_string_paa:
             cut_length: int = len(self.data_array) % segment_count
@@ -217,8 +215,9 @@ class DataSonif():
 
 
         # Putting segment means to temparr
-        index_segment: int = 0
-        iterative:     int = 0
+        index_segment: int  = 0
+        iterative:     int  = 0
+        temparr: np.ndarray = np.empty(segment_count)
 
         while iterative < segment_count:
             chunk_end: int     = index_segment + segment_size
@@ -370,8 +369,6 @@ class DataSonif():
             if not cut_string_paa:
                 segment_count += 1 # That many real segments
 
-        temparr: np.ndarray = np.empty(segment_count)
-
         # Cutting data array before segmenting
         if cut_string_paa:
             cut_length: int = len(self.data_array) % segment_count
@@ -384,8 +381,10 @@ class DataSonif():
 
 
         # Putting segment means to temparr
-        index_segment: int = 0
-        iterative: int     = 0
+        index_segment: int  = 0
+        iterative: int      = 0
+        temparr: np.ndarray = np.empty(segment_count)
+        self.show_chart()
 
         while iterative < segment_count:
             chunk_end: int     = index_segment + segment_size
@@ -402,6 +401,7 @@ class DataSonif():
             temparr[iterative] = temp_chunk.get_data_mean()
 
         self.data_array = temparr
+        self.show_chart()
         # Update fields accordingly
         self._update_min_max()
         self.calculate_threshold()
