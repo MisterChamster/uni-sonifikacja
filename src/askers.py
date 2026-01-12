@@ -235,10 +235,9 @@ class Askers():
         current_note  = Utils.get_val_from_json_fix(
             "src/settings.py",
             temp_dict_key)
-        main_message = f"Choose a new {low_or_high} note for binary sonification (currently {current_note})"
 
         while True:
-            print(main_message)
+            print(f"Choose a new {low_or_high} note for binary sonification (currently {current_note})")
             print(f"Available notes from {lowest_note} to {highest_note}")
             print("(type 'r' to return)\n>> ", end="")
             asker = input().strip().upper() #Upper here is crucial!
@@ -318,3 +317,26 @@ class Askers():
                 continue
             else:
                 return asker
+
+
+    @staticmethod
+    def ask_lowest_note_anal(
+        current_lowest_note_name:     str,
+        highest_lowest_note_possible: str,
+        notes:                        list[str]
+    ) -> str | None:
+        lowest_lowest_note_possible: str = notes[0]
+        highest_possible_index = notes.index(highest_lowest_note_possible)
+        available_notes = notes[:highest_possible_index]
+        while True:
+            print(f"Choose a new lowest note for analog sonification (currently {current_lowest_note_name})")
+            print(f"Available notes from {lowest_lowest_note_possible} to {highest_lowest_note_possible}")
+            print("(type 'r' to return)\n>> ", end="")
+            asker = input().strip().upper()
+
+            if asker in available_notes:
+                return asker
+            elif asker == "R":
+                return
+            else:
+                print("Invalid input!\n")

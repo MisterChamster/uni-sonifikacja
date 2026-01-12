@@ -606,9 +606,20 @@ class DataSonif():
                     new_note_duration)
 
             elif asker == "l":
+                highest_lowest_note: str = Utils.get_highest_lowest_note_possible_for_amount(
+                    notes,
+                    notes_used_amount)
                 new_lowest_note = Askers.ask_lowest_note_anal(
                     lowest_note_name,
-                    notes_used_amount)
+                    highest_lowest_note,
+                    notes)
+                if not new_lowest_note:
+                    continue
+
+                Utils.save_value_to_settings(
+                    settings_rel_adress,
+                    "ANAL_SONIFICATION_LOWEST_NOTE",
+                    new_lowest_note)
 
             elif asker == "a":
                 pass

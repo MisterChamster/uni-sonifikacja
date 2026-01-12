@@ -197,3 +197,13 @@ class Utils():
             lowest_note,
             notes_amount)
         return highest_note_name
+
+
+    @staticmethod
+    def get_highest_lowest_note_possible_for_amount(
+        notes:        list[str],
+        notes_amount: int
+    ) -> str:
+        highest_lowest_note_index = len(notes) - notes_amount + 1
+        highest_lowest_note = notes[highest_lowest_note_index]
+        return highest_lowest_note
