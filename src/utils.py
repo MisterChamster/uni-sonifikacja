@@ -161,7 +161,7 @@ class Utils():
 
         lowest_note_index: int  = notes.index(lowest_note)
         highest_note_index: int = lowest_note_index + notes_amount - 1
-        if highest_note_index+1 > len(notes):
+        if highest_note_index + 1 > len(notes):
             return False
 
         return True
@@ -184,6 +184,10 @@ class Utils():
         lowest_note:  str,
         notes_amount: int
     ) -> str | None:
+        """
+        Checks if it is possible to get the highest note.
+        Then, calculates the highest note name and returns it.
+        """
         is_anal_possible = Utils._is_anal_possible(
             notes,
             lowest_note,
@@ -219,4 +223,7 @@ class Utils():
         lowest_note:  str,
         notes_amount: int
     ) -> list[str]:
-        return
+        lowest_index = notes.index(lowest_note)
+        notes = notes[lowest_index:]
+        notes = notes[:notes_amount]
+        return notes
