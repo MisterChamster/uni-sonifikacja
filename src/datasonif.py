@@ -510,12 +510,14 @@ class DataSonif():
                     new_note_duration)
 
             elif asker == "s":
+                print("Sonifying...")
                 try:
                     self.binary_sonification(
                         sample_rate,
                         note_duration_milis,
                         low_note_freq,
                         high_note_freq)
+                    print("Done!\n\n")
                 except Exception as e:
                     print("An exception occurred during binary sonification")
                     print(e)
@@ -526,6 +528,15 @@ class DataSonif():
 
 
 # ============================ ANALOG SONIFICATION ============================
+    def analog_sonification(
+        sample_rate:         int,
+        note_duration_milis: int,
+        notes_used:          list[str],
+        notes_dict:          dict[str: float]
+    ) -> None:
+        return
+
+
     def analog_sonif_loop(
         self,
         settings_rel_adress: str,
@@ -541,9 +552,7 @@ class DataSonif():
             settings_rel_adress,
             "SAMPLE_RATE")
 
-        # notes_dict = Utils.get_dict_from_json(notes_rel_adress)
-        notes      = Utils.get_keys_from_json(notes_rel_adress)
-
+        notes = Utils.get_keys_from_json(notes_rel_adress)
         while True:
             lowest_note_name: str = Utils.get_val_from_json_fix(
                 settings_rel_adress,
@@ -666,7 +675,19 @@ class DataSonif():
                     print(f"Updated lowest note:  {new_lowest_note}")
 
             elif asker == "s":
-                pass
+                print("Sonifying...")
+                notes_dict = Utils.get_dict_from_json(notes_rel_adress)
+                try:
+                    self.analog_sonification(
+                        sample_rate,
+                        note_duration_milis,
+                        # notes_used,
+                        notes_dict)
+                    print("Done!\n\n")
+                except Exception as e:
+                    print("An exception occurred during binary sonification")
+                    print(e)
+                continue
 
             else:
                 print("Invalid input.\n\n")
