@@ -529,10 +529,11 @@ class DataSonif():
 
 # ============================ ANALOG SONIFICATION ============================
     def analog_sonification(
+        self,
         sample_rate:         int,
         note_duration_milis: int,
         notes_used:          list[str],
-        notes_dict:          dict[str: float]
+        notes_dict:          dict[str, float]
     ) -> None:
         return
 
@@ -689,7 +690,7 @@ class DataSonif():
                         notes_dict)
                     print("Done!\n\n")
                 except Exception as e:
-                    print("An exception occurred during binary sonification")
+                    print("An exception occurred during analog sonification")
                     print(e)
                 continue
 
