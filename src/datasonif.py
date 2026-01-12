@@ -577,7 +577,7 @@ class DataSonif():
             audio_len_human = Utils.human_read_milis(final_length_milis)
             print( "Sonification type:    Analog")
             print(f"Lowest note:          {lowest_note_name} ({lowest_note_freq} Hz)")
-            # ALSO INCLUDE HIGHEST NOTE HERE!!!!!!!!!!!!
+            print(f"Highest note:         {highest_note_name} ({highest_note_freq} Hz)")
             print(f"Note duration (ms):   {note_duration_milis}")
             print(f"Amount of used notes: {notes_used_amount}")
             print(f"Sample rate:          {sample_rate}")
