@@ -159,7 +159,7 @@ def mainloop() -> None:
                             continue
                         print(datafile_path, "\n")
 
-                        asker_segment = Askers.ask_initial_segmentation()
+                        asker_segment = Askers.ask_segmentation(True)
                         if not asker_segment:
                             return
                         print("\n")
