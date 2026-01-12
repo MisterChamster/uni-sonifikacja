@@ -204,6 +204,10 @@ class Utils():
         notes:        list[str],
         notes_amount: int
     ) -> str:
+        """
+        Return the highest possible lowest note that can be selected when choosing
+        a fixed number of notes from an ordered note list.
+        """
         highest_lowest_note_index = len(notes) - notes_amount
-        highest_lowest_note = notes[highest_lowest_note_index]
+        highest_lowest_note       = notes[highest_lowest_note_index]
         return highest_lowest_note
