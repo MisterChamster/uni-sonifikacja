@@ -670,7 +670,6 @@ class DataSonif():
         plt.title('Open and closed states of the ion channel in time (perceived in samples)')
 
         plt.show()
-
         return
 
 

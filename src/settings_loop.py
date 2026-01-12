@@ -10,6 +10,9 @@ def settings_loop(
     while True:
         asker_settings: str = Askers.ask_settings(settings_rel_adress)
 
+        if not asker_settings:
+            return
+
         if asker_settings == "change_cutting_setting_paa":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
@@ -57,9 +60,6 @@ def settings_loop(
                 "BINARY_SONIFICATION_HIGH_NOTE",
                 new_note)
             print("Value successfully changed\n")
-
-        elif asker_settings == "exit":
-            return
 
         else:
             print("Invalid input!\n")

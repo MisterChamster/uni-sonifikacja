@@ -61,7 +61,11 @@ def mainloop() -> None:
                     alter_asker = Askers.ask_alter_data()
                     print("\n")
 
-                    if alter_asker   == "reverse_order":
+                    if not alter_asker:
+                        print("\n")
+                        break
+
+                    elif alter_asker   == "reverse_order":
                         print("Reversing order...")
                         loaded_data.reverse_data_order()
                         print("Done!\n\n")
@@ -84,9 +88,12 @@ def mainloop() -> None:
                     elif alter_asker == "segment_data":
                         asker_segment = Askers.ask_segmentation()
                         if asker_segment is None or asker_segment == 1:
+                            print("\n")
                             continue
 
+                        print("\nSegmenting data...")
                         loaded_data.segment_data(asker_segment)
+                        print("Done!\n\n")
 
                     elif alter_asker == "apply_paa":
                         segmenting_style = Utils.get_val_from_json_fix(
@@ -97,10 +104,10 @@ def mainloop() -> None:
                             loaded_data.get_sample_count(),
                             segmenting_style)
 
-                        if asker_segment_value is None:
+                        print()
+                        if not asker_segment_value:
                             print()
                             continue
-                        print()
 
                         print("Processing...")
                         loaded_data.apply_paa_aggregation(
@@ -122,10 +129,10 @@ def mainloop() -> None:
                             loaded_data.get_sample_count(),
                             segmenting_style)
 
+                        print()
                         if not asker_segment_value:
                             print()
                             continue
-                        print()
 
                         print("Converting data to dwell times...")
                         loaded_data.convert_to_dwell_times(
@@ -142,10 +149,10 @@ def mainloop() -> None:
                             loaded_data.get_sample_count(),
                             segmenting_style)
 
+                        print()
                         if not asker_segment_value:
                             print()
                             continue
-                        print()
 
                         print("Converting data to condensed dwell times...")
                         loaded_data.convert_to_dwell_times_CONDENSED(
@@ -166,9 +173,6 @@ def mainloop() -> None:
 
                         loaded_data = DataSonif(datafile_path, asker_segment)
 
-                    elif alter_asker == "return":
-                        print("\n")
-                        break
 
             # ========================== OTHER OPTIONS =========================
             elif action_asker == "sonify":

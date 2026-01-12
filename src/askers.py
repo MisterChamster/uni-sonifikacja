@@ -96,7 +96,7 @@ class Askers():
             "d": "convert_to_dwelltimes",
             "c": "convert_to_dwelltimes_condensed",
             "o": "original_data",
-            "r": "return"}
+            "r": None}
 
         while True:
             print("Choose an action:\n"
@@ -162,7 +162,7 @@ class Askers():
             "sd": "change_segmenting_setting_dwelltimes",
             "bl": "change_binary_low_note",
             "bh": "change_binary_high_note",
-            "r":  "return"}
+            "r":  None}
 
         # Get current settings from settings.json
         cut_string_paa          = Utils.get_val_from_json_fix(
@@ -270,13 +270,13 @@ class Askers():
                 if analog_available
                 else "a - Sonify analog data... (UNAVAILABLE)")
 
-            print("Choose a method of sonification (type 'exit' to exit):")
+            print("Choose a method of sonification (type 'r' to return):")
             print(bin_msg)
             print(analog_msg)
             print(">> ", end="")
             asker = input().strip().lower()
 
-            if asker == "exit":
+            if asker == "r":
                 return
             elif asker not in returns_dict:
                 print("Invalid input!\n")
