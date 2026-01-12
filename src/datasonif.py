@@ -623,7 +623,9 @@ class DataSonif():
                     new_lowest_note)
 
             elif asker == "a":
-                pass
+                amount_asker = Askers.ask_note_amount(len(notes))
+                if not amount_asker:
+                    continue
 
             elif asker == "s":
                 pass

@@ -340,3 +340,30 @@ class Askers():
                 return
             else:
                 print("Invalid input!\n")
+
+
+    def ask_note_amount(available_notes_count: int) -> int | None:
+        min_amount = 5
+        max_amount = (30
+                      if available_notes_count >= 30
+                      else available_notes_count)
+
+        while True:
+            print(f"Enter a new amount of notes (value between {min_amount} and {max_amount})")
+            print("(type 'r' to return)\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == "r":
+                return
+            elif not asker.isdigit():
+                print("Invalid input.\n\n")
+
+            asker = int(asker)
+            if asker < min_amount:
+                print("Entered number is too high.\n\n")
+                continue
+            elif asker > max_amount:
+                print("Entered number is too low.\n\n")
+                continue
+
+            return asker
