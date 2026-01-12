@@ -39,7 +39,7 @@ def settings_loop(
             print("Value successfully changed\n")
 
         elif asker_settings == "change_binary_low_note":
-            new_note = Askers.ask_note(notes_rel_adress, "low")
+            new_note = Askers.ask_note_binary(notes_rel_adress, "low")
             if not new_note:
                 continue
             Utils.save_value_to_settings(
@@ -49,7 +49,7 @@ def settings_loop(
             print("Value successfully changed\n")
 
         elif asker_settings == "change_binary_high_note":
-            new_note = Askers.ask_note(notes_rel_adress, "high")
+            new_note = Askers.ask_note_binary(notes_rel_adress, "high")
             if not new_note:
                 continue
             Utils.save_value_to_settings(

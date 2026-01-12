@@ -223,7 +223,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_note(
+    def ask_note_binary(
         notes_rel_adress: str,
         low_or_high:      Literal["low", "high"]
     ) -> str|None:
