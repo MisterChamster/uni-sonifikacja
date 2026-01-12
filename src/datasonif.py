@@ -677,11 +677,15 @@ class DataSonif():
             elif asker == "s":
                 print("Sonifying...")
                 notes_dict = Utils.get_dict_from_json(notes_rel_adress)
+                notes_used = Utils.get_notes_used_list(
+                    notes,
+                    lowest_note_name,
+                    notes_used_amount)
                 try:
                     self.analog_sonification(
                         sample_rate,
                         note_duration_milis,
-                        # notes_used,
+                        notes_used,
                         notes_dict)
                     print("Done!\n\n")
                 except Exception as e:

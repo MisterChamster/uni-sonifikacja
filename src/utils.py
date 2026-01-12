@@ -211,3 +211,12 @@ class Utils():
         highest_lowest_note_index = len(notes) - notes_amount
         highest_lowest_note       = notes[highest_lowest_note_index]
         return highest_lowest_note
+
+
+    @staticmethod
+    def get_notes_used_list(
+        notes:        list[str],
+        lowest_note:  str,
+        notes_amount: int
+    ) -> list[str]:
+        return
