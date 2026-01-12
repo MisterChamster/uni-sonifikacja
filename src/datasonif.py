@@ -627,6 +627,11 @@ class DataSonif():
                 if not amount_asker:
                     continue
 
+                # If lower than previous  - lower high note accordingly
+                # If higher then previous - check if exceeds available notes
+                    # If no  - increase high note accordingly
+                    # If yes - calculate highest lowest note for amount and hjigh note = notes[-1]
+
             elif asker == "s":
                 pass
 
