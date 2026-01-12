@@ -623,13 +623,47 @@ class DataSonif():
 
             elif asker == "a":
                 amount_asker = Askers.ask_note_amount(len(notes))
-                if not amount_asker:
+                if not amount_asker or amount_asker == notes_used_amount:
                     continue
 
-                # If lower than previous  - lower high note accordingly
+                # If lower than previous - save to settings. Highest note will
+                # recalculate itself in next loop iteration.
+                if amount_asker < notes_used_amount:
+                    Utils.save_value_to_settings(
+                        settings_rel_adress,
+                        "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                        amount_asker)
+                    continue
+
                 # If higher then previous - check if exceeds available notes
-                    # If no  - increase high note accordingly
-                    # If yes - calculate highest lowest note for amount and hjigh note = notes[-1]
+                    # If no  - increase note amount
+                    # If yes - calculate highest lowest note for amount. Save it and new amount
+                elif amount_asker > notes_used_amount:
+                    is_possible = Utils._is_anal_possible(
+                        notes,
+                        lowest_note_name,
+                        amount_asker)
+                    if is_possible:
+                        Utils.save_value_to_settings(
+                            settings_rel_adress,
+                            "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                            amount_asker)
+                        continue
+
+                    new_lowest_note: str = Utils.get_highest_lowest_note_possible_for_amount(
+                        notes,
+                        amount_asker)
+                    Utils.save_value_to_settings(
+                        settings_rel_adress,
+                        "ANAL_SONIFICATION_LOWEST_NOTE",
+                        new_lowest_note)
+                    Utils.save_value_to_settings(
+                        settings_rel_adress,
+                        "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                        amount_asker)
+                    print("[WARNING] A higher amount of notes forces the lowest note to be lowered")
+                    print(f"Previous lowest note: {lowest_note_name}")
+                    print(f"Updated lowest note:  {new_lowest_note}")
 
             elif asker == "s":
                 pass
