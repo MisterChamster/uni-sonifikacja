@@ -384,12 +384,12 @@ class DataSonif():
         index_segment: int  = 0
         iterative: int      = 0
         temparr: np.ndarray = np.empty(segment_count)
-        self.show_chart()
 
         while iterative < segment_count:
             chunk_end: int     = index_segment + segment_size
-            temp_chunk         = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
-            temparr[iterative] = temp_chunk.get_data_mean()
+            temp_chunk: Chunk  = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
+            chunk_binary_val   = 1 if temp_chunk.get_data_mean()>self.threshold else 0
+            temparr[iterative] = chunk_binary_val
 
             index_segment += segment_size
             iterative += 1
@@ -401,7 +401,6 @@ class DataSonif():
             temparr[iterative] = temp_chunk.get_data_mean()
 
         self.data_array = temparr
-        self.show_chart()
         # Update fields accordingly
         self._update_min_max()
         self.calculate_threshold()
