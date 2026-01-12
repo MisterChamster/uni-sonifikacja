@@ -57,8 +57,32 @@ class Utils():
     def get_val_from_json_fix(
         adress:      str,
         json_key:    str,
-        default_val: str|bool|int|float
+        default_val: str|bool|int|float = None
     ) -> str|bool|int|float:
+
+        if not default_val:
+            if json_key == "CUT_REMAINDER_SAMPLES_PAA":
+                default_val = True
+            elif json_key == "CUT_REMAINDER_SAMPLES_DWELLTIMES":
+                default_val = True
+            elif json_key == "SEGMENTING_STYLE_PAA":
+                default_val = "count"
+            elif json_key == "SEGMENTING_STYLE_DWELLTIMES":
+                default_val = "count"
+            elif json_key == "SAMPLE_RATE":
+                default_val = 44100
+            elif json_key == "BINARY_SONIFICATION_LOW_NOTE":
+                default_val = "D3"
+            elif json_key == "BINARY_SONIFICATION_HIGH_NOTE":
+                default_val = "A4"
+            elif json_key == "BINARY_SONIFICATION_NOTE_DURATION_MILIS":
+                default_val = 300
+            elif json_key == "ANAL_SONIFICATION_NOTE_DURATION_MILIS":
+                default_val = 300
+            elif json_key == "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES":
+                default_val = 20
+            elif json_key == "ANAL_SONIFICATION_LOWEST_NOTE":
+                default_val = "D3"
 
         try:
             temp = Utils.get_val_from_json(adress, json_key)

@@ -167,28 +167,22 @@ class Askers():
         # Get current settings from settings.json
         cut_string_paa          = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "CUT_REMAINDER_SAMPLES_PAA",
-            True)
+            "CUT_REMAINDER_SAMPLES_PAA")
         cut_string_dwelltimes   = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
-            True)
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         segment_style_paa       = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "SEGMENTING_STYLE_PAA",
-            "count")
+            "SEGMENTING_STYLE_PAA")
         segment_style_dwelltimes = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "SEGMENTING_STYLE_DWELLTIMES",
-            "size")
+            "SEGMENTING_STYLE_DWELLTIMES")
         binary_low_note = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_LOW_NOTE",
-            "D3")
+            "BINARY_SONIFICATION_LOW_NOTE")
         binary_high_note = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_HIGH_NOTE",
-            "A4")
+            "BINARY_SONIFICATION_HIGH_NOTE")
 
         if cut_string_paa:
             cutting_option_paa = "Disable cutting remainder data during PAA (currently enabled)"
@@ -238,11 +232,9 @@ class Askers():
         highest_note    = available_notes[-1]
 
         temp_dict_key = "BINARY_SONIFICATION_LOW_NOTE" if low_or_high == "low" else "BINARY_SONIFICATION_HIGH_NOTE"
-        temp_default  = "D3" if low_or_high == "low" else "A4"
         current_note  = Utils.get_val_from_json_fix(
             "src/settings.py",
-            temp_dict_key,
-            temp_default)
+            temp_dict_key)
         main_message = f"Choose a new {low_or_high} note for binary sonification (currently {current_note})"
 
         while True:

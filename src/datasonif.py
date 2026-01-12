@@ -188,8 +188,7 @@ class DataSonif():
 
         cut_string_paa = Utils.get_val_from_json_fix(
             "src/settings.json",
-            "CUT_REMAINDER_SAMPLES_PAA",
-            True)
+            "CUT_REMAINDER_SAMPLES_PAA")
 
         if segmenting_style == "count":
             segment_count = segment_value # That many real segments
@@ -271,8 +270,7 @@ class DataSonif():
 
         cut_string_paa = Utils.get_val_from_json_fix(
             "src/settings.json",
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
-            True)
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         if not self.threshold:
             self.calculate_threshold()
 
@@ -355,8 +353,7 @@ class DataSonif():
 
         cut_string_paa = Utils.get_val_from_json_fix(
             "src/settings.json",
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
-            True)
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         if not self.threshold:
             self.calculate_threshold()
 
@@ -462,28 +459,24 @@ class DataSonif():
     ) -> None:
         low_note_name: str = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_LOW_NOTE",
-            "D3")
+            "BINARY_SONIFICATION_LOW_NOTE")
         low_note_freq: float = Utils.get_val_from_json(
             notes_rel_adress,
             low_note_name)
         high_note_name: str = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_HIGH_NOTE",
-            "A4")
+            "BINARY_SONIFICATION_HIGH_NOTE")
         high_note_freq: float = Utils.get_val_from_json(
             notes_rel_adress,
             high_note_name)
         sample_rate: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "SAMPLE_RATE",
-            44100)
+            "SAMPLE_RATE")
 
         while True:
             note_duration_milis: int = Utils.get_val_from_json_fix(
                 settings_rel_adress,
-                "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
-                300)
+                "BINARY_SONIFICATION_NOTE_DURATION_MILIS")
 
             final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
@@ -548,8 +541,7 @@ class DataSonif():
             "And do not edit these files yourself in the future!")
         sample_rate: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "SAMPLE_RATE",
-            44100)
+            "SAMPLE_RATE")
 
         notes_dict = Utils.get_dict_from_json(notes_rel_adress)
         notes      = Utils.get_keys_from_json(notes_rel_adress)
@@ -557,19 +549,16 @@ class DataSonif():
         while True:
             lowest_note_name: str = Utils.get_val_from_json_fix(
                 settings_rel_adress,
-                "ANAL_SONIFICATION_LOWEST_NOTE",
-                "D3")
+                "ANAL_SONIFICATION_LOWEST_NOTE")
             lowest_note_freq: float = Utils.get_val_from_json(
                 notes_rel_adress,
                 lowest_note_name)
             note_duration_milis: int = Utils.get_val_from_json_fix(
                 settings_rel_adress,
-                "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
-                300)
+                "ANAL_SONIFICATION_NOTE_DURATION_MILIS")
             notes_used_amount: int = Utils.get_val_from_json_fix(
                 settings_rel_adress,
-                "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
-                20)
+                "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES")
 
             is_anal_possible = Utils.is_anal_possible(
                 notes,

@@ -91,8 +91,7 @@ def mainloop() -> None:
                     elif alter_asker == "apply_paa":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
-                            "SEGMENTING_STYLE_PAA",
-                            "count")
+                            "SEGMENTING_STYLE_PAA")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
@@ -117,8 +116,7 @@ def mainloop() -> None:
                     elif alter_asker == "convert_to_dwelltimes":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
-                            "SEGMENTING_STYLE_DWELLTIMES",
-                            "size")
+                            "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
@@ -138,8 +136,7 @@ def mainloop() -> None:
                     elif alter_asker == "convert_to_dwelltimes_condensed":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
-                            "SEGMENTING_STYLE_DWELLTIMES",
-                            "size")
+                            "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
