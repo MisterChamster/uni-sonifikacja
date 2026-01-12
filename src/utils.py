@@ -148,7 +148,7 @@ class Utils():
 
 
     @staticmethod
-    def is_anal_possible(
+    def _is_anal_possible(
         notes:        list[str],
         lowest_note:  str,
         notes_anount: int
@@ -162,3 +162,35 @@ class Utils():
             return False
 
         return True
+
+
+    @staticmethod
+    def _get_highest_note_anal(
+        notes:        list[str],
+        lowest_note:  str,
+        notes_anount: int
+    ) -> str:
+        lowest_note_index: int  = notes.index(lowest_note)
+        highest_note_index: int = lowest_note_index + notes_anount - 1
+        return notes[highest_note_index]
+
+
+    @staticmethod
+    def get_highest_note_anal_safe(
+        notes:        list[str],
+        lowest_note:  str,
+        notes_anount: int
+    ) -> str | None:
+        is_anal_possible = Utils._is_anal_possible(
+            notes,
+            lowest_note,
+            notes_anount)
+
+        if not is_anal_possible:
+            return
+
+        highest_note_name = Utils._get_highest_note_anal(
+            notes,
+            lowest_note,
+            notes_anount)
+        return highest_note_name

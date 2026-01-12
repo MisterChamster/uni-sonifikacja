@@ -560,13 +560,17 @@ class DataSonif():
                 settings_rel_adress,
                 "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES")
 
-            is_anal_possible = Utils.is_anal_possible(
+            highest_note_name = Utils.is_anal_possible(
                 notes,
                 lowest_note_name,
                 notes_used_amount)
-            if not is_anal_possible:
+            if not highest_note_name:
                 print(impossible_anal_message)
                 break
+
+            highest_note_freq: float = Utils.get_val_from_json(
+                notes_rel_adress,
+                highest_note_name)
 
             final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
