@@ -10,6 +10,9 @@ def settings_loop(
     while True:
         asker_settings: str = Askers.ask_settings(settings_rel_adress)
 
+        if not asker_settings:
+            return
+
         if asker_settings == "change_cutting_setting_paa":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
@@ -39,7 +42,7 @@ def settings_loop(
             print("Value successfully changed\n")
 
         elif asker_settings == "change_binary_low_note":
-            new_note = Askers.ask_note(notes_rel_adress, "low")
+            new_note = Askers.ask_note_binary(notes_rel_adress, "low")
             if not new_note:
                 continue
             Utils.save_value_to_settings(
@@ -49,7 +52,7 @@ def settings_loop(
             print("Value successfully changed\n")
 
         elif asker_settings == "change_binary_high_note":
-            new_note = Askers.ask_note(notes_rel_adress, "high")
+            new_note = Askers.ask_note_binary(notes_rel_adress, "high")
             if not new_note:
                 continue
             Utils.save_value_to_settings(
@@ -57,9 +60,6 @@ def settings_loop(
                 "BINARY_SONIFICATION_HIGH_NOTE",
                 new_note)
             print("Value successfully changed\n")
-
-        elif asker_settings == "exit":
-            return
 
         else:
             print("Invalid input!\n")

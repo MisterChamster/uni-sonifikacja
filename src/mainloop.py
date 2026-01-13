@@ -30,15 +30,15 @@ def mainloop() -> None:
         loaded_data   = DataSonif(datafile_path, asker_segment)
 
         while True:
-            segment_info = "False" if asker_segment == 1  else str(asker_segment)
-            ordering = "Original" if loaded_data.og_order else "Reverse"
-            sign     = "Original" if loaded_data.og_sign  else "Opposite"
+            segment_info = "False" if asker_segment == 1      else str(asker_segment)
+            ordering  = "Original" if loaded_data.is_og_order else "Reverse"
+            sign      = "Original" if loaded_data.is_og_sign  else "Opposite"
 
             print(f"Chosen file:           {loaded_data.file_path}")
             print(f"Data segmentation:     {segment_info}")
             print(f"Data order (x):        {ordering}")
             print(f"Data sign (y):         {sign}")
-            print(f"Data normalization:    {loaded_data.normalized}")
+            print(f"Data normalization:    {loaded_data.is_normalized}")
             print(f"Num of bins (hist):    {loaded_data.bins_count}")
             print(f"State threshold:       {loaded_data.threshold}")
             print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
@@ -49,19 +49,23 @@ def mainloop() -> None:
             # ========================== DATA ALTERING =========================
             if action_asker == "alter_data":
                 while True:
-                    print(f"Chosen file:           {loaded_data.file_path}")
-                    print(f"Data segmentation:     {segment_info}")
-                    print(f"Data order (x):        {ordering}")
-                    print(f"Data sign (y):         {sign}")
-                    print(f"Data normalization:    {loaded_data.normalized}")
-                    print(f"Num of bins (hist):    {loaded_data.bins_count}")
-                    print(f"State threshold:       {loaded_data.threshold}")
-                    print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
+                    print(f"Chosen file:              {loaded_data.file_path}")
+                    print(f"Data segmentation:        {segment_info}")
+                    print(f"Data order (x):           {ordering}")
+                    print(f"Data sign (y):            {sign}")
+                    print(f"Data normalization:       {loaded_data.is_normalized}")
+                    print(f"Num of bins (hist/thold): {loaded_data.bins_count}")
+                    print(f"State threshold:          {loaded_data.threshold}")
+                    print(f"Num of loaded samples:    {loaded_data.get_sample_count()}")
                     print()
                     alter_asker = Askers.ask_alter_data()
                     print("\n")
 
-                    if alter_asker   == "reverse_order":
+                    if not alter_asker:
+                        print("\n")
+                        break
+
+                    elif alter_asker   == "reverse_order":
                         print("Reversing order...")
                         loaded_data.reverse_data_order()
                         print("Done!\n\n")
@@ -84,24 +88,26 @@ def mainloop() -> None:
                     elif alter_asker == "segment_data":
                         asker_segment = Askers.ask_segmentation()
                         if asker_segment is None or asker_segment == 1:
+                            print("\n")
                             continue
 
+                        print("\nSegmenting data...")
                         loaded_data.segment_data(asker_segment)
+                        print("Done!\n\n")
 
                     elif alter_asker == "apply_paa":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
-                            "SEGMENTING_STYLE_PAA",
-                            "count")
+                            "SEGMENTING_STYLE_PAA")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
                             segmenting_style)
 
-                        if asker_segment_value is None:
+                        print()
+                        if not asker_segment_value:
                             print()
                             continue
-                        print()
 
                         print("Processing...")
                         loaded_data.apply_paa_aggregation(
@@ -117,17 +123,16 @@ def mainloop() -> None:
                     elif alter_asker == "convert_to_dwelltimes":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
-                            "SEGMENTING_STYLE_DWELLTIMES",
-                            "size")
+                            "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
                             segmenting_style)
 
+                        print()
                         if not asker_segment_value:
                             print()
                             continue
-                        print()
 
                         print("Converting data to dwell times...")
                         loaded_data.convert_to_dwell_times(
@@ -138,17 +143,16 @@ def mainloop() -> None:
                     elif alter_asker == "convert_to_dwelltimes_condensed":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
-                            "SEGMENTING_STYLE_DWELLTIMES",
-                            "size")
+                            "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
                             segmenting_style)
 
+                        print()
                         if not asker_segment_value:
                             print()
                             continue
-                        print()
 
                         print("Converting data to condensed dwell times...")
                         loaded_data.convert_to_dwell_times_CONDENSED(
@@ -162,26 +166,19 @@ def mainloop() -> None:
                             continue
                         print(datafile_path, "\n")
 
-                        asker_segment = Askers.ask_initial_segmentation()
+                        asker_segment = Askers.ask_segmentation(True)
                         if not asker_segment:
                             return
                         print("\n")
 
                         loaded_data = DataSonif(datafile_path, asker_segment)
 
-                    elif alter_asker == "return":
-                        print("\n")
-                        break
 
             # ========================== OTHER OPTIONS =========================
             elif action_asker == "sonify":
                 asker_sonif_type = Askers.ask_sonif_type(
-                    loaded_data.converted_to_binary,
-                    #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-                    # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                    #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-                    # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                    False)
+                    loaded_data.is_converted_to_binary,
+                    loaded_data.is_normalized)
                 print("\n\n")
 
                 if not asker_sonif_type:
@@ -190,8 +187,7 @@ def mainloop() -> None:
                     loaded_data.binary_sonif_loop(settings_rel_path, notes_rel_path)
                     print("\n\n")
                 elif asker_sonif_type == "analog":
-                    # CONTINUE WRITING HERE
-                    # self.analog_sonif_loop(settings_rel_adress, notes_rel_adress)
+                    loaded_data.analog_sonif_loop(settings_rel_path, notes_rel_path)
                     print("\n\n")
 
             elif action_asker == "show_chart":

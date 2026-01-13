@@ -59,20 +59,20 @@ class Askers():
     def ask_action() -> str:
         returns_dict = {
             "a": "alter_data",
-            "i": "sonify",
+            "s": "sonify",
             "c": "show_chart",
             "h": "show_histogram",
-            "s": "settings",
+            "t": "settings",
             "f": "change_file",
             "exit": "exit"}
 
         while True:
             print("Choose an action:\n"
                   "a - Alter data...\n"
-                  "i - Sonify data...\n"
+                  "s - Sonify data...\n"
                   "c - Show chart\n"
                   "h - Show histogram\n"
-                  "s - Settings...\n"
+                  "t - Settings...\n"
                   "f - Change file\n"
                   "exit - Exit program\n>> ", end="")
             asker = input().strip().lower()
@@ -96,7 +96,7 @@ class Askers():
             "d": "convert_to_dwelltimes",
             "c": "convert_to_dwelltimes_condensed",
             "o": "original_data",
-            "r": "return"}
+            "r": None}
 
         while True:
             print("Choose an action:\n"
@@ -162,33 +162,27 @@ class Askers():
             "sd": "change_segmenting_setting_dwelltimes",
             "bl": "change_binary_low_note",
             "bh": "change_binary_high_note",
-            "r":  "return"}
+            "r":  None}
 
         # Get current settings from settings.json
         cut_string_paa          = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "CUT_REMAINDER_SAMPLES_PAA",
-            True)
+            "CUT_REMAINDER_SAMPLES_PAA")
         cut_string_dwelltimes   = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
-            True)
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         segment_style_paa       = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "SEGMENTING_STYLE_PAA",
-            "count")
+            "SEGMENTING_STYLE_PAA")
         segment_style_dwelltimes = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "SEGMENTING_STYLE_DWELLTIMES",
-            "size")
+            "SEGMENTING_STYLE_DWELLTIMES")
         binary_low_note = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_LOW_NOTE",
-            "D3")
+            "BINARY_SONIFICATION_LOW_NOTE")
         binary_high_note = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_HIGH_NOTE",
-            "A4")
+            "BINARY_SONIFICATION_HIGH_NOTE")
 
         if cut_string_paa:
             cutting_option_paa = "Disable cutting remainder data during PAA (currently enabled)"
@@ -229,7 +223,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_note(
+    def ask_note_binary(
         notes_rel_adress: str,
         low_or_high:      Literal["low", "high"]
     ) -> str|None:
@@ -238,15 +232,12 @@ class Askers():
         highest_note    = available_notes[-1]
 
         temp_dict_key = "BINARY_SONIFICATION_LOW_NOTE" if low_or_high == "low" else "BINARY_SONIFICATION_HIGH_NOTE"
-        temp_default  = "D3" if low_or_high == "low" else "A4"
         current_note  = Utils.get_val_from_json_fix(
             "src/settings.py",
-            temp_dict_key,
-            temp_default)
-        main_message = f"Choose a new {low_or_high} note for binary sonification (currently {current_note})"
+            temp_dict_key)
 
         while True:
-            print(main_message)
+            print(f"Choose a new {low_or_high} note for binary sonification (currently {current_note})")
             print(f"Available notes from {lowest_note} to {highest_note}")
             print("(type 'r' to return)\n>> ", end="")
             asker = input().strip().upper() #Upper here is crucial!
@@ -263,7 +254,7 @@ class Askers():
     def ask_sonif_type(
         bin_available:    bool,
         analog_available: bool
-    ) -> Literal["binary", "analog", None]:
+    ) -> Literal["binary", "analog"] | None:
         returns_dict = {
             "b": "binary",
             "a": "analog"
@@ -279,13 +270,13 @@ class Askers():
                 if analog_available
                 else "a - Sonify analog data... (UNAVAILABLE)")
 
-            print("Choose a method of sonification (type 'exit' to exit):")
+            print("Choose a method of sonification (type 'r' to return):")
             print(bin_msg)
             print(analog_msg)
             print(">> ", end="")
             asker = input().strip().lower()
 
-            if asker == "exit":
+            if asker == "r":
                 return
             elif asker not in returns_dict:
                 print("Invalid input!\n")
@@ -298,24 +289,20 @@ class Askers():
                         return returns_dict[asker]
                 elif asker == "a":
                     if not analog_available:
-                        #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-                        # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                        #COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE
-                        # COME_BACK_HERE COME_BACK_HERE COME_BACK_HERE COME_BACK_HER
-                        print("Option unavailable; FOR A REASON????????????.\n\n")
+                        print("Option unavailable; data has to be normalized first.\n\n")
                         continue
                     else:
                         return returns_dict[asker]
 
 
     @staticmethod
-    def ask_note_duration() -> int|None:
+    def ask_note_duration() -> int | None:
         while True:
             print("Input new note duration (ms):")
-            print("(type 'exit' to exit)\n>> ", end="")
+            print("(type 'r' to return)\n>> ", end="")
             asker = input().strip()
 
-            if asker == "exit":
+            if asker == "r":
                 return
             if not asker.isdigit():
                 print("Invalid input.\n")
@@ -323,7 +310,60 @@ class Askers():
 
             asker = int(asker)
             if asker > 4000:
-                print("Number is too big (max 4000)\n")
+                print("Duration is too long (max 4000)\n")
+                continue
+            elif asker < 1:
+                print("Duration is too short (min 1)\n")
                 continue
             else:
                 return asker
+
+
+    @staticmethod
+    def ask_lowest_note_anal(
+        current_lowest_note_name:     str,
+        highest_lowest_note_possible: str,
+        notes:                        list[str]
+    ) -> str | None:
+        lowest_lowest_note_possible: str = notes[0]
+        highest_possible_index = notes.index(highest_lowest_note_possible)
+        available_notes = notes[:highest_possible_index+1]
+        while True:
+            print(f"Choose a new lowest note for analog sonification (currently {current_lowest_note_name})")
+            print(f"Available notes from {lowest_lowest_note_possible} to {highest_lowest_note_possible}")
+            print("(type 'r' to return)\n>> ", end="")
+            asker = input().strip().upper()
+
+            if asker in available_notes:
+                return asker
+            elif asker == "R":
+                return
+            else:
+                print("Invalid input!\n")
+
+
+    def ask_note_amount(available_notes_count: int) -> int | None:
+        min_amount = 5
+        max_amount = (30
+                      if available_notes_count >= 30
+                      else available_notes_count)
+
+        while True:
+            print(f"Enter a new amount of notes (value between {min_amount} and {max_amount})")
+            print("(type 'r' to return)\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == "r":
+                return
+            elif not asker.isdigit():
+                print("Invalid input.\n\n")
+
+            asker = int(asker)
+            if asker < min_amount:
+                print("Entered number is too high.\n\n")
+                continue
+            elif asker > max_amount:
+                print("Entered number is too low.\n\n")
+                continue
+
+            return asker

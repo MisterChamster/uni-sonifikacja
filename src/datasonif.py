@@ -14,17 +14,17 @@ from src.chunk  import Chunk
 
 
 class DataSonif():
-    file_path:  Path
-    data_array: np.ndarray[np.float64]
-    data_sign:  str
-    og_order:   bool
-    og_sign:    bool
-    min_val:    float
-    max_val:    float
-    bins_count: int
-    threshold:  float | None
-    normalized: bool
-    converted_to_binary: bool
+    file_path:   Path
+    data_array:  np.ndarray[np.float64]
+    data_sign:   str
+    is_og_order: bool
+    is_og_sign:  bool
+    min_val:     float
+    max_val:     float
+    bins_count:  int
+    threshold:   float | None
+    is_normalized: bool
+    is_converted_to_binary: bool
 
 
     def __init__(
@@ -32,14 +32,14 @@ class DataSonif():
         file_path: Path,
         segment:   int
     ) -> None:
-        self.file_path  = file_path
-        self.og_order   = True
-        self.og_sign    = True
+        self.file_path   = file_path
+        self.is_og_order = True
+        self.is_og_sign  = True
 
         self.bins_count = 200
-        self.threshold   = None
-        self.normalized = False
-        self.converted_to_binary = False
+        self.threshold  = None
+        self.is_normalized = False
+        self.is_converted_to_binary = False
 
         if segment == 1:
             try:
@@ -92,7 +92,7 @@ class DataSonif():
 
     def reverse_data_order(self) -> None:
         self.data_array = self.data_array[::-1]
-        self.og_order = not self.og_order
+        self.is_og_order = not self.is_og_order
         return
 
 
@@ -107,13 +107,13 @@ class DataSonif():
         self._update_min_max()
         if self.threshold:
             self.calculate_threshold()
-            self.og_sign = not self.og_sign
+            self.is_og_sign = not self.is_og_sign
         return
 
 
     # Normalization xnorm = (x-xmin)/(xmax-xmin)
     def normalize_data(self) -> None:
-        if self.normalized == True:
+        if self.is_normalized == True:
             return
 
         difference = self.max_val - self.min_val
@@ -127,7 +127,7 @@ class DataSonif():
             self.threshold = (self.threshold - self.min_val)/(difference)
 
         self._update_min_max()
-        self.normalized = True
+        self.is_normalized = True
         return
 
 
@@ -188,8 +188,7 @@ class DataSonif():
 
         cut_string_paa = Utils.get_val_from_json_fix(
             "src/settings.json",
-            "CUT_REMAINDER_SAMPLES_PAA",
-            True)
+            "CUT_REMAINDER_SAMPLES_PAA")
 
         if segmenting_style == "count":
             segment_count = segment_value # That many real segments
@@ -204,8 +203,6 @@ class DataSonif():
             if not cut_string_paa:
                 segment_count += 1 # That many real segments
 
-        temparr: np.ndarray = np.empty(segment_count)
-
         # Cutting data array before segmenting
         if cut_string_paa:
             cut_length: int = len(self.data_array) % segment_count
@@ -218,8 +215,9 @@ class DataSonif():
 
 
         # Putting segment means to temparr
-        index_segment: int = 0
-        iterative:     int = 0
+        index_segment: int  = 0
+        iterative:     int  = 0
+        temparr: np.ndarray = np.empty(segment_count)
 
         while iterative < segment_count:
             chunk_end: int     = index_segment + segment_size
@@ -245,7 +243,7 @@ class DataSonif():
 
 # ============================ BINARY CONVERSION ==============================
     def convert_data_to_binary(self) -> None:
-        if not self.normalized:
+        if not self.is_normalized:
             self.normalize_data()
 
         if not self.threshold:
@@ -258,7 +256,7 @@ class DataSonif():
                 else 1)
 
         self._update_min_max()
-        self.converted_to_binary = True
+        self.is_converted_to_binary = True
         return
 
 
@@ -271,8 +269,7 @@ class DataSonif():
 
         cut_string_paa = Utils.get_val_from_json_fix(
             "src/settings.json",
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
-            True)
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         if not self.threshold:
             self.calculate_threshold()
 
@@ -338,7 +335,7 @@ class DataSonif():
         segmenting_style: str
     ) -> None:
 
-        if not self.converted_to_binary:
+        if not self.is_converted_to_binary:
             self.convert_data_to_binary()
 
         self.__binary_to_dwelltimes(
@@ -355,8 +352,7 @@ class DataSonif():
 
         cut_string_paa = Utils.get_val_from_json_fix(
             "src/settings.json",
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES",
-            True)
+            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         if not self.threshold:
             self.calculate_threshold()
 
@@ -373,8 +369,6 @@ class DataSonif():
             if not cut_string_paa:
                 segment_count += 1 # That many real segments
 
-        temparr: np.ndarray = np.empty(segment_count)
-
         # Cutting data array before segmenting
         if cut_string_paa:
             cut_length: int = len(self.data_array) % segment_count
@@ -387,13 +381,15 @@ class DataSonif():
 
 
         # Putting segment means to temparr
-        index_segment: int = 0
-        iterative: int     = 0
+        index_segment: int  = 0
+        iterative: int      = 0
+        temparr: np.ndarray = np.empty(segment_count)
 
         while iterative < segment_count:
             chunk_end: int     = index_segment + segment_size
-            temp_chunk         = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
-            temparr[iterative] = temp_chunk.get_data_mean()
+            temp_chunk: Chunk  = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
+            chunk_binary_val   = 1 if temp_chunk.get_data_mean()>self.threshold else 0
+            temparr[iterative] = chunk_binary_val
 
             index_segment += segment_size
             iterative += 1
@@ -417,7 +413,7 @@ class DataSonif():
         segmenting_style: str
     ) -> None:
 
-        if not self.converted_to_binary:
+        if not self.is_converted_to_binary:
             self.convert_data_to_binary()
 
         self.__binary_to_dwelltimes_CONDENSED(
@@ -436,22 +432,21 @@ class DataSonif():
     ) -> None:
         note_duration_sec = note_duration_milis / 1000
         audio: list = []
+        t = np.linspace(0,
+                        note_duration_sec,
+                        int(sample_rate * note_duration_sec),
+                        endpoint=False)
 
         for val in self.data_array:
-            t = np.linspace(
-                0,
-                note_duration_sec,
-                int(sample_rate * note_duration_sec),
-                endpoint=False)
-            freq = (
-                high_note_freq
-                if val == 1
-                else low_note_freq)
-            tone = np.sin(2 * np.pi * freq * t)
+            curr_freq = (high_note_freq
+                         if val == 1
+                         else low_note_freq)
+            tone = np.sin(2 * np.pi * curr_freq * t)
             audio.append(tone)
 
         audio = np.concatenate(audio).astype(np.float32)
-        write("output/output.wav", sample_rate, audio)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
         return
 
 
@@ -462,52 +457,48 @@ class DataSonif():
     ) -> None:
         low_note_name: str = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_LOW_NOTE",
-            "D3")
+            "BINARY_SONIFICATION_LOW_NOTE")
         low_note_freq: float = Utils.get_val_from_json(
             notes_rel_adress,
             low_note_name)
         high_note_name: str = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "BINARY_SONIFICATION_HIGH_NOTE",
-            "A4")
+            "BINARY_SONIFICATION_HIGH_NOTE")
         high_note_freq: float = Utils.get_val_from_json(
             notes_rel_adress,
             high_note_name)
         sample_rate: int = Utils.get_val_from_json_fix(
             settings_rel_adress,
-            "SAMPLE_RATE",
-            44100)
+            "SAMPLE_RATE")
 
         while True:
             note_duration_milis: int = Utils.get_val_from_json_fix(
                 settings_rel_adress,
-                "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
-                300)
+                "BINARY_SONIFICATION_NOTE_DURATION_MILIS")
 
-            final_length_milis: int = (note_duration_milis * 
+            final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
             audio_len_human = Utils.human_read_milis(final_length_milis)
             print( "Sonification type:  Binary")
-            print(f"Low note:           {low_note_name} ({low_note_freq} Hz)")
-            print(f"High note:          {high_note_name} ({high_note_freq} Hz)")
-            print(f"Note duration (ms): {note_duration_milis}")
-            print(f"Sample rate:        {sample_rate}")
-            print(f"Amount of notes:    {self.get_sample_count()}")
-            print(f"Final audio length: {audio_len_human}")
+            print(f"Low note:             {low_note_name} ({low_note_freq} Hz)")
+            print(f"High note:            {high_note_name} ({high_note_freq} Hz)")
+            print(f"Note duration (ms):   {note_duration_milis}")
+            print(f"Sample rate:          {sample_rate}")
+            print(f"Amount of notes:      {self.get_sample_count()}")
+            print(f"Final audio duration: {audio_len_human}")
             # print(f"Final audio length (MILI): {final_length_milis}")
             print()
             print("Choose an action:")
-            print("c - Change note length (ms)")
+            print("d - Change note duration (ms)")
             print("s - Sonify")
-            print("exit - Exit menu\n>> ", end="")
+            print("r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
+            print("\n")
 
-            if asker == "exit":
+            if asker == "r":
                 return
 
-            elif asker == "c":
-                print()
+            elif asker == "d":
                 new_note_duration = Askers.ask_note_duration()
                 print("\n\n")
                 if not new_note_duration:
@@ -518,20 +509,218 @@ class DataSonif():
                     new_note_duration)
 
             elif asker == "s":
-                print()
+                print("Sonifying...")
                 try:
                     self.binary_sonification(
                         sample_rate,
                         note_duration_milis,
                         low_note_freq,
                         high_note_freq)
+                    print("Done!\n\n")
                 except Exception as e:
                     print("An exception occurred during binary sonification")
                     print(e)
                 continue
 
             else:
-                print("Invalid input.\n")
+                print("Invalid input.\n\n")
+
+
+# ============================ ANALOG SONIFICATION ============================
+    def analog_sonification(
+        self,
+        sample_rate:         int,
+        note_duration_milis: int,
+        notes_used:          list[str],
+        notes_dict:          dict[str, float]
+    ) -> None:
+        optimal_dict: dict[str, float] = {}
+        for notename in notes_used:
+            optimal_dict[notename] = notes_dict[notename]
+
+        bin_count: int    = len(notes_used)
+        note_duration_sec = note_duration_milis / 1000
+        audio: list       = []
+        t = np.linspace(0,
+                        note_duration_sec,
+                        int(sample_rate * note_duration_sec),
+                        endpoint=False)
+
+        for value in self.data_array:
+            val_bin  = int(value*bin_count)
+            val_bin -= (val_bin == 5)
+            temp_note_name = notes_used[val_bin]
+            temp_note_freq = optimal_dict[temp_note_name]
+
+            tone = np.sin(2 * np.pi * temp_note_freq * t)
+            audio.append(tone)
+
+        audio = np.concatenate(audio).astype(np.float32)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_analog_{curr_time_str}.wav",
+              sample_rate,
+              audio)
+        return
+
+
+    def analog_sonif_loop(
+        self,
+        settings_rel_adress: str,
+        notes_rel_adress: str
+    ) -> None:
+        impossible_anal_message = (
+            "Analog sonification cannot be performed.\n"
+            "The issue results from messed settings.json or notes.json.\n"
+            "Program does not allow messing these up, so it's likely due to writing directly in these files.\n"
+            "To fix it, download both settings.json and notes.json files from repo and replace them in src directory of the project\n"
+            "And do not edit these files yourself in the future!")
+        sample_rate: int = Utils.get_val_from_json_fix(
+            settings_rel_adress,
+            "SAMPLE_RATE")
+
+        notes = Utils.get_keys_from_json(notes_rel_adress)
+        while True:
+            lowest_note_name: str = Utils.get_val_from_json_fix(
+                settings_rel_adress,
+                "ANAL_SONIFICATION_LOWEST_NOTE")
+            lowest_note_freq: float = Utils.get_val_from_json(
+                notes_rel_adress,
+                lowest_note_name)
+            note_duration_milis: int = Utils.get_val_from_json_fix(
+                settings_rel_adress,
+                "ANAL_SONIFICATION_NOTE_DURATION_MILIS")
+            notes_used_amount: int = Utils.get_val_from_json_fix(
+                settings_rel_adress,
+                "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES")
+
+            highest_note_name = Utils.get_highest_note_anal_safe(
+                notes,
+                lowest_note_name,
+                notes_used_amount)
+            if not highest_note_name:
+                print(impossible_anal_message)
+                break
+            highest_note_freq: float = Utils.get_val_from_json(
+                notes_rel_adress,
+                highest_note_name)
+
+            final_length_milis: int = (note_duration_milis *
+                                       self.get_sample_count())
+            audio_len_human = Utils.human_read_milis(final_length_milis)
+            print( "Sonification type:    Analog")
+            print(f"Amount of used notes: {notes_used_amount}")
+            print(f"Lowest note:          {lowest_note_name} ({lowest_note_freq} Hz)")
+            print(f"Highest note:         {highest_note_name} ({highest_note_freq} Hz)")
+            print(f"Note duration (ms):   {note_duration_milis}")
+            print(f"Sample rate:          {sample_rate}")
+            print(f"Amount of notes:      {self.get_sample_count()}")
+            print(f"Final audio duration: {audio_len_human}")
+            print()
+            print("Choose an action:")
+            print("d - Change note duration (ms)")
+            print("l - Change the lowest note name")
+            print("a - Change amount of notes for sonification")
+            print("s - Sonify")
+            print("r - Return to main menu\n>> ", end="")
+            asker = input().strip().lower()
+            print("\n\n")
+
+
+            if asker == "r":
+                return
+
+            elif asker == "d":
+                new_note_duration = Askers.ask_note_duration()
+                print("\n\n")
+                if not new_note_duration:
+                    continue
+                Utils.save_value_to_settings(
+                    settings_rel_adress,
+                    "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
+                    new_note_duration)
+
+            elif asker == "l":
+                highest_lowest_note: str = Utils.get_highest_lowest_note_possible_for_amount(
+                    notes,
+                    notes_used_amount)
+                new_lowest_note = Askers.ask_lowest_note_anal(
+                    lowest_note_name,
+                    highest_lowest_note,
+                    notes)
+                print("\n\n")
+                if not new_lowest_note:
+                    continue
+
+                Utils.save_value_to_settings(
+                    settings_rel_adress,
+                    "ANAL_SONIFICATION_LOWEST_NOTE",
+                    new_lowest_note)
+
+            elif asker == "a":
+                amount_asker = Askers.ask_note_amount(len(notes))
+                if not amount_asker or amount_asker == notes_used_amount:
+                    continue
+
+                # If lower than previous - save to settings. Highest note will
+                # recalculate itself in next loop iteration.
+                if amount_asker < notes_used_amount:
+                    Utils.save_value_to_settings(
+                        settings_rel_adress,
+                        "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                        amount_asker)
+                    continue
+
+                # If higher then previous - check if exceeds available notes
+                    # If no  - increase note amount
+                    # If yes - calculate highest lowest note for amount. Save it and new amount
+                elif amount_asker > notes_used_amount:
+                    is_possible = Utils._is_anal_possible(
+                        notes,
+                        lowest_note_name,
+                        amount_asker)
+                    if is_possible:
+                        Utils.save_value_to_settings(
+                            settings_rel_adress,
+                            "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                            amount_asker)
+                        continue
+
+                    new_lowest_note: str = Utils.get_highest_lowest_note_possible_for_amount(
+                        notes,
+                        amount_asker)
+                    Utils.save_value_to_settings(
+                        settings_rel_adress,
+                        "ANAL_SONIFICATION_LOWEST_NOTE",
+                        new_lowest_note)
+                    Utils.save_value_to_settings(
+                        settings_rel_adress,
+                        "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                        amount_asker)
+                    print("[WARNING] A higher amount of notes forces the lowest note to be lowered")
+                    print(f"Previous lowest note: {lowest_note_name}")
+                    print(f"Updated lowest note:  {new_lowest_note}")
+
+            elif asker == "s":
+                print("Sonifying...")
+                notes_dict = Utils.get_dict_from_json(notes_rel_adress)
+                notes_used = Utils.get_notes_used_list(
+                    notes,
+                    lowest_note_name,
+                    notes_used_amount)
+                try:
+                    self.analog_sonification(
+                        sample_rate,
+                        note_duration_milis,
+                        notes_used,
+                        notes_dict)
+                    print("Done!\n\n")
+                except Exception as e:
+                    print("An exception occurred during analog sonification")
+                    print(e)
+                continue
+
+            else:
+                print("Invalid input.\n\n")
 
 
 # ================================= PLOTTING ==================================
@@ -540,7 +729,7 @@ class DataSonif():
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
         # peak_xes = [a[0] for a in peak_coords]
         # peak_ys  = [a[1] for a in peak_coords]
-        # if self.normalized == True:
+        # if self.is_normalized == True:
         #     difference = self.max_val - self.min_val
         #     for i in range(len(peak_ys)):
         #         peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
@@ -554,18 +743,17 @@ class DataSonif():
             plt.axhline(y=self.threshold, color="red")
 
         # plt.gca().xaxis.set_major_locator(MultipleLocator(len(self.data_array)/10))
-        y_locators = 0.1 if self.normalized == True else 1
+        y_locators = 0.1 if self.is_normalized == True else 1
         plt.gca().yaxis.set_major_locator(MultipleLocator(y_locators))
 
         plt.xlabel("Sample index")
-        if self.normalized:
+        if self.is_normalized:
             plt.ylabel("Normalised Voltage")
         else:
             plt.ylabel("Voltage [V]")
         plt.title('Open and closed states of the ion channel in time (perceived in samples)')
 
         plt.show()
-
         return
 
 
@@ -577,7 +765,7 @@ class DataSonif():
             plt.axvline(x=self.threshold, color="red")
 
         plt.ylabel("Sample count")
-        if self.normalized == True:
+        if self.is_normalized == True:
             plt.xlabel("Normalised Voltage")
         else:
             plt.xlabel("Voltage [V]")
