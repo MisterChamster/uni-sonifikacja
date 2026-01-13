@@ -438,14 +438,14 @@ class DataSonif():
                         endpoint=False)
 
         for val in self.data_array:
-            freq = (high_note_freq
-                    if val == 1
-                    else low_note_freq)
-            tone = np.sin(2 * np.pi * freq * t)
+            curr_freq = (high_note_freq
+                         if val == 1
+                         else low_note_freq)
+            tone = np.sin(2 * np.pi * curr_freq * t)
             audio.append(tone)
 
         audio = np.concatenate(audio).astype(np.float32)
-        write("output/output.wav", sample_rate, audio)
+        write("output/sonif_binary.wav", sample_rate, audio)
         return
 
 
@@ -533,6 +533,22 @@ class DataSonif():
         notes_used:          list[str],
         notes_dict:          dict[str, float]
     ) -> None:
+        bin_count: int    = len(notes_used)
+        note_duration_sec = note_duration_milis / 1000
+        audio: list       = []
+        t = np.linspace(0,
+                        note_duration_sec,
+                        int(sample_rate * note_duration_sec),
+                        endpoint=False)
+
+        for value in self.data_array:
+            val_bin  = int(value*bin_count)
+            val_bin -= (val_bin == 5)
+            temp_note_name = notes_used[val_bin]
+            temp_note_freq = notes_dict[temp_note_name]
+
+            tone = np.sin(2 * np.pi * temp_note_freq * t)
+            audio.append(tone)
         # This is the method I'll go with
         # Normalised samples in array will be multiplied and int
         # which will make them converted to n+1 bins, where n+1 value
@@ -543,6 +559,9 @@ class DataSonif():
         # values = np.array(values)
         # binned = (values * n_bins).astype(int)
         # binned = np.clip(binned, 0, n_bins - 1) + 1
+
+        audio = np.concatenate(audio).astype(np.float32)
+        write("output/sonif_analog.wav", sample_rate, audio)
         return
 
 
