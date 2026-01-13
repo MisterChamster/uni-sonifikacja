@@ -535,6 +535,16 @@ class DataSonif():
         notes_used:          list[str],
         notes_dict:          dict[str, float]
     ) -> None:
+        # This is the method I'll go with
+        # Normalised samples in array will be multiplied and int
+        # which will make them converted to n+1 bins, where n+1 value
+        # will be assigned only to 1. Then, clipping will change n+1 bins to n.
+        # I want to do it manually, it will probably be faster that way.
+        # This should be done via Chunks I guess? I have to make a FULL PLAN.
+        # ON PAPER. DON'T MAKE IT IN YOUR HEAD.
+        # values = np.array(values)
+        # binned = (values * n_bins).astype(int)
+        # binned = np.clip(binned, 0, n_bins - 1) + 1
         return
 
 
