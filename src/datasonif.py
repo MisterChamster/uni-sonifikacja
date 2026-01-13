@@ -445,7 +445,8 @@ class DataSonif():
             audio.append(tone)
 
         audio = np.concatenate(audio).astype(np.float32)
-        write("output/sonif_binary.wav", sample_rate, audio)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
         return
 
 
@@ -555,7 +556,10 @@ class DataSonif():
             audio.append(tone)
 
         audio = np.concatenate(audio).astype(np.float32)
-        write("output/sonif_analog.wav", sample_rate, audio)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_analog_{curr_time_str}.wav",
+              sample_rate,
+              audio)
         return
 
 

@@ -1,7 +1,6 @@
-# import pandas as pd
-# from math import floor
 import json
 from typing import Literal
+from datetime          import datetime
 
 
 
@@ -148,6 +147,13 @@ class Utils():
             parts.append(f"{seconds} second(s)")
 
         return ", ".join(parts) or "0 seconds"
+
+
+    @staticmethod
+    def get_curr_time_to_name() -> str:
+        currtime: datetime   = datetime.now()
+        currtime_string: str = currtime.strftime("%Y-%m-%d_%H:%M:%S")
+        return currtime_string
 
 
     @staticmethod
