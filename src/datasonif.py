@@ -533,6 +533,10 @@ class DataSonif():
         notes_used:          list[str],
         notes_dict:          dict[str, float]
     ) -> None:
+        optimal_dict: dict[str, float] = {}
+        for notename in notes_used:
+            optimal_dict[notename] = notes_dict[notename]
+
         bin_count: int    = len(notes_used)
         note_duration_sec = note_duration_milis / 1000
         audio: list       = []
@@ -545,7 +549,7 @@ class DataSonif():
             val_bin  = int(value*bin_count)
             val_bin -= (val_bin == 5)
             temp_note_name = notes_used[val_bin]
-            temp_note_freq = notes_dict[temp_note_name]
+            temp_note_freq = optimal_dict[temp_note_name]
 
             tone = np.sin(2 * np.pi * temp_note_freq * t)
             audio.append(tone)
