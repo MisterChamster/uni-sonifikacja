@@ -39,8 +39,7 @@ class DataSonif():
         self.threshold  = None
         self.is_normalized = False
         self.is_converted_to_binary = False
-
-        self.load_data(segment)
+        return
 
 
     def segment_data(self, n: int) -> None:
