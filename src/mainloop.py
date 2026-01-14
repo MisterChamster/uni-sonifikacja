@@ -10,6 +10,7 @@ from src.settings_loop import settings_loop
 def mainloop() -> None:
     settings_rel_path = "src/settings.json"
     notes_rel_path = "src/notes.json"
+
     while True:
         print("Choose data file in txt/csv format:")
         datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
@@ -27,7 +28,8 @@ def mainloop() -> None:
         print("\n")
 
         datafile_path = Path(datafile_path)
-        loaded_data   = DataSonif(datafile_path, asker_segment)
+        loaded_data   = DataSonif(datafile_path)
+        loaded_data.load_data(asker_segment)
 
         while True:
             segment_info = "False" if asker_segment == 1      else str(asker_segment)
