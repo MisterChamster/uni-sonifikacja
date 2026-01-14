@@ -33,11 +33,11 @@ class DataSonif():
 
     def __init__(
         self,
-        settings_rel_path: str,
-        notes_rel_path:    str
+        in_settings_rel_path: str,
+        in_notes_rel_path:    str
     ) -> None:
-        self.settings_rel_path = settings_rel_path
-        self.notes_rel_path    = notes_rel_path
+        self.settings_rel_path = in_settings_rel_path
+        self.notes_rel_path    = in_notes_rel_path
 
         self.file_path   = None
         self.data_array  = None
