@@ -150,17 +150,17 @@ def mainloop() -> None:
                         print("Done!\n\n")
 
                     elif alter_asker == "original_data":
-                        if not os.path.exists(datafile_path):
-                            print(f"Chosen file no longer exists in path {datafile_path}")
+                        if not os.path.exists(loaded_data.file_path):
+                            print(f"Chosen file no longer exists in path {loaded_data.file_path}")
                             continue
-                        print(datafile_path, "\n")
+                        print(loaded_data.file_path, "\n")
 
                         asker_segment = Askers.ask_segmentation(True)
                         if not asker_segment:
                             return
                         print("\n")
 
-                        loaded_data = DataSonif(datafile_path, asker_segment)
+                        loaded_data = DataSonif(loaded_data.file_path, asker_segment)
 
 
             # ========================== OTHER OPTIONS =========================
