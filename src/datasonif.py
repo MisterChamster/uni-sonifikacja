@@ -24,6 +24,7 @@ class DataSonif():
     bins_count:  int
     threshold:   float | None
     is_normalized: bool
+    segmentation_performed: list[int]
     is_converted_to_binary: bool
 
 
@@ -40,6 +41,7 @@ class DataSonif():
         self.bins_count = 200
         self.threshold  = None
         self.is_normalized = False
+        self.segmentation_performed = []
         self.is_converted_to_binary = False
         return
 
@@ -58,6 +60,7 @@ class DataSonif():
             i_new += 1
 
         self.data_array = temparr
+        self.segmentation_performed.append(int)
         return
 
 

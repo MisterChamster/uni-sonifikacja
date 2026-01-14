@@ -19,9 +19,11 @@ def mainloop() -> None:
         loaded_data.load_data()
 
         while True:
-            segment_info = "False" if asker_segment == 1      else str(asker_segment)
-            ordering  = "Original" if loaded_data.is_og_order else "Reverse"
-            sign      = "Original" if loaded_data.is_og_sign  else "Opposite"
+            ordering:     str = "Original" if loaded_data.is_og_order else "Reverse"
+            sign:         str = "Original" if loaded_data.is_og_sign  else "Opposite"
+            segment_info: str = ("None"
+                                 if loaded_data.segmentation_performed == []
+                                 else str(loaded_data.segmentation_performed))
 
             print(f"Chosen file:           {loaded_data.file_path}")
             print(f"Data segmentation:     {segment_info}")
@@ -38,6 +40,12 @@ def mainloop() -> None:
             # ========================== DATA ALTERING =========================
             if action_asker == "alter_data":
                 while True:
+                    ordering:     str = "Original" if loaded_data.is_og_order else "Reverse"
+                    sign:         str = "Original" if loaded_data.is_og_sign  else "Opposite"
+                    segment_info: str = ("None"
+                                         if loaded_data.segmentation_performed == []
+                                         else str(loaded_data.segmentation_performed))
+
                     print(f"Chosen file:              {loaded_data.file_path}")
                     print(f"Data segmentation:        {segment_info}")
                     print(f"Data order (x):           {ordering}")
