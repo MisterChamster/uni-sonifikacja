@@ -167,12 +167,8 @@ def mainloop() -> None:
                             continue
                         print(loaded_data.file_path, "\n")
 
-                        asker_segment = Askers.ask_segmentation(True)
-                        if not asker_segment:
-                            return
-                        print("\n")
-
-                        loaded_data = DataSonif(loaded_data.file_path, asker_segment)
+                        loaded_data.load_data()
+                        continue
 
 
             # ========================== OTHER OPTIONS =========================
