@@ -8,12 +8,14 @@ from src.settings_loop import settings_loop
 
 
 
-def mainloop() -> None:
-    settings_rel_path = "src/settings.json"
-    notes_rel_path    = "src/notes.json"
-    Askers.settings_rel_path = settings_rel_path
-    Askers.notes_rel_path    = notes_rel_path
+settings_rel_path = "src/settings.json"
+notes_rel_path    = "src/notes.json"
+Askers.settings_rel_path = settings_rel_path
+Askers.notes_rel_path    = notes_rel_path
+Utils.settings_rel_path = settings_rel_path
+Utils.notes_rel_path    = notes_rel_path
 
+def mainloop() -> None:
     while True:
         loaded_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
         temp_success:     bool = loaded_data.get_datafile_path()

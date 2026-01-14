@@ -548,7 +548,6 @@ class DataSonif():
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
-                    self.settings_rel_path,
                     "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
                     new_note_duration)
 
@@ -675,7 +674,6 @@ class DataSonif():
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
-                    self.settings_rel_path,
                     "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
                     new_note_duration)
 
@@ -692,7 +690,6 @@ class DataSonif():
                     continue
 
                 Utils.save_value_to_settings(
-                    self.settings_rel_path,
                     "ANAL_SONIFICATION_LOWEST_NOTE",
                     new_lowest_note)
 
@@ -705,7 +702,6 @@ class DataSonif():
                 # recalculate itself in next loop iteration.
                 if amount_asker < notes_used_amount:
                     Utils.save_value_to_settings(
-                        self.settings_rel_path,
                         "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
                         amount_asker)
                     continue
@@ -720,7 +716,6 @@ class DataSonif():
                         amount_asker)
                     if is_possible:
                         Utils.save_value_to_settings(
-                            self.settings_rel_path,
                             "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
                             amount_asker)
                         continue
@@ -729,11 +724,9 @@ class DataSonif():
                         notes,
                         amount_asker)
                     Utils.save_value_to_settings(
-                        self.settings_rel_path,
                         "ANAL_SONIFICATION_LOWEST_NOTE",
                         new_lowest_note)
                     Utils.save_value_to_settings(
-                        self.settings_rel_path,
                         "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
                         amount_asker)
                     print("[WARNING] A higher amount of notes forces the lowest note to be lowered")

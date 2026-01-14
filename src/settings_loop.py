@@ -3,10 +3,7 @@ from src.utils  import Utils
 
 
 
-def settings_loop(
-    settings_rel_adress: str,
-    notes_rel_adress: str
-) -> None:
+def settings_loop(settings_rel_adress: str) -> None:
     while True:
         asker_settings: str = Askers.ask_settings()
 
@@ -14,33 +11,23 @@ def settings_loop(
             return
 
         if asker_settings == "auto_threshold_at_load":
-            Utils.change_setting_to_opposite(
-                settings_rel_adress,
-                "AUTOMATIC_THRESHOLD_AT_LOAD")
+            Utils.change_setting_to_opposite("AUTOMATIC_THRESHOLD_AT_LOAD")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_cutting_setting_paa":
-            Utils.change_setting_to_opposite(
-                settings_rel_adress,
-                "CUT_REMAINDER_SAMPLES_PAA")
+            Utils.change_setting_to_opposite("CUT_REMAINDER_SAMPLES_PAA")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_cutting_setting_dwelltimes":
-            Utils.change_setting_to_opposite(
-                settings_rel_adress,
-                "CUT_REMAINDER_SAMPLES_DWELLTIMES")
+            Utils.change_setting_to_opposite("CUT_REMAINDER_SAMPLES_DWELLTIMES")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_segmenting_setting_paa":
-            Utils.change_setting_to_opposite(
-                settings_rel_adress,
-                "SEGMENTING_STYLE_PAA")
+            Utils.change_setting_to_opposite("SEGMENTING_STYLE_PAA")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_segmenting_setting_dwelltimes":
-            Utils.change_setting_to_opposite(
-                settings_rel_adress,
-                "SEGMENTING_STYLE_DWELLTIMES")
+            Utils.change_setting_to_opposite("SEGMENTING_STYLE_DWELLTIMES")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_binary_low_note":

@@ -5,18 +5,20 @@ from datetime import datetime
 
 
 class Utils():
+    settings_rel_path: str = "src/settings.json"
+    notes_rel_path:    str = "src/notes.json"
+
     @staticmethod
     def save_value_to_settings(
-        adress:   str,
         json_key: str,
         json_val: bool|str|int|float
     ) -> None:
 
-        with open(adress) as f:
+        with open(Utils.settings_rel_path) as f:
             config = json.load(f)
 
         config[json_key] = json_val
-        with open(adress, "w") as f:
+        with open(Utils.settings_rel_path, "w") as f:
             json.dump(config, f, indent=2)
 
 
@@ -33,7 +35,7 @@ class Utils():
         if json_key not in config.keys():
             print(f"[WARNING] Key value '{json_key}' could not be found in {adress}. Resorting to default value ('{default_val}').\nFixing {adress}...")
             try:
-                Utils.save_value_to_settings(adress, json_key, default_val)
+                Utils.save_value_to_settings(json_key, default_val)
                 print(f"{json_key} has been fixed in {adress}")
             except Exception as e:
                 print(f"{json_key} could not have been fixed in {adress}\n{e}")
@@ -98,11 +100,10 @@ class Utils():
 
     @staticmethod
     def change_setting_to_opposite(
-        adress:      str,
         json_key:    str
     ) -> None:
         setting_val = Utils.get_val_from_json_fix(
-            adress,
+            Utils.settings_rel_path,
             json_key)
 
         if isinstance(setting_val, bool):
@@ -112,7 +113,7 @@ class Utils():
         else:
             raise ValueError("ERROR: Incorrect value in settings.json")
 
-        Utils.save_value_to_settings(adress, json_key, setting_val)
+        Utils.save_value_to_settings(json_key, setting_val)
         return
 
 
