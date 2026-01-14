@@ -26,13 +26,13 @@ class Askers():
 
 
     @staticmethod
-    def ask_segmentation(is_initial: bool = False) -> int|None:
+    def ask_downsampling(is_initial: bool = False) -> int|None:
         stroing = ("Input 'exit' to exit program."
                    if is_initial
                    else "Input 'r' to return.")
 
         while True:
-            print("Segment data (Pick every n-th line of data)\n"
+            print("Downsample data (Pick every n-th line of data)\n"
                   "Max value is 10, but highest reasonable is 5.\n"
                   f"Press Enter to skip. {stroing}\n"
                   "n = ", end="")
@@ -94,10 +94,10 @@ class Askers():
             "y": "reverse_sign",
             "n": "normalization",
             "t": "calculate_threshold",
-            "e": "segment_data",
+            "d": "downsample_data",
             "p": "apply_paa",
             "b": "convert_to_bin",
-            "d": "convert_to_dwelltimes",
+            "t": "convert_to_dwelltimes",
             "c": "convert_to_dwelltimes_condensed",
             "o": "original_data",
             "r": None}
@@ -111,10 +111,10 @@ class Askers():
                   "y - Reverse data sign\n"
                  f"n - Normalize data ({normalized_msg})\n"
                  f"t - Calculate threshold ({threshold_msg})\n"
-                  "e - Segment data\n"
+                  "d - Downsample data\n"
                   "p - Apply PAA downsampling\n"
                  f"b - Convert data to binary ({binary_msg})\n"
-                  "d - Convert data to dwell times\n"
+                  "t - Convert data to dwell times\n"
                   "c - Convert data to condensed dwell times\n"
                   "o - Revert to original data set\n"
                   "r - Return to main menu\n>> ", end="")

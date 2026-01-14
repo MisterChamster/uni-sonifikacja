@@ -24,7 +24,7 @@ class DataSonif():
     bins_count:  int
     threshold:   float | None
     is_normalized: bool
-    segmentation_performed: list[int]
+    downsampling_performed: list[int]
     is_converted_to_binary: bool
 
 
@@ -41,18 +41,18 @@ class DataSonif():
         self.bins_count = 200
         self.threshold  = None
         self.is_normalized = False
-        self.segmentation_performed = []
+        self.downsampling_performed = []
         self.is_converted_to_binary = False
         return
 
 
-    def segment_data(self, n: int) -> None:
+    def downsample_data(self, n: int) -> None:
         if n > self.get_sample_count():
             print("n is higher than the current number of loaded samples!\n")
             return
 
         new_sample_count: int = self.get_sample_count() // n
-        temparr: np.ndarray   = np.empty(new_sample_count)
+        temparr:   np.ndarray = np.empty(new_sample_count)
 
         i_new = 0
         for i_dar in range(0, self.get_sample_count(), n):
@@ -60,7 +60,7 @@ class DataSonif():
             i_new += 1
 
         self.data_array = temparr
-        self.segmentation_performed.append(int)
+        self.downsampling_performed.append(int)
         return
 
 
@@ -81,12 +81,12 @@ class DataSonif():
 
 
     def load_data(self) -> None:
-        asker_segment: int = Askers.ask_segmentation(True)
-        if not asker_segment:
+        asker_downsample: int = Askers.ask_downsampling(True)
+        if not asker_downsample:
             return
         print("\n")
 
-        if asker_segment == 1:
+        if asker_downsample == 1:
             try:
                 self.data_array = pd.read_csv(
                     self.file_path,
@@ -101,7 +101,7 @@ class DataSonif():
                     self.file_path,
                     header=None,
                     names=["values"],
-                    skiprows=lambda i: i % asker_segment != 0,
+                    skiprows=lambda i: i % asker_downsample != 0,
                     skipinitialspace=True)
             except:
                 raise Exception("Data loading has failed.\n")

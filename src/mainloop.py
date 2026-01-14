@@ -19,14 +19,14 @@ def mainloop() -> None:
         loaded_data.load_data()
 
         while True:
-            ordering:     str = "Original" if loaded_data.is_og_order else "Reverse"
-            sign:         str = "Original" if loaded_data.is_og_sign  else "Opposite"
-            segment_info: str = ("None"
-                                 if loaded_data.segmentation_performed == []
-                                 else str(loaded_data.segmentation_performed))
+            ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
+            sign:              str = "Original" if loaded_data.is_og_sign  else "Opposite"
+            downsampling_info: str = ("None"
+                                      if loaded_data.downsampling_performed == []
+                                      else " ,".join(map(str, loaded_data.downsampling_performed)))
 
             print(f"Chosen file:           {loaded_data.file_path}")
-            print(f"Data segmentation:     {segment_info}")
+            print(f"Data downsampling:     {downsampling_info}")
             print(f"Data order (x):        {ordering}")
             print(f"Data sign (y):         {sign}")
             print(f"Data normalization:    {loaded_data.is_normalized}")
@@ -40,14 +40,14 @@ def mainloop() -> None:
             # ========================== DATA ALTERING =========================
             if action_asker == "alter_data":
                 while True:
-                    ordering:     str = "Original" if loaded_data.is_og_order else "Reverse"
-                    sign:         str = "Original" if loaded_data.is_og_sign  else "Opposite"
-                    segment_info: str = ("None"
-                                         if loaded_data.segmentation_performed == []
-                                         else str(loaded_data.segmentation_performed))
+                    ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
+                    sign:              str = "Original" if loaded_data.is_og_sign  else "Opposite"
+                    downsampling_info: str = ("None"
+                                              if loaded_data.downsampling_performed == []
+                                              else " ,".join(map(str, loaded_data.downsampling_performed)))
 
                     print(f"Chosen file:              {loaded_data.file_path}")
-                    print(f"Data segmentation:        {segment_info}")
+                    print(f"Data downsampling:        {downsampling_info}")
                     print(f"Data order (x):           {ordering}")
                     print(f"Data sign (y):            {sign}")
                     print(f"Data normalization:       {loaded_data.is_normalized}")
@@ -85,14 +85,14 @@ def mainloop() -> None:
                         loaded_data.calculate_threshold()
                         print("Done!\n\n")
 
-                    elif alter_asker == "segment_data":
-                        asker_segment = Askers.ask_segmentation()
-                        if not asker_segment or asker_segment == 1:
+                    elif alter_asker == "downsample_data":
+                        asker_downsample = Askers.ask_downsampling()
+                        if not asker_downsample or asker_downsample == 1:
                             print("\n")
                             continue
 
-                        print("\nSegmenting data...")
-                        loaded_data.segment_data(asker_segment)
+                        print("\nDownsampling data...")
+                        loaded_data.downsample_data(asker_downsample)
                         print("Done!\n\n")
 
                     elif alter_asker == "apply_paa":
