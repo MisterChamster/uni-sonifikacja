@@ -13,7 +13,14 @@ def settings_loop(
         if not asker_settings:
             return
 
-        if asker_settings == "change_cutting_setting_paa":
+        if asker_settings == "auto_threshold_at_load":
+            Utils.change_setting_to_opposite(
+                settings_rel_adress,
+                "AUTOMATIC_THRESHOLD_AT_LOAD",
+                True)
+            print("Value successfully changed\n")
+
+        elif asker_settings == "change_cutting_setting_paa":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
                 "CUT_REMAINDER_SAMPLES_PAA",

@@ -163,6 +163,7 @@ class Askers():
     @staticmethod
     def ask_settings(settings_rel_adress: str) -> str:
         returns_dict = {
+            "at": "auto_threshold_at_load",
             "cp": "change_cutting_setting_paa",
             "cd": "change_cutting_setting_dwelltimes",
             "sp": "change_segmenting_setting_paa",
@@ -172,10 +173,13 @@ class Askers():
             "r":  None}
 
         # Get current settings from settings.json
-        cut_string_paa          = Utils.get_val_from_json_fix(
+        auto_thold_load         = Utils.get_val_from_json_fix(
+            settings_rel_adress,
+            "AUTOMATIC_THRESHOLD_AT_LOAD")
+        cut_samples_paa          = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "CUT_REMAINDER_SAMPLES_PAA")
-        cut_string_dwelltimes   = Utils.get_val_from_json_fix(
+        cut_samples_dwelltimes   = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         segment_style_paa       = Utils.get_val_from_json_fix(
@@ -184,19 +188,24 @@ class Askers():
         segment_style_dwelltimes = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "SEGMENTING_STYLE_DWELLTIMES")
-        binary_low_note = Utils.get_val_from_json_fix(
+        binary_low_note          = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_LOW_NOTE")
-        binary_high_note = Utils.get_val_from_json_fix(
+        binary_high_note         = Utils.get_val_from_json_fix(
             settings_rel_adress,
             "BINARY_SONIFICATION_HIGH_NOTE")
 
-        if cut_string_paa:
+        if auto_thold_load:
+            auto_thold_option = "Disable automatic calculation of threshold during data loading (currently enabled)"
+        else:
+            auto_thold_option = "Enable automatic calculation of threshold during data loading (currently disable)"
+
+        if cut_samples_paa:
             cutting_option_paa = "Disable cutting remainder data during PAA (currently enabled)"
         else:
             cutting_option_paa = "Enable cutting remainder data during PAA (currently disabled)"
 
-        if cut_string_dwelltimes:
+        if cut_samples_dwelltimes:
             cutting_option_dwelltimes = "Disable cutting remainder data during dwell times conversion (currently enabled)"
         else:
             cutting_option_dwelltimes = "Enable cutting remainder data during dwell times conversion (currently disabled)"
@@ -214,6 +223,7 @@ class Askers():
 
         while True:
             print( "Choose an action:\n"
+                  f"at - {auto_thold_option}\n"
                   f"cp - {cutting_option_paa}\n"
                   f"cd - {cutting_option_dwelltimes}\n"
                   f"sp - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
