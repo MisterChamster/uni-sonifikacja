@@ -27,14 +27,23 @@ class DataSonif():
     downsampling_performed: list[int]
     is_converted_to_binary: bool
 
+    settings_rel_path: str
+    notes_rel_path:    str
 
-    def __init__(self) -> None:
+
+    def __init__(
+        self,
+        settings_rel_path: str,
+        notes_rel_path:    str
+    ) -> None:
+        self.settings_rel_path = settings_rel_path
+        self.notes_rel_path    = notes_rel_path
+
         self.file_path   = None
         self.data_array  = None
         self.data_sign   = None
         self.is_og_order = None
         self.is_og_sign  = None
-
         self.min_val = None
         self.max_val = None
 
@@ -80,7 +89,7 @@ class DataSonif():
         return True
 
 
-    def load_data(self, settings_rel_path: str) -> None:
+    def load_data(self) -> None:
         asker_downsample: int = Askers.ask_downsampling(True)
         if not asker_downsample:
             return
@@ -110,7 +119,7 @@ class DataSonif():
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
 
         is_threshold_automatic = Utils.get_val_from_json_fix(
-            settings_rel_path,
+            self.settings_rel_path,
             "AUTOMATIC_THRESHOLD_AT_LOAD")
         if is_threshold_automatic:
             self.calculate_threshold()
@@ -489,30 +498,26 @@ class DataSonif():
         return
 
 
-    def binary_sonif_loop(
-        self,
-        settings_rel_adress: str,
-        notes_rel_adress: str
-    ) -> None:
+    def binary_sonif_loop(self) -> None:
         low_note_name: str = Utils.get_val_from_json_fix(
-            settings_rel_adress,
+            self.settings_rel_path,
             "BINARY_SONIFICATION_LOW_NOTE")
         low_note_freq: float = Utils.get_val_from_json(
-            notes_rel_adress,
+            self.notes_rel_path,
             low_note_name)
         high_note_name: str = Utils.get_val_from_json_fix(
-            settings_rel_adress,
+            self.settings_rel_path,
             "BINARY_SONIFICATION_HIGH_NOTE")
         high_note_freq: float = Utils.get_val_from_json(
-            notes_rel_adress,
+            self.notes_rel_path,
             high_note_name)
         sample_rate: int = Utils.get_val_from_json_fix(
-            settings_rel_adress,
+            self.settings_rel_path,
             "SAMPLE_RATE")
 
         while True:
             note_duration_milis: int = Utils.get_val_from_json_fix(
-                settings_rel_adress,
+                self.settings_rel_path,
                 "BINARY_SONIFICATION_NOTE_DURATION_MILIS")
 
             final_length_milis: int = (note_duration_milis *
@@ -543,7 +548,7 @@ class DataSonif():
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
-                    settings_rel_adress,
+                    self.settings_rel_path,
                     "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
                     new_note_duration)
 
@@ -602,11 +607,7 @@ class DataSonif():
         return
 
 
-    def analog_sonif_loop(
-        self,
-        settings_rel_adress: str,
-        notes_rel_adress: str
-    ) -> None:
+    def analog_sonif_loop(self) -> None:
         impossible_anal_message = (
             "Analog sonification cannot be performed.\n"
             "The issue results from messed settings.json or notes.json.\n"
@@ -614,22 +615,22 @@ class DataSonif():
             "To fix it, download both settings.json and notes.json files from repo and replace them in src directory of the project\n"
             "And do not edit these files yourself in the future!")
         sample_rate: int = Utils.get_val_from_json_fix(
-            settings_rel_adress,
+            self.settings_rel_path,
             "SAMPLE_RATE")
 
-        notes = Utils.get_keys_from_json(notes_rel_adress)
+        notes = Utils.get_keys_from_json(self.notes_rel_path)
         while True:
             lowest_note_name: str = Utils.get_val_from_json_fix(
-                settings_rel_adress,
+                self.settings_rel_path,
                 "ANAL_SONIFICATION_LOWEST_NOTE")
             lowest_note_freq: float = Utils.get_val_from_json(
-                notes_rel_adress,
+                self.notes_rel_path,
                 lowest_note_name)
             note_duration_milis: int = Utils.get_val_from_json_fix(
-                settings_rel_adress,
+                self.settings_rel_path,
                 "ANAL_SONIFICATION_NOTE_DURATION_MILIS")
             notes_used_amount: int = Utils.get_val_from_json_fix(
-                settings_rel_adress,
+                self.settings_rel_path,
                 "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES")
 
             highest_note_name = Utils.get_highest_note_anal_safe(
@@ -640,7 +641,7 @@ class DataSonif():
                 print(impossible_anal_message)
                 break
             highest_note_freq: float = Utils.get_val_from_json(
-                notes_rel_adress,
+                self.notes_rel_path,
                 highest_note_name)
 
             final_length_milis: int = (note_duration_milis *
@@ -674,7 +675,7 @@ class DataSonif():
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
-                    settings_rel_adress,
+                    self.settings_rel_path,
                     "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
                     new_note_duration)
 
@@ -691,7 +692,7 @@ class DataSonif():
                     continue
 
                 Utils.save_value_to_settings(
-                    settings_rel_adress,
+                    self.settings_rel_path,
                     "ANAL_SONIFICATION_LOWEST_NOTE",
                     new_lowest_note)
 
@@ -704,7 +705,7 @@ class DataSonif():
                 # recalculate itself in next loop iteration.
                 if amount_asker < notes_used_amount:
                     Utils.save_value_to_settings(
-                        settings_rel_adress,
+                        self.settings_rel_path,
                         "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
                         amount_asker)
                     continue
@@ -719,7 +720,7 @@ class DataSonif():
                         amount_asker)
                     if is_possible:
                         Utils.save_value_to_settings(
-                            settings_rel_adress,
+                            self.settings_rel_path,
                             "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
                             amount_asker)
                         continue
@@ -728,11 +729,11 @@ class DataSonif():
                         notes,
                         amount_asker)
                     Utils.save_value_to_settings(
-                        settings_rel_adress,
+                        self.settings_rel_path,
                         "ANAL_SONIFICATION_LOWEST_NOTE",
                         new_lowest_note)
                     Utils.save_value_to_settings(
-                        settings_rel_adress,
+                        self.settings_rel_path,
                         "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
                         amount_asker)
                     print("[WARNING] A higher amount of notes forces the lowest note to be lowered")
@@ -741,7 +742,7 @@ class DataSonif():
 
             elif asker == "s":
                 print("Sonifying...")
-                notes_dict = Utils.get_dict_from_json(notes_rel_adress)
+                notes_dict = Utils.get_dict_from_json(self.notes_rel_path)
                 notes_used = Utils.get_notes_used_list(
                     notes,
                     lowest_note_name,

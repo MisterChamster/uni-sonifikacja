@@ -9,14 +9,14 @@ from src.settings_loop import settings_loop
 
 def mainloop() -> None:
     settings_rel_path = "src/settings.json"
-    notes_rel_path = "src/notes.json"
+    notes_rel_path    = "src/notes.json"
 
     while True:
-        loaded_data: DataSonif = DataSonif()
-        temp_success: bool     = loaded_data.get_datafile_path()
+        loaded_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
+        temp_success:     bool = loaded_data.get_datafile_path()
         if not temp_success:
             return
-        loaded_data.load_data(settings_rel_path)
+        loaded_data.load_data()
 
         while True:
             ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
@@ -166,7 +166,7 @@ def mainloop() -> None:
                             continue
                         print(loaded_data.file_path, "\n")
 
-                        loaded_data.load_data(settings_rel_path)()
+                        loaded_data.load_data()
                         continue
 
 
@@ -180,10 +180,10 @@ def mainloop() -> None:
                 if not asker_sonif_type:
                     continue
                 elif asker_sonif_type == "binary":
-                    loaded_data.binary_sonif_loop(settings_rel_path, notes_rel_path)
+                    loaded_data.binary_sonif_loop()
                     print("\n\n")
                 elif asker_sonif_type == "analog":
-                    loaded_data.analog_sonif_loop(settings_rel_path, notes_rel_path)
+                    loaded_data.analog_sonif_loop(settings_rel_path)
                     print("\n\n")
 
             elif action_asker == "show_chart":
@@ -201,13 +201,13 @@ def mainloop() -> None:
                 print("\n")
 
             elif action_asker == "change_file":
-                new_data: DataSonif = DataSonif()
+                new_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
                 temp_success: bool  = new_data.get_datafile_path()
                 if not temp_success:
                     print("Data will remain unchanged\n\n")
                     continue
                 loaded_data = new_data
-                loaded_data.load_data(settings_rel_path)()
+                loaded_data.load_data()
 
             elif action_asker == "exit":
                 return
