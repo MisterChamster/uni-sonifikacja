@@ -55,7 +55,11 @@ def mainloop() -> None:
                     print(f"State threshold:          {loaded_data.threshold}")
                     print(f"Num of loaded samples:    {loaded_data.get_sample_count()}")
                     print()
-                    alter_asker = Askers.ask_alter_data()
+                    is_treshold = False if not loaded_data.threshold else True
+                    alter_asker = Askers.ask_alter_data(
+                        loaded_data.is_normalized,
+                        is_treshold,
+                        loaded_data.is_converted_to_binary)
                     print("\n")
 
                     if not alter_asker:

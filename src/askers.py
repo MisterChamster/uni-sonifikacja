@@ -84,7 +84,11 @@ class Askers():
 
 
     @staticmethod
-    def ask_alter_data() -> str|None:
+    def ask_alter_data(
+        is_normalized: str,
+        is_threshold:  str,
+        is_binary:     str
+    ) -> str | None:
         returns_dict = {
             "x": "reverse_order",
             "y": "reverse_sign",
@@ -97,16 +101,19 @@ class Askers():
             "c": "convert_to_dwelltimes_condensed",
             "o": "original_data",
             "r": None}
+        normalized_msg = "already normalized" if is_normalized else "not normalized"
+        threshold_msg  = "already calculated" if is_threshold  else "not calculated"
+        binary_msg     = "already converted"  if is_binary     else "not converted"
 
         while True:
             print("Choose an action:\n"
                   "x - Reverse data order\n"
                   "y - Reverse data sign\n"
-                  "n - Normalize data\n"
-                  "t - Calculate threshold\n"
+                 f"n - Normalize data ({normalized_msg})\n"
+                 f"t - Calculate threshold ({threshold_msg})\n"
                   "e - Segment data\n"
                   "p - Apply PAA downsampling\n"
-                  "b - Convert data to binary\n"
+                 f"b - Convert data to binary ({binary_msg})\n"
                   "d - Convert data to dwell times\n"
                   "c - Convert data to condensed dwell times\n"
                   "o - Revert to original data set\n"
