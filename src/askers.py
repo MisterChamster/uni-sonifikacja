@@ -27,20 +27,20 @@ class Askers():
 
     @staticmethod
     def ask_segmentation(is_initial: bool = False) -> int|None:
-        stroing = (" Input 'exit' to exit program."
+        stroing = ("Input 'exit' to exit program."
                    if is_initial
-                   else "")
+                   else "Input 'r' to return.")
 
         while True:
             print("Segment data (Pick every n-th line of data)\n"
                   "Max value is 10, but highest reasonable is 5.\n"
-                  f"Press Enter to skip.{stroing}\n"
+                  f"Press Enter to skip. {stroing}\n"
                   "n = ", end="")
             asker = input().strip().lower()
 
             if not asker:
                 return 1
-            if asker == "exit" and is_initial:
+            if (asker == "exit" and is_initial) or (asker == "r" and not is_initial):
                 return
             if not asker.isdigit():
                 print("Incorrect input.\n\n")
