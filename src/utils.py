@@ -99,13 +99,11 @@ class Utils():
     @staticmethod
     def change_setting_to_opposite(
         adress:      str,
-        json_key:    str,
-        default_val: str|bool
+        json_key:    str
     ) -> None:
         setting_val = Utils.get_val_from_json_fix(
             adress,
-            json_key,
-            default_val)
+            json_key)
 
         if isinstance(setting_val, bool):
             setting_val = not setting_val

@@ -16,36 +16,31 @@ def settings_loop(
         if asker_settings == "auto_threshold_at_load":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "AUTOMATIC_THRESHOLD_AT_LOAD",
-                True)
+                "AUTOMATIC_THRESHOLD_AT_LOAD")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_cutting_setting_paa":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "CUT_REMAINDER_SAMPLES_PAA",
-                True)
+                "CUT_REMAINDER_SAMPLES_PAA")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_cutting_setting_dwelltimes":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "CUT_REMAINDER_SAMPLES_DWELLTIMES",
-                True)
+                "CUT_REMAINDER_SAMPLES_DWELLTIMES")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_segmenting_setting_paa":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "SEGMENTING_STYLE_PAA",
-                "size")
+                "SEGMENTING_STYLE_PAA")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_segmenting_setting_dwelltimes":
             Utils.change_setting_to_opposite(
                 settings_rel_adress,
-                "SEGMENTING_STYLE_DWELLTIMES",
-                "size")
+                "SEGMENTING_STYLE_DWELLTIMES")
             print("Value successfully changed\n")
 
         elif asker_settings == "change_binary_low_note":
