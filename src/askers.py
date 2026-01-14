@@ -161,7 +161,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_settings(settings_rel_adress: str) -> str:
+    def ask_settings(settings_rel_path: str) -> str:
         returns_dict = {
             "at": "auto_threshold_at_load",
             "cp": "change_cutting_setting_paa",
@@ -170,66 +170,57 @@ class Askers():
             "sd": "change_segmenting_setting_dwelltimes",
             "bl": "change_binary_low_note",
             "bh": "change_binary_high_note",
-            "r":  None}
+            "r":   None}
 
         # Get current settings from settings.json
-        auto_thold_load         = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "AUTOMATIC_THRESHOLD_AT_LOAD")
-        cut_samples_paa          = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "CUT_REMAINDER_SAMPLES_PAA")
-        cut_samples_dwelltimes   = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
-        segment_style_paa       = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "SEGMENTING_STYLE_PAA")
-        segment_style_dwelltimes = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "SEGMENTING_STYLE_DWELLTIMES")
-        binary_low_note          = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "BINARY_SONIFICATION_LOW_NOTE")
-        binary_high_note         = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "BINARY_SONIFICATION_HIGH_NOTE")
+        curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(settings_rel_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
+        curr_sett_cut_samples_paa:        bool = Utils.get_val_from_json_fix(settings_rel_path, "CUT_REMAINDER_SAMPLES_PAA")
+        curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
+        curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(settings_rel_path, "SEGMENTING_STYLE_PAA")
+        curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
+        curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
+        curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
 
-        if auto_thold_load:
-            auto_thold_option = "Disable automatic calculation of threshold during data loading (currently enabled)"
-        else:
-            auto_thold_option = "Enable automatic calculation of threshold during data loading (currently disable)"
+        msg_auto_thold_disable = "Disable automatic calculation of threshold during data loading (currently enabled)"
+        msg_auto_thold_enable  = "Enable automatic calculation of threshold during data loading (currently disable)"
+        msg_cutting_paa_disable = "Disable cutting remainder data during PAA (currently enabled)"
+        msg_cutting_paa_enable  = "Enable cutting remainder data during PAA (currently disabled)"
+        msg_cutting_dtimes_disable = "Disable cutting remainder data during dwell times conversion (currently enabled)"
+        msg_cutting_dtimes_enable  = "Enable cutting remainder data during dwell times conversion (currently disabled)"
+        msg_segm_style_paa_tosize  = "size (currently segment count)"
+        msg_segm_style_paa_tocount = "count (currently segment size)"
+        msg_segm_style_dtimes_tosize  = "size (currently segment count)"
+        msg_segm_style_dtimes_tocount = "count (currently segment size)"
 
-        if cut_samples_paa:
-            cutting_option_paa = "Disable cutting remainder data during PAA (currently enabled)"
-        else:
-            cutting_option_paa = "Enable cutting remainder data during PAA (currently disabled)"
-
-        if cut_samples_dwelltimes:
-            cutting_option_dwelltimes = "Disable cutting remainder data during dwell times conversion (currently enabled)"
-        else:
-            cutting_option_dwelltimes = "Enable cutting remainder data during dwell times conversion (currently disabled)"
-
-        if segment_style_paa == "count":
-            segmenting_style_paa = "size (currently segment count)"
-        elif segment_style_paa == "size":
-            segmenting_style_paa = "count (currently segment size)"
-
-        if segment_style_dwelltimes == "count":
-            segmenting_style_dwelltimes = "size (currently segment count)"
-        elif segment_style_dwelltimes == "size":
-            segmenting_style_dwelltimes = "count (currently segment size)"
-
+        msg_auto_thold = (msg_auto_thold_disable
+                          if curr_sett_auto_thold
+                          else msg_auto_thold_enable)
+        msg_cutting_paa = (msg_cutting_paa_disable
+                           if curr_sett_cut_samples_paa
+                           else msg_cutting_paa_enable)
+        msg_cutting_dtimes = (msg_cutting_dtimes_disable
+                              if curr_sett_cut_samples_dwelltimes
+                              else msg_cutting_dtimes_enable)
+        msg_segm_style_paa = (msg_segm_style_paa_tosize
+                              if curr_sett_seg_style_paa == "count"
+                              else msg_segm_style_paa_tocount
+                              if curr_sett_seg_style_paa == "size"
+                              else "ERROR")
+        msg_segm_style_dtimes = (msg_segm_style_dtimes_tosize
+                                 if curr_sett_seg_style_dwelltimes == "count"
+                                 else msg_segm_style_dtimes_tocount
+                                 if curr_sett_seg_style_dwelltimes == "size"
+                                 else "ERROR")
 
         while True:
             print( "Choose an action:\n"
-                  f"at - {auto_thold_option}\n"
-                  f"cp - {cutting_option_paa}\n"
-                  f"cd - {cutting_option_dwelltimes}\n"
-                  f"sp - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
-                  f"sd - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
-                  f"bl - Change low note in binary sonification (currently {binary_low_note})\n"
-                  f"bh - Change high note in binary sonification (currently {binary_high_note})\n"
+                  f"at - {msg_auto_thold}\n"
+                  f"cp - {msg_cutting_paa}\n"
+                  f"cd - {msg_cutting_dtimes}\n"
+                  f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
+                  f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
+                  f"bl - Change low note in binary sonification (currently {curr_sett_binary_low_note})\n"
+                  f"bh - Change high note in binary sonification (currently {curr_sett_binary_high_note})\n"
                    "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
