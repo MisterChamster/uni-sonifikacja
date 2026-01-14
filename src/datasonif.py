@@ -14,26 +14,28 @@ from src.chunk  import Chunk
 
 
 class DataSonif():
-    file_path:   Path
-    data_array:  np.ndarray[np.float64]
-    data_sign:   str
-    is_og_order: bool
-    is_og_sign:  bool
-    min_val:     float
-    max_val:     float
+    file_path:   Path | None
+    data_array:  np.ndarray[np.float64] | None
+    data_sign:   str | None
+    is_og_order: bool | None
+    is_og_sign:  bool | None
+    min_val:     float | None
+    max_val:     float | None
     bins_count:  int
     threshold:   float | None
     is_normalized: bool
     is_converted_to_binary: bool
 
 
-    def __init__(
-        self,
-        file_path: Path
-    ) -> None:
-        self.file_path   = file_path
-        self.is_og_order = True
-        self.is_og_sign  = True
+    def __init__(self) -> None:
+        self.file_path   = None
+        self.data_array  = None
+        self.data_sign   = None
+        self.is_og_order = None
+        self.is_og_sign  = None
+
+        self.min_val = None
+        self.max_val = None
 
         self.bins_count = 200
         self.threshold  = None
@@ -59,8 +61,29 @@ class DataSonif():
         return
 
 
-    def load_data(self, segment) -> None:
-        if segment == 1:
+    def get_datafile_path(self) -> bool:
+        print("Choose data file in txt/csv format:")
+        datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
+        if not datafile_path:
+            print("No file has been chosen.")
+            return False
+        if not datafile_path.endswith((".txt", ".csv")):
+            print("Wrong file format.")
+            return False
+        print(f"{datafile_path}\n\n")
+
+        datafile_path = Path(datafile_path)
+        self.file_path = datafile_path
+        return True
+
+
+    def load_data(self) -> None:
+        asker_segment: int = Askers.ask_segmentation(True)
+        if not asker_segment:
+            return
+        print("\n")
+
+        if asker_segment == 1:
             try:
                 self.data_array = pd.read_csv(
                     self.file_path,
@@ -75,7 +98,7 @@ class DataSonif():
                     self.file_path,
                     header=None,
                     names=["values"],
-                    skiprows=lambda i: i % segment != 0,
+                    skiprows=lambda i: i % asker_segment != 0,
                     skipinitialspace=True)
             except:
                 raise Exception("Data loading has failed.\n")
@@ -84,6 +107,8 @@ class DataSonif():
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
 
         self._update_min_max()
+        self.is_og_order = True
+        self.is_og_sign  = True
         return
 
 

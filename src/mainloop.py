@@ -12,24 +12,11 @@ def mainloop() -> None:
     notes_rel_path = "src/notes.json"
 
     while True:
-        print("Choose data file in txt/csv format:")
-        datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
-        if not datafile_path:
-            print("No file has been chosen.")
+        loaded_data: DataSonif = DataSonif()
+        temp_success: bool     = loaded_data.get_datafile_path()
+        if not temp_success:
             return
-        if not datafile_path.endswith((".txt", ".csv")):
-            print("Wrong file format.")
-            return
-        print(f"{datafile_path}\n\n")
-
-        asker_segment = Askers.ask_segmentation(True)
-        if not asker_segment:
-            return
-        print("\n")
-
-        datafile_path = Path(datafile_path)
-        loaded_data   = DataSonif(datafile_path)
-        loaded_data.load_data(asker_segment)
+        loaded_data.load_data()
 
         while True:
             segment_info = "False" if asker_segment == 1      else str(asker_segment)
