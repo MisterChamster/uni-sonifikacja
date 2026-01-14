@@ -57,6 +57,7 @@ class Utils():
     def get_val_from_json_fix(
         adress:      str,
         json_key:    Literal[
+            "AUTOMATIC_THRESHOLD_AT_LOAD",
             "CUT_REMAINDER_SAMPLES_PAA",
             "CUT_REMAINDER_SAMPLES_DWELLTIMES",
             "SEGMENTING_STYLE_PAA",
@@ -73,6 +74,7 @@ class Utils():
 
         if not default_val:
             default_settings_dict = {
+                "AUTOMATIC_THRESHOLD_AT_LOAD":             True,
                 "CUT_REMAINDER_SAMPLES_PAA":               True,
                 "CUT_REMAINDER_SAMPLES_DWELLTIMES":        True,
                 "SEGMENTING_STYLE_PAA":                   "count",
@@ -83,7 +85,7 @@ class Utils():
                 "BINARY_SONIFICATION_NOTE_DURATION_MILIS": 300,
                 "ANAL_SONIFICATION_NOTE_DURATION_MILIS":   300,
                 "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES":  20,
-                "ANAL_SONIFICATION_LOWEST_NOTE":           "D3"}
+                "ANAL_SONIFICATION_LOWEST_NOTE":          "D3"}
             default_val = default_settings_dict[json_key]
 
         try:

@@ -80,7 +80,7 @@ class DataSonif():
         return True
 
 
-    def load_data(self) -> None:
+    def load_data(self, settings_rel_path: str) -> None:
         asker_downsample: int = Askers.ask_downsampling(True)
         if not asker_downsample:
             return
@@ -108,6 +108,12 @@ class DataSonif():
 
         self.data_array = self.data_array.to_numpy().flatten()
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
+
+        is_threshold_automatic = Utils.get_val_from_json_fix(
+            settings_rel_path,
+            "AUTOMATIC_THRESHOLD_AT_LOAD")
+        if is_threshold_automatic:
+            self.calculate_threshold()
 
         self._update_min_max()
         self.is_og_order = True

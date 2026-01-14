@@ -16,7 +16,7 @@ def mainloop() -> None:
         temp_success: bool     = loaded_data.get_datafile_path()
         if not temp_success:
             return
-        loaded_data.load_data()
+        loaded_data.load_data(settings_rel_path)
 
         while True:
             ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
@@ -166,7 +166,7 @@ def mainloop() -> None:
                             continue
                         print(loaded_data.file_path, "\n")
 
-                        loaded_data.load_data()
+                        loaded_data.load_data(settings_rel_path)()
                         continue
 
 
@@ -207,7 +207,7 @@ def mainloop() -> None:
                     print("Data will remain unchanged\n\n")
                     continue
                 loaded_data = new_data
-                loaded_data.load_data()
+                loaded_data.load_data(settings_rel_path)()
 
             elif action_asker == "exit":
                 return
