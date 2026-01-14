@@ -63,10 +63,9 @@ def mainloop() -> None:
                     print("\n")
 
                     if not alter_asker:
-                        print("\n")
                         break
 
-                    elif alter_asker   == "reverse_order":
+                    elif alter_asker == "reverse_order":
                         print("Reversing order...")
                         loaded_data.reverse_data_order()
                         print("Done!\n\n")
@@ -202,7 +201,13 @@ def mainloop() -> None:
                 print("\n")
 
             elif action_asker == "change_file":
-                break
+                new_data: DataSonif = DataSonif()
+                temp_success: bool  = new_data.get_datafile_path()
+                if not temp_success:
+                    print("Data will remain unchanged\n\n")
+                    continue
+                loaded_data = new_data
+                loaded_data.load_data()
 
             elif action_asker == "exit":
                 return
