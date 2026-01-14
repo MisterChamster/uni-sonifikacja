@@ -1,11 +1,15 @@
 import os
 from tkinter import filedialog
-from typing import Literal
+from typing  import Literal
+
 from src.utils import Utils
 
 
 
 class Askers():
+    settings_rel_path: str = "src/settings.json"
+    notes_rel_path:    str = "src/notes.json"
+
     @staticmethod
     def ask_path_filedialog(
         node_type: str,
@@ -161,7 +165,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_settings(settings_rel_path: str) -> str:
+    def ask_settings() -> str:
         returns_dict = {
             "at": "auto_threshold_at_load",
             "cp": "change_cutting_setting_paa",
@@ -173,13 +177,13 @@ class Askers():
             "r":   None}
 
         # Get current settings from settings.json
-        curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(settings_rel_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
-        curr_sett_cut_samples_paa:        bool = Utils.get_val_from_json_fix(settings_rel_path, "CUT_REMAINDER_SAMPLES_PAA")
-        curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
-        curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(settings_rel_path, "SEGMENTING_STYLE_PAA")
-        curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
-        curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
-        curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
+        curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
+        curr_sett_cut_samples_paa:        bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_PAA")
+        curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
+        curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
+        curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
+        curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
+        curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
 
         msg_auto_thold_disable = "Disable automatic calculation of threshold during data loading (currently enabled)"
         msg_auto_thold_enable  = "Enable automatic calculation of threshold during data loading (currently disable)"
@@ -232,16 +236,15 @@ class Askers():
 
     @staticmethod
     def ask_note_binary(
-        notes_rel_adress: str,
-        low_or_high:      Literal["low", "high"]
+        low_or_high: Literal["low", "high"]
     ) -> str|None:
-        available_notes = Utils.get_keys_from_json(notes_rel_adress)
+        available_notes = Utils.get_keys_from_json(Askers.notes_rel_path)
         lowest_note     = available_notes[0]
         highest_note    = available_notes[-1]
 
         temp_dict_key = "BINARY_SONIFICATION_LOW_NOTE" if low_or_high == "low" else "BINARY_SONIFICATION_HIGH_NOTE"
         current_note  = Utils.get_val_from_json_fix(
-            "src/settings.py",
+            Askers.settings_rel_path,
             temp_dict_key)
 
         while True:

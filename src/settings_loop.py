@@ -1,5 +1,5 @@
 from src.askers import Askers
-from src.utils import Utils
+from src.utils  import Utils
 
 
 
@@ -8,7 +8,7 @@ def settings_loop(
     notes_rel_adress: str
 ) -> None:
     while True:
-        asker_settings: str = Askers.ask_settings(settings_rel_adress)
+        asker_settings: str = Askers.ask_settings()
 
         if not asker_settings:
             return
@@ -44,7 +44,7 @@ def settings_loop(
             print("Value successfully changed\n")
 
         elif asker_settings == "change_binary_low_note":
-            new_note = Askers.ask_note_binary(notes_rel_adress, "low")
+            new_note = Askers.ask_note_binary("low")
             if not new_note:
                 continue
             Utils.save_value_to_settings(
@@ -54,7 +54,7 @@ def settings_loop(
             print("Value successfully changed\n")
 
         elif asker_settings == "change_binary_high_note":
-            new_note = Askers.ask_note_binary(notes_rel_adress, "high")
+            new_note = Askers.ask_note_binary("high")
             if not new_note:
                 continue
             Utils.save_value_to_settings(

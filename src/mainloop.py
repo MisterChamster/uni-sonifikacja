@@ -1,8 +1,9 @@
 from pathlib import Path
 import os
-from src.askers import Askers
-from src.datasonif import DataSonif
-from src.utils import Utils
+
+from src.askers        import Askers
+from src.datasonif     import DataSonif
+from src.utils         import Utils
 from src.settings_loop import settings_loop
 
 
@@ -10,6 +11,8 @@ from src.settings_loop import settings_loop
 def mainloop() -> None:
     settings_rel_path = "src/settings.json"
     notes_rel_path    = "src/notes.json"
+    Askers.settings_rel_path = settings_rel_path
+    Askers.notes_rel_path    = notes_rel_path
 
     while True:
         loaded_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
