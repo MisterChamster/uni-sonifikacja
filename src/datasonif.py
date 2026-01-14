@@ -266,6 +266,7 @@ class DataSonif():
 
         self.data_array = temparr
         # Update fields accordingly
+        self.is_converted_to_binary = False #if paa perfectly converts to binary, this line will save false data
         self._update_min_max()
         if self.threshold:
             self.calculate_threshold()
@@ -287,6 +288,7 @@ class DataSonif():
                 else 1)
 
         self._update_min_max()
+        self.is_normalized = True
         self.is_converted_to_binary = True
         return
 
