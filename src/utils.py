@@ -2,6 +2,9 @@ import json
 from typing   import Literal
 from datetime import datetime
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 
 class Utils():
@@ -236,3 +239,16 @@ class Utils():
         notes = notes[lowest_index:]
         notes = notes[:notes_amount]
         return notes
+
+
+    @staticmethod
+    def draw_tone(
+        tone: np.ndarray,
+        sample_rate: int = 44100
+    ) -> None:
+        plt.figure()
+        plt.plot(tone)
+        plt.xlabel("Sample")
+        plt.ylabel("Amplitude")
+        plt.title("Soundwave")
+        plt.show()

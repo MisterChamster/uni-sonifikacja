@@ -480,16 +480,18 @@ class DataSonif():
     ) -> None:
         note_duration_sec = note_duration_milis / 1000
         audio: list = []
-        t = np.linspace(0,
-                        note_duration_sec,
-                        int(sample_rate * note_duration_sec),
-                        endpoint=False)
+        t = np.linspace(
+            0,
+            note_duration_sec,
+            int(sample_rate * note_duration_sec),
+            endpoint=False)
 
         for val in self.data_array:
             curr_freq = (high_note_freq
                          if val == 1
                          else low_note_freq)
             tone = np.sin(2 * np.pi * curr_freq * t)
+            # Utils.draw_tone(tone, sample_rate)
             audio.append(tone)
 
         audio = np.concatenate(audio).astype(np.float32)
