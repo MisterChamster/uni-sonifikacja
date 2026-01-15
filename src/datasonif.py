@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy  as np
+import math
 import matplotlib.pyplot as plt
 
 from matplotlib.ticker import MultipleLocator
@@ -500,23 +501,31 @@ class DataSonif():
         high_note_freq:      float
     ) -> None:
         note_duration_sec: float = note_duration_milis / 1000
+        audio: list = []
 
         notes_dict = Utils.get_dict_from_json(self.notes_rel_path)
         lowest_note = next(iter(notes_dict))
         lowest_freq = notes_dict[lowest_note]
+        longest_wavelen_in_samples: int = math.ceil(sample_rate / lowest_freq)
 
-        #GET SAMPLES FOR FREQ - LAMBDA LEN IN SAMPLES
+        first_freq = (high_note_freq
+                      if self.data_array[0] == 1
+                      else low_note_freq)
+        first_note = Note(
+            sample_rate,
+            first_freq,
+            note_duration_milis,
+            longest_wavelen_in_samples
+        )
 
-        audio: list = []
-        t = np.linspace(0,
-                        note_duration_sec,
-                        int(sample_rate * note_duration_sec),
-                        endpoint=False)
+        print("BREAK\n"*30)
+
 
         for val in self.data_array:
             curr_freq = (high_note_freq
                          if val == 1
                          else low_note_freq)
+
             tone = np.sin(2 * np.pi * curr_freq * t)
             audio.append(tone)
 
@@ -524,6 +533,9 @@ class DataSonif():
         curr_time_str = Utils.get_curr_time_to_name()
         write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
         return
+
+
+
 
 
     def binary_sonif_loop(self) -> None:
