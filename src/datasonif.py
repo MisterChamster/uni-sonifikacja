@@ -503,10 +503,11 @@ class DataSonif():
         note_duration_sec: float = note_duration_milis / 1000
         audio: list = []
 
-        notes_dict = Utils.get_dict_from_json(self.notes_rel_path)
-        lowest_note = next(iter(notes_dict))
-        lowest_freq = notes_dict[lowest_note]
-        longest_wavelen_in_samples: int = math.ceil(sample_rate / lowest_freq)
+        # notes_dict = Utils.get_dict_from_json(self.notes_rel_path)
+        # lowest_note = next(iter(notes_dict))
+        # lowest_freq = notes_dict[lowest_note]
+        # longest_wavelen_in_samples: int = math.ceil(sample_rate / lowest_freq)
+        longest_wavelen_in_samples: int = math.ceil(sample_rate / low_note_freq)
 
         first_freq = (high_note_freq
                       if self.data_array[0] == 1
