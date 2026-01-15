@@ -772,7 +772,10 @@ class DataSonif():
                               s=1)
 
         # Threshold line
-        if self.threshold:
+        show_thold: bool = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "SHOW_THRESHOLD_ON_CHARTS")
+        if show_thold and self.threshold:
             plt.axhline(y=self.threshold, color="red")
 
         # plt.gca().xaxis.set_major_locator(MultipleLocator(len(self.data_array)/10))
@@ -794,7 +797,10 @@ class DataSonif():
         plt.hist(self.data_array, bins=self.bins_count)
 
         # Threshold line
-        if self.threshold is not None:
+        show_thold: bool = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "SHOW_THRESHOLD_ON_CHARTS")
+        if show_thold and self.threshold:
             plt.axvline(x=self.threshold, color="red")
 
         plt.ylabel("Sample count")

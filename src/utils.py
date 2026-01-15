@@ -60,6 +60,7 @@ class Utils():
         adress:      str,
         json_key:    Literal[
             "AUTOMATIC_THRESHOLD_AT_LOAD",
+            "SHOW_THRESHOLD_ON_CHARTS",
             "CUT_REMAINDER_SAMPLES_PAA",
             "CUT_REMAINDER_SAMPLES_DWELLTIMES",
             "SEGMENTING_STYLE_PAA",
@@ -77,6 +78,7 @@ class Utils():
         if not default_val:
             default_settings_dict = {
                 "AUTOMATIC_THRESHOLD_AT_LOAD":             True,
+                "SHOW_THRESHOLD_ON_CHARTS":                True,
                 "CUT_REMAINDER_SAMPLES_PAA":               True,
                 "CUT_REMAINDER_SAMPLES_DWELLTIMES":        True,
                 "SEGMENTING_STYLE_PAA":                   "count",
