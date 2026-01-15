@@ -19,7 +19,7 @@ DataSonif.notes_rel_path    = notes_rel_path
 
 def mainloop() -> None:
     while True:
-        loaded_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
+        loaded_data: DataSonif = DataSonif()
         temp_success:     bool = loaded_data.get_datafile_path()
         if not temp_success:
             return
@@ -208,7 +208,7 @@ def mainloop() -> None:
                 print("\n")
 
             elif action_asker == "change_file":
-                new_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
+                new_data: DataSonif = DataSonif()
                 temp_success: bool  = new_data.get_datafile_path()
                 if not temp_success:
                     print("Data will remain unchanged\n\n")
