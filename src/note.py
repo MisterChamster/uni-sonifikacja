@@ -56,6 +56,11 @@ class Note():
             return True
         return False
 
+    def is_freq_rising_start(self) -> bool:
+        if self.tone[0] < self.tone[1]:
+            return True
+        return False
+
 
     def extend_linspace_with_lowest_note(self) -> None:
         lowest_wavelen_sec: float = self.sample_rate / self.lowest_note_wavelen_samples_roundup
@@ -65,4 +70,19 @@ class Note():
             self.length_sec,
             int(self.sample_rate * new_length),
             endpoint=False)
+        return
+
+
+    def cut_tone_to_match(
+        self,
+        is_freq_rising: bool,
+        last_freq: float,
+        longest_wavelen_in_samples: int
+    ) -> None:
+        for _ in range(longest_wavelen_in_samples):
+            if not is_freq_rising and self.is_freq_rising_start():
+                continue
+            if is_freq_rising and not self.is_freq_rising_start():
+                continue
+            # If not are similar
         return
