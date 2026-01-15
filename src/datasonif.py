@@ -512,18 +512,30 @@ class DataSonif():
         first_freq = (high_note_freq
                       if self.data_array[0] == 1
                       else low_note_freq)
-        first_note = Note(
+        last_note = Note(
             sample_rate,
             first_freq,
             note_duration_milis,
             longest_wavelen_in_samples)
-        # first_note.extend_linspace_with_lowest_note() NOT NEEDED FOR FIRST
+        # last_note.extend_linspace_with_lowest_note() NOT NEEDED FOR FIRST
         # GET LOWEST NOTE IN A SMART WAY! FOR BINARY YOU ONLY HAVE 2 NOTES,
         # AND FOR ANAL YOU HAVE LOWEST NOTE IN AVAILABLE NOTES LIST!!!!
-        first_note.calculate_tone()
-        audio.append(first_note.get_tone())
+        audio.append(last_note.get_tone())
 
         for i in range(1, len(self.data_array)):
+            curr_freq = (high_note_freq
+                         if self.data_array[i] == 1
+                         else low_note_freq)
+            temp_note = Note(
+                sample_rate,
+                curr_freq,
+                note_duration_milis,
+                longest_wavelen_in_samples)
+            temp_note.extend_linspace_with_lowest_note()
+            temp_note.calculate_tone()
+
+            is_freq_rising = last_note.is_freq_rising_end()
+            last_freq = last_note.get_last_freq()
             print(i)
 
         print("BREAK\n"*10)
