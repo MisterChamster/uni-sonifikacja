@@ -1,11 +1,15 @@
 import os
 from tkinter import filedialog
-from typing import Literal
+from typing  import Literal
+
 from src.utils import Utils
 
 
 
 class Askers():
+    settings_rel_path: str = "src/settings.json"
+    notes_rel_path:    str = "src/notes.json"
+
     @staticmethod
     def ask_path_filedialog(
         node_type: str,
@@ -26,21 +30,21 @@ class Askers():
 
 
     @staticmethod
-    def ask_segmentation(is_initial: bool = False) -> int|None:
-        stroing = (" Input 'exit' to exit program."
+    def ask_downsampling(is_initial: bool = False) -> int|None:
+        stroing = ("Input 'exit' to exit program."
                    if is_initial
-                   else "")
+                   else "Input 'r' to return.")
 
         while True:
-            print("Segment data (Pick every n-th line of data)\n"
+            print("Downsample data (Pick every n-th line of data)\n"
                   "Max value is 10, but highest reasonable is 5.\n"
-                  f"Press Enter to skip.{stroing}\n"
+                  f"Press Enter to skip. {stroing}\n"
                   "n = ", end="")
             asker = input().strip().lower()
 
             if not asker:
                 return 1
-            if asker == "exit" and is_initial:
+            if (asker == "exit" and is_initial) or (asker == "r" and not is_initial):
                 return
             if not asker.isdigit():
                 print("Incorrect input.\n\n")
@@ -84,30 +88,37 @@ class Askers():
 
 
     @staticmethod
-    def ask_alter_data() -> str|None:
+    def ask_alter_data(
+        is_normalized: str,
+        is_threshold:  str,
+        is_binary:     str
+    ) -> str | None:
         returns_dict = {
             "x": "reverse_order",
             "y": "reverse_sign",
             "n": "normalization",
             "t": "calculate_threshold",
-            "e": "segment_data",
+            "d": "downsample_data",
             "p": "apply_paa",
             "b": "convert_to_bin",
-            "d": "convert_to_dwelltimes",
+            "t": "convert_to_dwelltimes",
             "c": "convert_to_dwelltimes_condensed",
             "o": "original_data",
             "r": None}
+        normalized_msg = "already normalized" if is_normalized else "not normalized"
+        threshold_msg  = "already calculated" if is_threshold  else "not calculated"
+        binary_msg     = "already converted"  if is_binary     else "not converted"
 
         while True:
             print("Choose an action:\n"
                   "x - Reverse data order\n"
                   "y - Reverse data sign\n"
-                  "n - Normalize data\n"
-                  "t - Calculate threshold\n"
-                  "e - Segment data\n"
+                 f"n - Normalize data ({normalized_msg})\n"
+                 f"t - Calculate threshold ({threshold_msg})\n"
+                  "d - Downsample data\n"
                   "p - Apply PAA downsampling\n"
-                  "b - Convert data to binary\n"
-                  "d - Convert data to dwell times\n"
+                 f"b - Convert data to binary ({binary_msg})\n"
+                  "t - Convert data to dwell times\n"
                   "c - Convert data to condensed dwell times\n"
                   "o - Revert to original data set\n"
                   "r - Return to main menu\n>> ", end="")
@@ -154,65 +165,74 @@ class Askers():
 
 
     @staticmethod
-    def ask_settings(settings_rel_adress: str) -> str:
+    def ask_settings() -> str:
         returns_dict = {
+            "at": "auto_threshold_at_load",
+            "ct": "show_thold_chart",
             "cp": "change_cutting_setting_paa",
             "cd": "change_cutting_setting_dwelltimes",
             "sp": "change_segmenting_setting_paa",
             "sd": "change_segmenting_setting_dwelltimes",
             "bl": "change_binary_low_note",
             "bh": "change_binary_high_note",
-            "r":  None}
+            "r":   None}
 
         # Get current settings from settings.json
-        cut_string_paa          = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "CUT_REMAINDER_SAMPLES_PAA")
-        cut_string_dwelltimes   = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "CUT_REMAINDER_SAMPLES_DWELLTIMES")
-        segment_style_paa       = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "SEGMENTING_STYLE_PAA")
-        segment_style_dwelltimes = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "SEGMENTING_STYLE_DWELLTIMES")
-        binary_low_note = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "BINARY_SONIFICATION_LOW_NOTE")
-        binary_high_note = Utils.get_val_from_json_fix(
-            settings_rel_adress,
-            "BINARY_SONIFICATION_HIGH_NOTE")
+        curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
+        curr_sett_show_thold_chart:       bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SHOW_THRESHOLD_ON_CHARTS")
+        curr_sett_cut_samples_paa:        bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_PAA")
+        curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
+        curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
+        curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
+        curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
+        curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
 
-        if cut_string_paa:
-            cutting_option_paa = "Disable cutting remainder data during PAA (currently enabled)"
-        else:
-            cutting_option_paa = "Enable cutting remainder data during PAA (currently disabled)"
+        msg_auto_thold_disable = "Disable automatic calculation of threshold during data loading (currently enabled)"
+        msg_auto_thold_enable  = "Enable automatic calculation of threshold during data loading (currently disabled)"
+        msg_show_thold_disable = "Disable showing threshold on charts (currently enabled)"
+        msg_show_thold_enable  = "Enable showing threshold on charts (currently disabled)"
+        msg_cutting_paa_disable = "Disable cutting remainder data during PAA (currently enabled)"
+        msg_cutting_paa_enable  = "Enable cutting remainder data during PAA (currently disabled)"
+        msg_cutting_dtimes_disable = "Disable cutting remainder data during dwell times conversion (currently enabled)"
+        msg_cutting_dtimes_enable  = "Enable cutting remainder data during dwell times conversion (currently disabled)"
+        msg_segm_style_paa_tosize  = "size (currently segment count)"
+        msg_segm_style_paa_tocount = "count (currently segment size)"
+        msg_segm_style_dtimes_tosize  = "size (currently segment count)"
+        msg_segm_style_dtimes_tocount = "count (currently segment size)"
 
-        if cut_string_dwelltimes:
-            cutting_option_dwelltimes = "Disable cutting remainder data during dwell times conversion (currently enabled)"
-        else:
-            cutting_option_dwelltimes = "Enable cutting remainder data during dwell times conversion (currently disabled)"
-
-        if segment_style_paa == "count":
-            segmenting_style_paa = "size (currently segment count)"
-        elif segment_style_paa == "size":
-            segmenting_style_paa = "count (currently segment size)"
-
-        if segment_style_dwelltimes == "count":
-            segmenting_style_dwelltimes = "size (currently segment count)"
-        elif segment_style_dwelltimes == "size":
-            segmenting_style_dwelltimes = "count (currently segment size)"
-
+        msg_auto_thold = (msg_auto_thold_disable
+                          if curr_sett_auto_thold
+                          else msg_auto_thold_enable)
+        msg_show_thold = (msg_show_thold_disable
+                          if curr_sett_show_thold_chart
+                          else msg_show_thold_enable)
+        msg_cutting_paa = (msg_cutting_paa_disable
+                           if curr_sett_cut_samples_paa
+                           else msg_cutting_paa_enable)
+        msg_cutting_dtimes = (msg_cutting_dtimes_disable
+                              if curr_sett_cut_samples_dwelltimes
+                              else msg_cutting_dtimes_enable)
+        msg_segm_style_paa = (msg_segm_style_paa_tosize
+                              if curr_sett_seg_style_paa == "count"
+                              else msg_segm_style_paa_tocount
+                              if curr_sett_seg_style_paa == "size"
+                              else "ERROR")
+        msg_segm_style_dtimes = (msg_segm_style_dtimes_tosize
+                                 if curr_sett_seg_style_dwelltimes == "count"
+                                 else msg_segm_style_dtimes_tocount
+                                 if curr_sett_seg_style_dwelltimes == "size"
+                                 else "ERROR")
 
         while True:
             print( "Choose an action:\n"
-                  f"cp - {cutting_option_paa}\n"
-                  f"cd - {cutting_option_dwelltimes}\n"
-                  f"sp - Change segmenting style for PAA to segment {segmenting_style_paa}\n"
-                  f"sd - Change segmenting style for dwell times conversion to segment {segmenting_style_dwelltimes}\n"
-                  f"bl - Change low note in binary sonification (currently {binary_low_note})\n"
-                  f"bh - Change high note in binary sonification (currently {binary_high_note})\n"
+                  f"at - {msg_auto_thold}\n"
+                  f"ct - {msg_show_thold}"
+                  f"cp - {msg_cutting_paa}\n"
+                  f"cd - {msg_cutting_dtimes}\n"
+                  f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
+                  f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
+                  f"bl - Change low note in binary sonification (currently {curr_sett_binary_low_note})\n"
+                  f"bh - Change high note in binary sonification (currently {curr_sett_binary_high_note})\n"
                    "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
@@ -224,16 +244,15 @@ class Askers():
 
     @staticmethod
     def ask_note_binary(
-        notes_rel_adress: str,
-        low_or_high:      Literal["low", "high"]
+        low_or_high: Literal["low", "high"]
     ) -> str|None:
-        available_notes = Utils.get_keys_from_json(notes_rel_adress)
+        available_notes = Utils.get_keys_from_json(Askers.notes_rel_path)
         lowest_note     = available_notes[0]
         highest_note    = available_notes[-1]
 
         temp_dict_key = "BINARY_SONIFICATION_LOW_NOTE" if low_or_high == "low" else "BINARY_SONIFICATION_HIGH_NOTE"
         current_note  = Utils.get_val_from_json_fix(
-            "src/settings.py",
+            Askers.settings_rel_path,
             temp_dict_key)
 
         while True:

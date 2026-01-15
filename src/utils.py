@@ -1,22 +1,24 @@
 import json
-from typing import Literal
-from datetime          import datetime
+from typing   import Literal
+from datetime import datetime
 
 
 
 class Utils():
+    settings_rel_path: str = "src/settings.json"
+    notes_rel_path:    str = "src/notes.json"
+
     @staticmethod
     def save_value_to_settings(
-        adress:   str,
         json_key: str,
         json_val: bool|str|int|float
     ) -> None:
 
-        with open(adress) as f:
+        with open(Utils.settings_rel_path) as f:
             config = json.load(f)
 
         config[json_key] = json_val
-        with open(adress, "w") as f:
+        with open(Utils.settings_rel_path, "w") as f:
             json.dump(config, f, indent=2)
 
 
@@ -33,7 +35,7 @@ class Utils():
         if json_key not in config.keys():
             print(f"[WARNING] Key value '{json_key}' could not be found in {adress}. Resorting to default value ('{default_val}').\nFixing {adress}...")
             try:
-                Utils.save_value_to_settings(adress, json_key, default_val)
+                Utils.save_value_to_settings(json_key, default_val)
                 print(f"{json_key} has been fixed in {adress}")
             except Exception as e:
                 print(f"{json_key} could not have been fixed in {adress}\n{e}")
@@ -57,6 +59,8 @@ class Utils():
     def get_val_from_json_fix(
         adress:      str,
         json_key:    Literal[
+            "AUTOMATIC_THRESHOLD_AT_LOAD",
+            "SHOW_THRESHOLD_ON_CHARTS",
             "CUT_REMAINDER_SAMPLES_PAA",
             "CUT_REMAINDER_SAMPLES_DWELLTIMES",
             "SEGMENTING_STYLE_PAA",
@@ -73,6 +77,8 @@ class Utils():
 
         if not default_val:
             default_settings_dict = {
+                "AUTOMATIC_THRESHOLD_AT_LOAD":             True,
+                "SHOW_THRESHOLD_ON_CHARTS":                True,
                 "CUT_REMAINDER_SAMPLES_PAA":               True,
                 "CUT_REMAINDER_SAMPLES_DWELLTIMES":        True,
                 "SEGMENTING_STYLE_PAA":                   "count",
@@ -83,7 +89,7 @@ class Utils():
                 "BINARY_SONIFICATION_NOTE_DURATION_MILIS": 300,
                 "ANAL_SONIFICATION_NOTE_DURATION_MILIS":   300,
                 "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES":  20,
-                "ANAL_SONIFICATION_LOWEST_NOTE":           "D3"}
+                "ANAL_SONIFICATION_LOWEST_NOTE":          "D3"}
             default_val = default_settings_dict[json_key]
 
         try:
@@ -96,14 +102,11 @@ class Utils():
 
     @staticmethod
     def change_setting_to_opposite(
-        adress:      str,
-        json_key:    str,
-        default_val: str|bool
+        json_key:    str
     ) -> None:
         setting_val = Utils.get_val_from_json_fix(
-            adress,
-            json_key,
-            default_val)
+            Utils.settings_rel_path,
+            json_key)
 
         if isinstance(setting_val, bool):
             setting_val = not setting_val
@@ -112,7 +115,7 @@ class Utils():
         else:
             raise ValueError("ERROR: Incorrect value in settings.json")
 
-        Utils.save_value_to_settings(adress, json_key, setting_val)
+        Utils.save_value_to_settings(json_key, setting_val)
         return
 
 

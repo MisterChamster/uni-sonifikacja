@@ -1,41 +1,37 @@
 from pathlib import Path
 import os
-from src.askers import Askers
-from src.datasonif import DataSonif
-from src.utils import Utils
+
+from src.askers        import Askers
+from src.datasonif     import DataSonif
+from src.utils         import Utils
 from src.settings_loop import settings_loop
 
 
 
+settings_rel_path = "src/settings.json"
+notes_rel_path    = "src/notes.json"
+Askers.settings_rel_path = settings_rel_path
+Askers.notes_rel_path    = notes_rel_path
+Utils.settings_rel_path = settings_rel_path
+Utils.notes_rel_path    = notes_rel_path
+
 def mainloop() -> None:
-    settings_rel_path = "src/settings.json"
-    notes_rel_path = "src/notes.json"
     while True:
-        print("Choose data file in txt/csv format:")
-        datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
-        if not datafile_path:
-            print("No file has been chosen.")
+        loaded_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
+        temp_success:     bool = loaded_data.get_datafile_path()
+        if not temp_success:
             return
-        if not datafile_path.endswith((".txt", ".csv")):
-            print("Wrong file format.")
-            return
-        print(f"{datafile_path}\n\n")
-
-        asker_segment = Askers.ask_segmentation(True)
-        if not asker_segment:
-            return
-        print("\n")
-
-        datafile_path = Path(datafile_path)
-        loaded_data   = DataSonif(datafile_path, asker_segment)
+        loaded_data.load_data()
 
         while True:
-            segment_info = "False" if asker_segment == 1      else str(asker_segment)
-            ordering  = "Original" if loaded_data.is_og_order else "Reverse"
-            sign      = "Original" if loaded_data.is_og_sign  else "Opposite"
+            ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
+            sign:              str = "Original" if loaded_data.is_og_sign  else "Opposite"
+            downsampling_info: str = ("None"
+                                      if loaded_data.downsampling_performed == []
+                                      else " ,".join(map(str, loaded_data.downsampling_performed)))
 
             print(f"Chosen file:           {loaded_data.file_path}")
-            print(f"Data segmentation:     {segment_info}")
+            print(f"Data downsampling:     {downsampling_info}")
             print(f"Data order (x):        {ordering}")
             print(f"Data sign (y):         {sign}")
             print(f"Data normalization:    {loaded_data.is_normalized}")
@@ -49,8 +45,14 @@ def mainloop() -> None:
             # ========================== DATA ALTERING =========================
             if action_asker == "alter_data":
                 while True:
+                    ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
+                    sign:              str = "Original" if loaded_data.is_og_sign  else "Opposite"
+                    downsampling_info: str = ("None"
+                                              if loaded_data.downsampling_performed == []
+                                              else " ,".join(map(str, loaded_data.downsampling_performed)))
+
                     print(f"Chosen file:              {loaded_data.file_path}")
-                    print(f"Data segmentation:        {segment_info}")
+                    print(f"Data downsampling:        {downsampling_info}")
                     print(f"Data order (x):           {ordering}")
                     print(f"Data sign (y):            {sign}")
                     print(f"Data normalization:       {loaded_data.is_normalized}")
@@ -58,14 +60,17 @@ def mainloop() -> None:
                     print(f"State threshold:          {loaded_data.threshold}")
                     print(f"Num of loaded samples:    {loaded_data.get_sample_count()}")
                     print()
-                    alter_asker = Askers.ask_alter_data()
+                    is_treshold = False if not loaded_data.threshold else True
+                    alter_asker = Askers.ask_alter_data(
+                        loaded_data.is_normalized,
+                        is_treshold,
+                        loaded_data.is_converted_to_binary)
                     print("\n")
 
                     if not alter_asker:
-                        print("\n")
                         break
 
-                    elif alter_asker   == "reverse_order":
+                    elif alter_asker == "reverse_order":
                         print("Reversing order...")
                         loaded_data.reverse_data_order()
                         print("Done!\n\n")
@@ -85,14 +90,14 @@ def mainloop() -> None:
                         loaded_data.calculate_threshold()
                         print("Done!\n\n")
 
-                    elif alter_asker == "segment_data":
-                        asker_segment = Askers.ask_segmentation()
-                        if asker_segment is None or asker_segment == 1:
+                    elif alter_asker == "downsample_data":
+                        asker_downsample = Askers.ask_downsampling()
+                        if not asker_downsample or asker_downsample == 1:
                             print("\n")
                             continue
 
-                        print("\nSegmenting data...")
-                        loaded_data.segment_data(asker_segment)
+                        print("\nDownsampling data...")
+                        loaded_data.downsample_data(asker_downsample)
                         print("Done!\n\n")
 
                     elif alter_asker == "apply_paa":
@@ -161,17 +166,13 @@ def mainloop() -> None:
                         print("Done!\n\n")
 
                     elif alter_asker == "original_data":
-                        if not os.path.exists(datafile_path):
-                            print(f"Chosen file no longer exists in path {datafile_path}")
+                        if not os.path.exists(loaded_data.file_path):
+                            print(f"Chosen file no longer exists in path {loaded_data.file_path}")
                             continue
-                        print(datafile_path, "\n")
+                        print(loaded_data.file_path, "\n")
 
-                        asker_segment = Askers.ask_segmentation(True)
-                        if not asker_segment:
-                            return
-                        print("\n")
-
-                        loaded_data = DataSonif(datafile_path, asker_segment)
+                        loaded_data.load_data()
+                        continue
 
 
             # ========================== OTHER OPTIONS =========================
@@ -184,10 +185,10 @@ def mainloop() -> None:
                 if not asker_sonif_type:
                     continue
                 elif asker_sonif_type == "binary":
-                    loaded_data.binary_sonif_loop(settings_rel_path, notes_rel_path)
+                    loaded_data.binary_sonif_loop()
                     print("\n\n")
                 elif asker_sonif_type == "analog":
-                    loaded_data.analog_sonif_loop(settings_rel_path, notes_rel_path)
+                    loaded_data.analog_sonif_loop(settings_rel_path)
                     print("\n\n")
 
             elif action_asker == "show_chart":
@@ -205,7 +206,13 @@ def mainloop() -> None:
                 print("\n")
 
             elif action_asker == "change_file":
-                break
+                new_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
+                temp_success: bool  = new_data.get_datafile_path()
+                if not temp_success:
+                    print("Data will remain unchanged\n\n")
+                    continue
+                loaded_data = new_data
+                loaded_data.load_data()
 
             elif action_asker == "exit":
                 return
