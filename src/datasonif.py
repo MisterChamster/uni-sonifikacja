@@ -10,6 +10,7 @@ from scipy.io.wavfile  import write
 from src.utils  import Utils
 from src.askers import Askers
 from src.chunk  import Chunk
+from src.note   import Note
 
 
 
@@ -27,18 +28,11 @@ class DataSonif():
     downsampling_performed: list[int]
     is_converted_to_binary: bool
 
-    settings_rel_path: str
-    notes_rel_path:    str
+    settings_rel_path: str = "src/settings.json"
+    notes_rel_path:    str = "src/notes.json"
 
 
-    def __init__(
-        self,
-        in_settings_rel_path: str,
-        in_notes_rel_path:    str
-    ) -> None:
-        self.settings_rel_path = in_settings_rel_path
-        self.notes_rel_path    = in_notes_rel_path
-
+    def __init__(self) -> None:
         self.file_path   = None
         self.data_array  = None
         self.data_sign   = None
@@ -471,7 +465,7 @@ class DataSonif():
 
 
 # ============================ BINARY SONIFICATION ============================
-    def binary_sonification(
+    def binary_sonification_nontest(
         self,
         sample_rate:         int,
         note_duration_milis: int,
@@ -480,18 +474,50 @@ class DataSonif():
     ) -> None:
         note_duration_sec = note_duration_milis / 1000
         audio: list = []
-        t = np.linspace(
-            0,
-            note_duration_sec,
-            int(sample_rate * note_duration_sec),
-            endpoint=False)
+        t = np.linspace(0,
+                        note_duration_sec,
+                        int(sample_rate * note_duration_sec),
+                        endpoint=False)
 
         for val in self.data_array:
             curr_freq = (high_note_freq
                          if val == 1
                          else low_note_freq)
             tone = np.sin(2 * np.pi * curr_freq * t)
-            # Utils.draw_tone(tone, sample_rate)
+            audio.append(tone)
+
+        audio = np.concatenate(audio).astype(np.float32)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
+        return
+
+
+    def binary_sonification(
+        self,
+        sample_rate:         int,
+        note_duration_milis: int,
+        low_note_freq:       float,
+        high_note_freq:      float
+    ) -> None:
+        note_duration_sec: float = note_duration_milis / 1000
+
+        notes_dict = Utils.get_dict_from_json(self.notes_rel_path)
+        lowest_note = next(iter(notes_dict))
+        lowest_freq = notes_dict[lowest_note]
+
+        #GET SAMPLES FOR FREQ - LAMBDA LEN IN SAMPLES
+
+        audio: list = []
+        t = np.linspace(0,
+                        note_duration_sec,
+                        int(sample_rate * note_duration_sec),
+                        endpoint=False)
+
+        for val in self.data_array:
+            curr_freq = (high_note_freq
+                         if val == 1
+                         else low_note_freq)
+            tone = np.sin(2 * np.pi * curr_freq * t)
             audio.append(tone)
 
         audio = np.concatenate(audio).astype(np.float32)
