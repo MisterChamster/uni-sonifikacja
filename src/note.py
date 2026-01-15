@@ -1,4 +1,5 @@
 import numpy as np
+from src.utils import Utils
 
 
 
@@ -36,6 +37,7 @@ class Note():
     #UNSAFE
     def calculate_tone(self) -> None:
         self.tone = np.sin(2 * np.pi * self.freq * self.linspace)
+        Utils.draw_tone(self.tone)
         self.last_freq = self.tone[-1]
         return
 
@@ -53,7 +55,7 @@ class Note():
         if self.tone[-2] < self.tone[-1]:
             return True
         return False
-    
+
 
     def extend_linspace_with_lowest_note(self) -> None:
         lowest_wavelen_sec: float = self.sample_rate / self.lowest_note_wavelen_samples_roundup

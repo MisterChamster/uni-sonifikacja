@@ -242,10 +242,7 @@ class Utils():
 
 
     @staticmethod
-    def draw_tone(
-        tone: np.ndarray,
-        sample_rate: int = 44100
-    ) -> None:
+    def draw_tone(tone: np.ndarray) -> None:
         plt.figure()
         plt.plot(tone)
         plt.xlabel("Sample")

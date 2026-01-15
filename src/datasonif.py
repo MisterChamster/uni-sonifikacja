@@ -515,26 +515,32 @@ class DataSonif():
             sample_rate,
             first_freq,
             note_duration_milis,
-            longest_wavelen_in_samples
-        )
+            longest_wavelen_in_samples)
+        # first_note.extend_linspace_with_lowest_note() NOT NEEDED FOR FIRST
+        # GET LOWEST NOTE IN A SMART WAY! FOR BINARY YOU ONLY HAVE 2 NOTES,
+        # AND FOR ANAL YOU HAVE LOWEST NOTE IN AVAILABLE NOTES LIST!!!!
+        first_note.calculate_tone()
+        audio.append(first_note.get_tone())
 
-        print("BREAK\n"*30)
+        for i in range(1, len(self.data_array)):
+            print(i)
+
+        print("BREAK\n"*10)
 
 
-        for val in self.data_array:
-            curr_freq = (high_note_freq
-                         if val == 1
-                         else low_note_freq)
+        # for val in self.data_array:
+        #     curr_freq = (high_note_freq
+        #                  if val == 1
+        #                  else low_note_freq)
 
-            tone = np.sin(2 * np.pi * curr_freq * t)
-            audio.append(tone)
+        #     tone = np.sin(2 * np.pi * curr_freq * t)
+        #     audio.append(tone)
+
 
         audio = np.concatenate(audio).astype(np.float32)
-        curr_time_str = Utils.get_curr_time_to_name()
-        write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
+        # curr_time_str = Utils.get_curr_time_to_name()
+        # write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
         return
-
-
 
 
 
