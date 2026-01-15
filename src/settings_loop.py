@@ -14,6 +14,10 @@ def settings_loop(settings_rel_adress: str) -> None:
             Utils.change_setting_to_opposite("AUTOMATIC_THRESHOLD_AT_LOAD")
             print("Value successfully changed\n")
 
+        elif asker_settings == "show_thold_chart":
+            Utils.change_setting_to_opposite("SHOW_THRESHOLD_ON_CHARTS")
+            print("Value successfully changed\n")
+
         elif asker_settings == "change_cutting_setting_paa":
             Utils.change_setting_to_opposite("CUT_REMAINDER_SAMPLES_PAA")
             print("Value successfully changed\n")

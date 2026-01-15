@@ -168,6 +168,7 @@ class Askers():
     def ask_settings() -> str:
         returns_dict = {
             "at": "auto_threshold_at_load",
+            "ct": "show_thold_chart",
             "cp": "change_cutting_setting_paa",
             "cd": "change_cutting_setting_dwelltimes",
             "sp": "change_segmenting_setting_paa",
@@ -178,6 +179,7 @@ class Askers():
 
         # Get current settings from settings.json
         curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
+        curr_sett_show_thold_chart:       bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SHOW_THRESHOLD_ON_CHARTS")
         curr_sett_cut_samples_paa:        bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_PAA")
         curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
@@ -186,7 +188,9 @@ class Askers():
         curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
 
         msg_auto_thold_disable = "Disable automatic calculation of threshold during data loading (currently enabled)"
-        msg_auto_thold_enable  = "Enable automatic calculation of threshold during data loading (currently disable)"
+        msg_auto_thold_enable  = "Enable automatic calculation of threshold during data loading (currently disabled)"
+        msg_show_thold_disable = "Disable showing threshold on charts (currently enabled)"
+        msg_show_thold_enable  = "Enable showing threshold on charts (currently disabled)"
         msg_cutting_paa_disable = "Disable cutting remainder data during PAA (currently enabled)"
         msg_cutting_paa_enable  = "Enable cutting remainder data during PAA (currently disabled)"
         msg_cutting_dtimes_disable = "Disable cutting remainder data during dwell times conversion (currently enabled)"
@@ -199,6 +203,9 @@ class Askers():
         msg_auto_thold = (msg_auto_thold_disable
                           if curr_sett_auto_thold
                           else msg_auto_thold_enable)
+        msg_show_thold = (msg_show_thold_disable
+                          if curr_sett_show_thold_chart
+                          else msg_show_thold_enable)
         msg_cutting_paa = (msg_cutting_paa_disable
                            if curr_sett_cut_samples_paa
                            else msg_cutting_paa_enable)
@@ -219,6 +226,7 @@ class Askers():
         while True:
             print( "Choose an action:\n"
                   f"at - {msg_auto_thold}\n"
+                  f"ct - {msg_show_thold}"
                   f"cp - {msg_cutting_paa}\n"
                   f"cd - {msg_cutting_dtimes}\n"
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
