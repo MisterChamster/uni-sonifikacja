@@ -80,7 +80,7 @@ class Note():
         # TONE IS REVERSED FOR FAST POPPING
         reversed_tone = self.tone[::-1]
         if not self.tone:
-            raise TypeError("[ERROR] Code is written wrong. No tone is calculated.")
+            raise TypeError("[ERROR] Code is written wrong. No tone has been calculated.")
         for _ in range(longest_wavelen_in_samples):
             if not is_freq_rising and self.is_freq_rising_end():
                 reversed_tone.pop()
@@ -93,19 +93,21 @@ class Note():
                 continue
             else:
                 break
-            # NEED NOTE LEN IN SAMPLES VAR
-            # If reversed tone length is lower then note length - error
 
-            # FREQS ARE SIMILAR
-            popped_tone = reversed_tone[::-1]
-            # HERE, we need required and current len in samples
+        # If reversed tone length is lower then note length
+        if len(reversed_tone) < self.og_length_samples:
+            raise ValueError("[ERROR] Code is written wrong. New tone length is shorter than it should.")
+
+        # FREQS ARE SIMILAR
+        popped_tone = reversed_tone[::-1]
+        # HERE, we need required and current len in samples
 
 
-            # If not are similar
-            # COME BACK HERE
-            # My approximation threshold will be 0.05. This value can be changed,
-            # but I think that it'll make little, if any, noticeable difference.
-            # That value probably can be safely lowered l8r!
+        # If not are similar
+        # COME BACK HERE
+        # My approximation threshold will be 0.05. This value can be changed,
+        # but I think that it'll make little, if any, noticeable difference.
+        # That value probably can be safely lowered l8r!
         return
 
 
