@@ -87,7 +87,7 @@ class Note():
             elif is_freq_rising and not self.is_freq_rising_end():
                 reversed_tone = reversed_tone[:-1]
                 continue
-            elif not self.are_freqs_similar(prev_note_last_freq, self.tone[-1]):
+            elif not self.are_freqs_similar(prev_note_last_freq, reversed_tone[-1]):
                 reversed_tone = reversed_tone[:-1]
                 continue
             else:
