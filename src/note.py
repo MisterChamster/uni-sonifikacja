@@ -55,7 +55,7 @@ class Note():
 
     # OK
     def calculate_tone(self) -> None:
-        self.tone = np.sin(2 * np.pi * self.freq * self.linspace)
+        self.tone      = np.sin(2 * np.pi * self.freq * self.linspace)
         self.last_freq = self.tone[-1]
         return
 
@@ -73,15 +73,14 @@ class Note():
 
     def cut_tone_to_match(
         self,
-        is_freq_rising:             bool,
-        prev_note_last_freq:        float,
-        longest_wavelen_in_samples: int
+        is_freq_rising:      bool,
+        prev_note_last_freq: float
     ) -> None:
         # TONE IS REVERSED FOR FAST POOPING
         reversed_tone = self.tone[::-1]
         if not self.tone:
             raise TypeError("[ERROR] Code is written wrong. No tone has been calculated.")
-        for _ in range(longest_wavelen_in_samples):
+        for _ in range(self.lowest_note_wavelen_samples_roundup):
             if not is_freq_rising and self.is_freq_rising_end():
                 reversed_tone.pop()
                 continue

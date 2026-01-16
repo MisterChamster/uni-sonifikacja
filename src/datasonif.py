@@ -500,7 +500,6 @@ class DataSonif():
         low_note_freq:       float,
         high_note_freq:      float
     ) -> None:
-        note_duration_sec: float = note_duration_milis / 1000
         audio: list = []
 
         # notes_dict = Utils.get_dict_from_json(self.notes_rel_path)
@@ -533,10 +532,12 @@ class DataSonif():
                 note_duration_milis,
                 longest_wavelen_in_samples)
             temp_note.extend_with_lowest_note()
-            temp_note.calculate_tone()
 
             is_freq_rising = last_note.is_freq_rising_end()
             last_freq = last_note.get_last_freq()
+            temp_note.cut_tone_to_match(
+                is_freq_rising,
+                last_freq)
             print(i)
 
         print("BREAK\n"*10)
@@ -552,8 +553,8 @@ class DataSonif():
 
 
         audio = np.concatenate(audio).astype(np.float32)
-        # curr_time_str = Utils.get_curr_time_to_name()
-        # write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
         return
 
 
