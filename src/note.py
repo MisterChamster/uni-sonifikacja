@@ -12,8 +12,10 @@ class Note():
     linspace:  np.ndarray#[np.float64]
     tone:      np.ndarray | None#IDK tone val types
     last_freq: float | None
-    length_samples: int
+    og_length_samples: int
+    curr_length_samples: int
 
+# ================================== INITIAL ==================================
     #OK
     def __init__(
         self,
@@ -31,9 +33,15 @@ class Note():
         self.tone      = None
 
         self.calculate_linspace_and_lensamples()
+        self.calc_og_samplelen()
         return
 
+    def calc_og_samplelen(self):
+        len_in_sec = self.length_ms / 1000
+        self.og_length_samples = self.sample_rate * len_in_sec
 
+
+# ============================== FUNCTIONALITIES ==============================
     # OK
     def calculate_linspace_and_lensamples(self) -> None:
         len_in_sec = self.length_ms / 1000
@@ -41,7 +49,7 @@ class Note():
             len_in_sec,
             int(self.sample_rate * len_in_sec),
             endpoint=False)
-        self.length_samples = self.sample_rate * len_in_sec
+        self.curr_length_samples = self.sample_rate * len_in_sec
         return
 
 
