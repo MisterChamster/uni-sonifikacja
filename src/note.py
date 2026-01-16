@@ -12,7 +12,7 @@ class Note():
     linspace:  np.ndarray#[np.float64]
     tone:      np.ndarray | None#IDK tone val types
     last_freq: float | None
-    og_length_samples: int
+    og_length_samples:   int
     curr_length_samples: int
 
 # ================================== INITIAL ==================================
@@ -73,11 +73,11 @@ class Note():
 
     def cut_tone_to_match(
         self,
-        is_freq_rising: bool,
-        last_freq: float,
+        is_freq_rising:             bool,
+        prev_note_last_freq:        float,
         longest_wavelen_in_samples: int
     ) -> None:
-        # TONE IS REVERSED FOR FAST POPPING
+        # TONE IS REVERSED FOR FAST POOPING
         reversed_tone = self.tone[::-1]
         if not self.tone:
             raise TypeError("[ERROR] Code is written wrong. No tone has been calculated.")
@@ -88,7 +88,7 @@ class Note():
             elif is_freq_rising and not self.is_freq_rising_end():
                 reversed_tone.pop()
                 continue
-            elif not self.are_freqs_similar(last_freq, self.tone[-1]):
+            elif not self.are_freqs_similar(prev_note_last_freq, self.tone[-1]):
                 reversed_tone.pop()
                 continue
             else:
@@ -98,16 +98,12 @@ class Note():
         if len(reversed_tone) < self.og_length_samples:
             raise ValueError("[ERROR] Code is written wrong. New tone length is shorter than it should.")
 
-        # FREQS ARE SIMILAR
         popped_tone = reversed_tone[::-1]
-        # HERE, we need required and current len in samples
+        self.tone = popped_tone[:self.og_length_samples]
+        self.last_freq = self.tone[-1]
 
-
-        # If not are similar
-        # COME BACK HERE
-        # My approximation threshold will be 0.05. This value can be changed,
-        # but I think that it'll make little, if any, noticeable difference.
-        # That value probably can be safely lowered l8r!
+        self.length_ms = (len(self.tone) / self.sample_rate) * 1000
+        self.calculate_linspace_and_lensamples()
         return
 
 
@@ -123,6 +119,9 @@ class Note():
 
     # OK
     def are_freqs_similar(freq1: float, freq2: float) -> bool:
+        # My approximation threshold will be 0.05. This value can be changed,
+        # but I think that it'll make little, if any, noticeable difference.
+        # That value probably can be safely lowered l8r!
         threshold_var = 0.05
         if abs(freq1 - freq2) <= threshold_var:
             return True
