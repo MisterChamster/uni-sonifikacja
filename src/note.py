@@ -5,13 +5,13 @@ from src.utils import Utils
 
 class Note():
     sample_rate: int
-    freq: float
-    length_ms: int
-    length_sec: float
-    linspace: np.ndarray#[np.float64]
-    tone: np.ndarray#IDK
+    freq:        float
+    length_ms:   int
+    length_sec:  float
+    linspace:    np.ndarray#[np.float64]
+    tone:        np.ndarray#IDK
+    last_freq:   float
     lowest_note_wavelen_samples_roundup: int
-    last_freq: float
 
     #Not finished
     def __init__(
@@ -75,17 +75,39 @@ class Note():
         return
 
 
+    def are_freqs_similar(freq1: float, freq2: float) -> bool:
+        threshold_var = 0.05
+        if abs(freq1 - freq2) <= threshold_var:
+            return True
+        return False
+
+
     def cut_tone_to_match(
         self,
         is_freq_rising: bool,
         last_freq: float,
         longest_wavelen_in_samples: int
     ) -> None:
+        reversed_tone = self.tone[::-1]
         for _ in range(longest_wavelen_in_samples):
-            if not is_freq_rising and self.is_freq_rising_start():
+            if not is_freq_rising and self.is_freq_rising_end():
+                reversed_tone.pop()
                 continue
-            if is_freq_rising and not self.is_freq_rising_start():
+            elif is_freq_rising and not self.is_freq_rising_end():
+                reversed_tone.pop()
                 continue
+            elif not self.are_freqs_similar(last_freq, self.tone[-1]):
+                reversed_tone.pop()
+                continue
+            else:
+                break
+            # NEED NOTE LEN IN SAMPLES VAR
+            # If reversed tone length is lower then note length - error
+
+            # FREQS ARE SIMILAR
+            popped_tone = reversed_tone[::-1]
+
+
             # If not are similar
             # COME BACK HERE
             # My approximation threshold will be 0.05. This value can be changed,
