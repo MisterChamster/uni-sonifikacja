@@ -7,13 +7,14 @@ class Note():
     sample_rate: int
     freq:        float
     length_ms:   int
-    linspace:    np.ndarray#[np.float64]
-    tone:        np.ndarray | None#IDK tone val types
-    last_freq:   float
-    length_samples: int
     lowest_note_wavelen_samples_roundup: int
 
-    #Not finished
+    linspace:  np.ndarray#[np.float64]
+    tone:      np.ndarray | None#IDK tone val types
+    last_freq: float | None
+    length_samples: int
+
+    #OK
     def __init__(
         self,
         sample_rate: int,
@@ -25,13 +26,16 @@ class Note():
         self.freq = freq
         self.length_ms = length_ms
         self.lowest_note_wavelen_samples_roundup = lowest_note_wavelen_samples_roundup
-        self.tone = None
 
-        self.calculate_linspace()
+        self.last_freq = None
+        self.tone      = None
+
+        self.calculate_linspace_and_lensamples()
         return
 
 
-    def calculate_linspace(self) -> None:
+    # OK
+    def calculate_linspace_and_lensamples(self) -> None:
         len_in_sec = self.length_ms / 1000
         self.linspace = np.linspace(0,
             len_in_sec,
@@ -41,39 +45,22 @@ class Note():
         return
 
 
-    #UNSAFE
+    # OK
     def calculate_tone(self) -> None:
         self.tone = np.sin(2 * np.pi * self.freq * self.linspace)
-        # Utils.draw_tone(self.tone)
-        # for i in range(30):
-        #     print("HELLO", str(i) + ".", self.tone[i])
         self.last_freq = self.tone[-1]
         return
 
 
-    # This does not check if tone is calculated for faster working
-    # Check if tone is calculated before loop that uses this fun!
-    def is_freq_rising_end(self) -> bool:
-        if self.tone[-2] < self.tone[-1]:
-            return True
-        return False
-
-
+    # OK
     def extend_with_lowest_note(self) -> None:
         lowest_wavelen_sec: float = self.sample_rate / self.lowest_note_wavelen_samples_roundup
         lowest_wavelen_ms:  float = lowest_wavelen_sec / 1000
         self.length_ms += lowest_wavelen_ms
 
-        self.calculate_linspace()
+        self.calculate_linspace_and_lensamples()
+        self.calculate_tone()
         return
-
-
-    # OK
-    def are_freqs_similar(freq1: float, freq2: float) -> bool:
-        threshold_var = 0.05
-        if abs(freq1 - freq2) <= threshold_var:
-            return True
-        return False
 
 
     def cut_tone_to_match(
@@ -103,6 +90,7 @@ class Note():
 
             # FREQS ARE SIMILAR
             popped_tone = reversed_tone[::-1]
+            # HERE, we need required and current len in samples
 
 
             # If not are similar
@@ -113,6 +101,25 @@ class Note():
         return
 
 
+# =============================== BOOL CHECKERS ===============================
+    # This does not check if tone is calculated for faster working
+    # Check if tone is calculated before loop that uses this fun!
+    # OK
+    def is_freq_rising_end(self) -> bool:
+        if self.tone[-2] < self.tone[-1]:
+            return True
+        return False
+
+
+    # OK
+    def are_freqs_similar(freq1: float, freq2: float) -> bool:
+        threshold_var = 0.05
+        if abs(freq1 - freq2) <= threshold_var:
+            return True
+        return False
+
+
+# ================================== GETTERS ==================================
     def get_tone(self) -> np.ndarray:
         return self.tone
 
