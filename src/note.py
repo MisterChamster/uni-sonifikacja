@@ -37,7 +37,9 @@ class Note():
     #UNSAFE
     def calculate_tone(self) -> None:
         self.tone = np.sin(2 * np.pi * self.freq * self.linspace)
-        Utils.draw_tone(self.tone)
+        # Utils.draw_tone(self.tone)
+        # for i in range(30):
+        #     print("HELLO", str(i) + ".", self.tone[i])
         self.last_freq = self.tone[-1]
         return
 
@@ -85,4 +87,8 @@ class Note():
             if is_freq_rising and not self.is_freq_rising_start():
                 continue
             # If not are similar
+            # COME BACK HERE
+            # My approximation threshold will be 0.05. This value can be changed,
+            # but I think that it'll make little, if any, noticeable difference.
+            # That value probably can be safely lowered l8r!
         return

@@ -520,6 +520,7 @@ class DataSonif():
         # last_note.extend_linspace_with_lowest_note() NOT NEEDED FOR FIRST
         # GET LOWEST NOTE IN A SMART WAY! FOR BINARY YOU ONLY HAVE 2 NOTES,
         # AND FOR ANAL YOU HAVE LOWEST NOTE IN AVAILABLE NOTES LIST!!!!
+        last_note.calculate_tone()
         audio.append(last_note.get_tone())
 
         for i in range(1, len(self.data_array)):
