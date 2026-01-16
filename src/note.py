@@ -49,7 +49,7 @@ class Note():
             len_in_sec,
             int(self.sample_rate * len_in_sec),
             endpoint=False)
-        self.curr_length_samples = self.sample_rate * len_in_sec
+        self.curr_length_samples = int(self.sample_rate * len_in_sec)
         return
 
 
