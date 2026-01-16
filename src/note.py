@@ -78,17 +78,17 @@ class Note():
     ) -> None:
         # TONE IS REVERSED FOR FAST POOPING
         reversed_tone = self.tone[::-1]
-        if not self.tone:
+        if self.tone is None:
             raise TypeError("[ERROR] Code is written wrong. No tone has been calculated.")
         for _ in range(self.lowest_note_wavelen_samples_roundup):
             if not is_freq_rising and self.is_freq_rising_end():
-                reversed_tone.pop()
+                reversed_tone = reversed_tone[:-1]
                 continue
             elif is_freq_rising and not self.is_freq_rising_end():
-                reversed_tone.pop()
+                reversed_tone = reversed_tone[:-1]
                 continue
             elif not self.are_freqs_similar(prev_note_last_freq, self.tone[-1]):
-                reversed_tone.pop()
+                reversed_tone = reversed_tone[:-1]
                 continue
             else:
                 break
@@ -117,7 +117,7 @@ class Note():
 
 
     # OK
-    def are_freqs_similar(freq1: float, freq2: float) -> bool:
+    def are_freqs_similar(self, freq1: float, freq2: float) -> bool:
         # My approximation threshold will be 0.05. This value can be changed,
         # but I think that it'll make little, if any, noticeable difference.
         # That value probably can be safely lowered l8r!

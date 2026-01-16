@@ -622,7 +622,7 @@ class DataSonif():
                         high_note_freq)
                     print("Done!\n\n")
                 except Exception as e:
-                    print("An exception occurred during binary sonification")
+                    print("[ERROR] An exception occurred during binary sonification")
                     print(e)
                 continue
 
