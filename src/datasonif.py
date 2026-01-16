@@ -517,7 +517,7 @@ class DataSonif():
             first_freq,
             note_duration_milis,
             longest_wavelen_in_samples)
-        # last_note.extend_linspace_with_lowest_note() NOT NEEDED FOR FIRST
+        # last_note.extend_with_lowest_note() NOT NEEDED FOR FIRST
         # GET LOWEST NOTE IN A SMART WAY! FOR BINARY YOU ONLY HAVE 2 NOTES,
         # AND FOR ANAL YOU HAVE LOWEST NOTE IN AVAILABLE NOTES LIST!!!!
         last_note.calculate_tone()
@@ -532,7 +532,7 @@ class DataSonif():
                 curr_freq,
                 note_duration_milis,
                 longest_wavelen_in_samples)
-            temp_note.extend_linspace_with_lowest_note()
+            temp_note.extend_with_lowest_note()
             temp_note.calculate_tone()
 
             is_freq_rising = last_note.is_freq_rising_end()

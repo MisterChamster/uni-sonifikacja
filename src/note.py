@@ -7,30 +7,36 @@ class Note():
     sample_rate: int
     freq:        float
     length_ms:   int
-    length_sec:  float
     linspace:    np.ndarray#[np.float64]
     tone:        np.ndarray#IDK
     last_freq:   float
+    length_samples: int
     lowest_note_wavelen_samples_roundup: int
 
     #Not finished
     def __init__(
         self,
-        in_s_rate: int,
-        in_freq: float,
-        in_len_ms: int,
-        in_longest_wavelen_samples: int
+        sample_rate: int,
+        freq:        float,
+        length_ms:   int,
+        lowest_note_wavelen_samples_roundup: int
     ) -> None:
-        self.sample_rate = in_s_rate
-        self.freq = in_freq
-        self.length_ms = in_len_ms
-        self.length_sec = in_len_ms / 1000
-        self.lowest_note_wavelen_samples_roundup = in_longest_wavelen_samples
+        self.sample_rate = sample_rate
+        self.freq = freq
+        self.length_ms = length_ms
+        self.lowest_note_wavelen_samples_roundup = lowest_note_wavelen_samples_roundup
 
+        self.calculate_linspace()
+        return
+
+
+    def calculate_linspace(self) -> None:
+        len_in_sec = self.length_ms / 1000
         self.linspace = np.linspace(0,
-            self.length_sec,
-            int(self.sample_rate * self.length_sec),
+            len_in_sec,
+            int(self.sample_rate * len_in_sec),
             endpoint=False)
+        self.length_samples = self.sample_rate * len_in_sec
         return
 
 
@@ -42,14 +48,6 @@ class Note():
         #     print("HELLO", str(i) + ".", self.tone[i])
         self.last_freq = self.tone[-1]
         return
-
-
-    def get_tone(self) -> np.ndarray:
-        return self.tone
-
-
-    def get_last_freq(self) -> float:
-        return self.last_freq
 
 
     # Unsafe!
@@ -64,14 +62,11 @@ class Note():
         return False
 
 
-    def extend_linspace_with_lowest_note(self) -> None:
+    def extend_with_lowest_note(self) -> None:
         lowest_wavelen_sec: float = self.sample_rate / self.lowest_note_wavelen_samples_roundup
-        new_length = lowest_wavelen_sec + self.length_sec
+        self.length_sec += lowest_wavelen_sec
 
-        self.linspace = np.linspace(0,
-            self.length_sec,
-            int(self.sample_rate * new_length),
-            endpoint=False)
+        self.calculate_linspace()
         return
 
 
@@ -114,3 +109,11 @@ class Note():
             # but I think that it'll make little, if any, noticeable difference.
             # That value probably can be safely lowered l8r!
         return
+
+
+    def get_tone(self) -> np.ndarray:
+        return self.tone
+
+
+    def get_last_freq(self) -> float:
+        return self.last_freq
