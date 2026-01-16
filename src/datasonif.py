@@ -531,7 +531,9 @@ class DataSonif():
                 curr_freq,
                 note_duration_milis,
                 longest_wavelen_in_samples)
+            print("B4 EXTENSION", temp_note.curr_length_samples)
             temp_note.extend_with_lowest_note()
+            print("AFTER EXTENSION", temp_note.curr_length_samples)
 
             is_freq_rising = last_note.is_freq_rising_end()
             last_freq = last_note.get_last_freq()
@@ -591,7 +593,6 @@ class DataSonif():
             print(f"Sample rate:          {sample_rate}")
             print(f"Amount of notes:      {self.get_sample_count()}")
             print(f"Final audio duration: {audio_len_human}")
-            # print(f"Final audio length (MILI): {final_length_milis}")
             print()
             print("Choose an action:")
             print("d - Change note duration (ms)")

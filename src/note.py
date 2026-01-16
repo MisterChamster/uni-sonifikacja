@@ -91,10 +91,16 @@ class Note():
                 reversed_tone = reversed_tone[:-1]
                 continue
             else:
+                print("...we came in?")
                 break
 
+        # DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE
+        # HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH
+        # DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE
         # If reversed tone length is lower then note length
         if len(reversed_tone) < self.og_length_samples:
+            print("ORIGINAL: ", self.og_length_samples)
+            print("NOT_OG!!: ", len(reversed_tone))
             raise ValueError("[ERROR] Code is written wrong. New tone length is shorter than it should.")
 
         popped_tone = reversed_tone[::-1]
@@ -122,6 +128,8 @@ class Note():
         # but I think that it'll make little, if any, noticeable difference.
         # That value probably can be safely lowered l8r!
         threshold_var = 0.05
+        print("Isn't this where... ", end="")
+        print(freq1, freq2)
         if abs(freq1 - freq2) <= threshold_var:
             return True
         return False
