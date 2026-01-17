@@ -72,14 +72,12 @@ class Note():
         # TONE IS REVERSED FOR FAST POOPING
         reversed_tone = self.tone[::-1]
         for _ in range(self.lowest_note_wavelen_samples_roundup):
+            # CRUCIAL
+            # LOGIC REVERSED, BECAUSE TONE IS REVERSED
             is_reversed_rising: bool = (
-                True
+                False
                 if reversed_tone[-2] < reversed_tone[-1]
-                else False)
-
-            print("Curr note last two vals: ", reversed_tone[-2], reversed_tone[-1])
-            print("Is it rising then?       ", is_reversed_rising)
-            print("\n\n")
+                else True)
 
             if not is_freq_rising and is_reversed_rising:
                 print("FALL 1")
