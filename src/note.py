@@ -6,7 +6,6 @@ from src.utils import Utils
 class Note():
     sample_rate: int
     freq:        float
-    length_ms:   int
     og_sample_amount: int
     lowest_note_wavelen_samples_roundup: int
 
@@ -21,13 +20,11 @@ class Note():
         self,
         sample_rate: int,
         freq:        float,
-        length_ms:   int,
         og_sample_amount: int,
         lowest_note_wavelen_samples_roundup: int
     ) -> None:
         self.sample_rate = sample_rate
         self.freq        = freq
-        self.length_ms   = length_ms
         self.og_sample_amount   = og_sample_amount
         self.curr_sample_amount = og_sample_amount
         self.lowest_note_wavelen_samples_roundup = lowest_note_wavelen_samples_roundup
@@ -55,11 +52,6 @@ class Note():
 
     # OK
     def extend_with_lowest_note(self) -> None:
-        # These three are obsolete (Do you want my love? Is it obsolete?)
-        lowest_wavelen_sec: float = self.sample_rate / self.lowest_note_wavelen_samples_roundup
-        lowest_wavelen_ms:  float = lowest_wavelen_sec / 1000
-        self.length_ms += lowest_wavelen_ms
-
         self.curr_sample_amount += self.lowest_note_wavelen_samples_roundup
         self.calculate_time_vector()
         self.calculate_tone()
@@ -103,7 +95,7 @@ class Note():
         self.tone = popped_tone[:self.og_sample_amount]
         self.last_freq = self.tone[-1]
 
-        self.length_ms = (len(self.tone) / self.sample_rate) * 1000
+        # self.length_ms = (len(self.tone) / self.sample_rate) * 1000
         self.calculate_time_vector()
         return
 

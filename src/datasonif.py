@@ -510,7 +510,6 @@ class DataSonif():
         last_note = Note(
             sample_rate,
             first_freq,
-            note_duration_milis,
             sample_amount_for_note,
             longest_wavelen_in_samples)
         # last_note.extend_with_lowest_note() NOT NEEDED FOR FIRST
@@ -526,7 +525,6 @@ class DataSonif():
             temp_note = Note(
                 sample_rate,
                 curr_freq,
-                note_duration_milis,
                 sample_amount_for_note,
                 longest_wavelen_in_samples)
             print(temp_note.time_vector)
