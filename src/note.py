@@ -63,9 +63,6 @@ class Note():
         is_freq_rising:      bool,
         prev_note_last_freq: float
     ) -> None:
-        print("We are cutting here")
-        print("Previous note was:", prev_note_last_freq)
-        print("Was it rising:    ", is_freq_rising)
         if self.tone is None:
             raise TypeError("[ERROR] Code is written wrong. No tone has been calculated.")
 
@@ -80,19 +77,15 @@ class Note():
                 else True)
 
             if not is_freq_rising and is_reversed_rising:
-                print("FALL 1")
                 reversed_tone = reversed_tone[:-1]
                 continue
             elif is_freq_rising and not is_reversed_rising:
-                print("FALL 2")
                 reversed_tone = reversed_tone[:-1]
                 continue
             elif not self.are_freqs_similar(prev_note_last_freq, reversed_tone[-1]):
-                print("FALL 3")
                 reversed_tone = reversed_tone[:-1]
                 continue
             else:
-                print("FALL 44")
                 # print("They are similar!", prev_note_last_freq, reversed_tone[-1])
                 break
 

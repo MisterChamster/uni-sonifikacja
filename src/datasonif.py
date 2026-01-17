@@ -535,10 +535,6 @@ class DataSonif():
             audio.append(temp_note.get_tone())
             last_note = temp_note
 
-            print(i)
-
-        print("BREAK\n"*5)
-
         audio = np.concatenate(audio).astype(np.float32)
         curr_time_str = Utils.get_curr_time_to_name()
         write(f"output/sonif_binary_{curr_time_str}.wav", self.sample_rate, audio)
