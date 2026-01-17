@@ -541,7 +541,6 @@ class DataSonif():
         return
 
 
-
     def binary_sonif_loop(self) -> None:
         low_note_name: str = Utils.get_val_from_json_fix(
             self.settings_rel_path,
@@ -609,7 +608,7 @@ class DataSonif():
 
 
 # ============================ ANALOG SONIFICATION ============================
-    def analog_sonification(
+    def analog_sonification_OBSOLETE(
         self,
         note_duration_milis: int,
         notes_used:          list[str],
@@ -635,6 +634,64 @@ class DataSonif():
 
             tone = np.sin(2 * np.pi * temp_note_freq * t)
             audio.append(tone)
+
+        audio = np.concatenate(audio).astype(np.float32)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_analog_{curr_time_str}.wav",
+              self.sample_rate,
+              audio)
+        return
+
+
+    def analog_sonification(
+        self,
+        note_duration_milis: int,
+        notes_used:          list[str],
+        notes_dict:          dict[str, float]
+    ) -> None:
+        sample_amount_for_note: int = int((note_duration_milis/1000) * self.sample_rate)
+        bin_count: int = len(notes_used)
+        audio: list = []
+
+        optimal_dict: dict[str, float] = {}
+        for notename in notes_used:
+            optimal_dict[notename] = notes_dict[notename]
+
+        longest_wavelen_freq: float = optimal_dict[notes_used[0]]
+        longest_wavelen_in_samples: int = math.ceil(self.sample_rate / longest_wavelen_freq)
+
+        first_val_bin   = int(self.data_array[0] * bin_count)
+        first_val_bin  -= (first_val_bin == 5)
+        first_note_name = notes_used[first_val_bin]
+        first_freq      = optimal_dict[first_note_name]
+
+        last_note = Note(
+            first_freq,
+            sample_amount_for_note,
+            longest_wavelen_in_samples)
+        last_note.calculate_tone()
+        audio.append(last_note.get_tone())
+
+        for i in range(1, len(self.data_array)):
+            val_bin  = int(self.data_array[i] * bin_count)
+            val_bin -= (val_bin == 5)
+            curr_note_name = notes_used[val_bin]
+            curr_note_freq = optimal_dict[curr_note_name]
+
+            temp_note = Note(
+                curr_note_freq,
+                sample_amount_for_note,
+                longest_wavelen_in_samples)
+            temp_note.extend_with_lowest_note()
+
+            is_freq_rising = last_note.is_freq_rising_end()
+            last_freq = last_note.get_last_freq()
+            temp_note.cut_tone_to_match(
+                is_freq_rising,
+                last_freq)
+
+            audio.append(temp_note.get_tone())
+            last_note = temp_note
 
         audio = np.concatenate(audio).astype(np.float32)
         curr_time_str = Utils.get_curr_time_to_name()
