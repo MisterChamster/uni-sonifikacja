@@ -17,6 +17,11 @@ Utils.notes_rel_path        = notes_rel_path
 DataSonif.settings_rel_path = settings_rel_path
 DataSonif.notes_rel_path    = notes_rel_path
 
+sample_rate: int = Utils.get_val_from_json_fix(
+    settings_rel_path,
+    "SAMPLE_RATE")
+DataSonif.sample_rate = sample_rate
+
 def mainloop() -> None:
     while True:
         loaded_data: DataSonif = DataSonif()
