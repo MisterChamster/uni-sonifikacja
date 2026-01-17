@@ -507,7 +507,6 @@ class DataSonif():
                       if self.data_array[0] == 1
                       else low_note_freq)
         last_note = Note(
-            self.sample_rate,
             first_freq,
             sample_amount_for_note,
             longest_wavelen_in_samples)
@@ -522,7 +521,6 @@ class DataSonif():
                          if self.data_array[i] == 1
                          else low_note_freq)
             temp_note = Note(
-                self.sample_rate,
                 curr_freq,
                 sample_amount_for_note,
                 longest_wavelen_in_samples)
