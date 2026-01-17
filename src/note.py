@@ -96,7 +96,7 @@ class Note():
         self.tone = popped_tone[:self.og_sample_amount]
         self.last_freq = self.tone[-1]
 
-        # self.length_ms = (len(self.tone) / self.sample_rate) * 1000
+        self.curr_sample_amount = self.og_sample_amount
         self.calculate_time_vector()
         return
 
