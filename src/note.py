@@ -64,10 +64,11 @@ class Note():
         is_freq_rising:      bool,
         prev_note_last_freq: float
     ) -> None:
-        # TONE IS REVERSED FOR FAST POOPING
-        reversed_tone = self.tone[::-1]
         if self.tone is None:
             raise TypeError("[ERROR] Code is written wrong. No tone has been calculated.")
+
+        # TONE IS REVERSED FOR FAST POOPING
+        reversed_tone = self.tone[::-1]
         for _ in range(self.lowest_note_wavelen_samples_roundup):
             if not is_freq_rising and self.is_freq_rising_end():
                 reversed_tone = reversed_tone[:-1]
