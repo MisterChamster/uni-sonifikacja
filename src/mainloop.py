@@ -22,7 +22,7 @@ sample_rate: int = Utils.get_val_from_json_fix(
     settings_rel_path,
     "SAMPLE_RATE")
 DataSonif.sample_rate = sample_rate
-Note.sample_rate = sample_rate
+Note.sample_rate      = sample_rate
 
 
 def mainloop() -> None:
@@ -198,7 +198,7 @@ def mainloop() -> None:
                     loaded_data.binary_sonif_loop()
                     print("\n\n")
                 elif asker_sonif_type == "analog":
-                    loaded_data.analog_sonif_loop(settings_rel_path)
+                    loaded_data.analog_sonif_loop()
                     print("\n\n")
 
             elif action_asker == "show_chart":
