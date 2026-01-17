@@ -10,7 +10,7 @@ class Note():
     og_sample_amount: int
     lowest_note_wavelen_samples_roundup: int
 
-    linspace:  np.ndarray#[np.float64]
+    time_vector:  np.ndarray#[np.float64]
     tone:      np.ndarray | None#IDK tone val types
     last_freq: float | None
     curr_sample_amount: int
@@ -35,15 +35,15 @@ class Note():
         self.last_freq = None
         self.tone      = None
 
-        self.calculate_linspace()
+        self.calculate_time_vector()
         return
 
 
 # ============================== FUNCTIONALITIES ==============================
     # OK
-    def calculate_linspace(self) -> None:
+    def calculate_time_vector(self) -> None:
         len_in_sec = self.length_ms / 1000
-        self.linspace = np.linspace(0,
+        self.time_vector = np.linspace(0,
             len_in_sec,
             int(self.sample_rate * len_in_sec),
             endpoint=False)
@@ -52,7 +52,7 @@ class Note():
 
     # OK
     def calculate_tone(self) -> None:
-        self.tone      = np.sin(2 * np.pi * self.freq * self.linspace)
+        self.tone      = np.sin(2 * np.pi * self.freq * self.time_vector)
         self.last_freq = self.tone[-1]
         return
 
@@ -64,7 +64,7 @@ class Note():
         self.length_ms += lowest_wavelen_ms
         self.curr_sample_amount += self.lowest_note_wavelen_samples_roundup
 
-        self.calculate_linspace()
+        self.calculate_time_vector()
         self.calculate_tone()
         return
 
@@ -107,7 +107,7 @@ class Note():
         self.last_freq = self.tone[-1]
 
         self.length_ms = (len(self.tone) / self.sample_rate) * 1000
-        self.calculate_linspace()
+        self.calculate_time_vector()
         return
 
 

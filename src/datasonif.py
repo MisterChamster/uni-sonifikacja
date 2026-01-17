@@ -529,7 +529,7 @@ class DataSonif():
                 note_duration_milis,
                 sample_amount_for_note,
                 longest_wavelen_in_samples)
-            print(temp_note.linspace)
+            print(temp_note.time_vector)
             print("B4 EXTENSION", temp_note.curr_sample_amount)
             temp_note.extend_with_lowest_note()
             print("AFTER EXTENSION", temp_note.curr_sample_amount)
