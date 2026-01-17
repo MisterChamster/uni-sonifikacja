@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy  as np
+import math
 import matplotlib.pyplot as plt
 
 from matplotlib.ticker import MultipleLocator
@@ -10,6 +11,7 @@ from scipy.io.wavfile  import write
 from src.utils  import Utils
 from src.askers import Askers
 from src.chunk  import Chunk
+from src.note   import Note
 
 
 
@@ -27,18 +29,12 @@ class DataSonif():
     downsampling_performed: list[int]
     is_converted_to_binary: bool
 
-    settings_rel_path: str
-    notes_rel_path:    str
+    settings_rel_path: str = "src/settings.json"
+    notes_rel_path:    str = "src/notes.json"
+    sample_rate:       int = 44100
 
 
-    def __init__(
-        self,
-        in_settings_rel_path: str,
-        in_notes_rel_path:    str
-    ) -> None:
-        self.settings_rel_path = in_settings_rel_path
-        self.notes_rel_path    = in_notes_rel_path
-
+    def __init__(self) -> None:
         self.file_path   = None
         self.data_array  = None
         self.data_sign   = None
@@ -471,32 +467,77 @@ class DataSonif():
 
 
 # ============================ BINARY SONIFICATION ============================
-    def binary_sonification(
+    def binary_sonification_OBSOLETE(
         self,
-        sample_rate:         int,
         note_duration_milis: int,
         low_note_freq:       float,
         high_note_freq:      float
     ) -> None:
         note_duration_sec = note_duration_milis / 1000
         audio: list = []
-        t = np.linspace(
-            0,
-            note_duration_sec,
-            int(sample_rate * note_duration_sec),
-            endpoint=False)
+        t = np.linspace(0,
+                        note_duration_sec,
+                        int(self.sample_rate * note_duration_sec),
+                        endpoint=False)
 
         for val in self.data_array:
             curr_freq = (high_note_freq
                          if val == 1
                          else low_note_freq)
             tone = np.sin(2 * np.pi * curr_freq * t)
-            # Utils.draw_tone(tone, sample_rate)
             audio.append(tone)
 
         audio = np.concatenate(audio).astype(np.float32)
         curr_time_str = Utils.get_curr_time_to_name()
-        write(f"output/sonif_binary_{curr_time_str}.wav", sample_rate, audio)
+        write(f"output/sonif_binary_{curr_time_str}.wav", self.sample_rate, audio)
+        return
+
+
+    def binary_sonification(
+        self,
+        note_duration_milis: int,
+        low_note_freq:       float,
+        high_note_freq:      float
+    ) -> None:
+        sample_amount_for_note: int = int((note_duration_milis/1000) * self.sample_rate)
+        audio: list = []
+        longest_wavelen_in_samples: int = math.ceil(self.sample_rate / low_note_freq)
+
+        first_freq = (high_note_freq
+                      if self.data_array[0] == 1
+                      else low_note_freq)
+        last_note = Note(
+            first_freq,
+            sample_amount_for_note,
+            longest_wavelen_in_samples)
+        # last_note.extend_with_lowest_note() NOT NEEDED FOR FIRST
+        # GET LOWEST NOTE IN A SMART WAY! FOR BINARY YOU ONLY HAVE 2 NOTES,
+        # AND FOR ANAL YOU HAVE LOWEST NOTE IN AVAILABLE NOTES LIST!!!!
+        last_note.calculate_tone()
+        audio.append(last_note.get_tone())
+
+        for i in range(1, len(self.data_array)):
+            curr_freq = (high_note_freq
+                         if self.data_array[i] == 1
+                         else low_note_freq)
+            temp_note = Note(
+                curr_freq,
+                sample_amount_for_note,
+                longest_wavelen_in_samples)
+            temp_note.extend_with_lowest_note()
+
+            is_freq_rising = last_note.is_freq_rising_end()
+            last_freq = last_note.get_last_freq()
+            temp_note.cut_tone_to_match(
+                is_freq_rising,
+                last_freq)
+
+            audio.append(temp_note.get_tone())
+            last_note = temp_note
+
+        audio = np.concatenate(audio).astype(np.float32)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_binary_{curr_time_str}.wav", self.sample_rate, audio)
         return
 
 
@@ -513,9 +554,6 @@ class DataSonif():
         high_note_freq: float = Utils.get_val_from_json(
             self.notes_rel_path,
             high_note_name)
-        sample_rate: int = Utils.get_val_from_json_fix(
-            self.settings_rel_path,
-            "SAMPLE_RATE")
 
         while True:
             note_duration_milis: int = Utils.get_val_from_json_fix(
@@ -525,14 +563,13 @@ class DataSonif():
             final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
             audio_len_human = Utils.human_read_milis(final_length_milis)
-            print( "Sonification type:  Binary")
+            print( "Sonification type:    Binary")
             print(f"Low note:             {low_note_name} ({low_note_freq} Hz)")
             print(f"High note:            {high_note_name} ({high_note_freq} Hz)")
             print(f"Note duration (ms):   {note_duration_milis}")
-            print(f"Sample rate:          {sample_rate}")
+            print(f"Sample rate:          {self.sample_rate}")
             print(f"Amount of notes:      {self.get_sample_count()}")
             print(f"Final audio duration: {audio_len_human}")
-            # print(f"Final audio length (MILI): {final_length_milis}")
             print()
             print("Choose an action:")
             print("d - Change note duration (ms)")
@@ -557,13 +594,12 @@ class DataSonif():
                 print("Sonifying...")
                 try:
                     self.binary_sonification(
-                        sample_rate,
                         note_duration_milis,
                         low_note_freq,
                         high_note_freq)
                     print("Done!\n\n")
                 except Exception as e:
-                    print("An exception occurred during binary sonification")
+                    print("[ERROR] An exception occurred during binary sonification")
                     print(e)
                 continue
 
@@ -572,9 +608,8 @@ class DataSonif():
 
 
 # ============================ ANALOG SONIFICATION ============================
-    def analog_sonification(
+    def analog_sonification_OBSOLETE(
         self,
-        sample_rate:         int,
         note_duration_milis: int,
         notes_used:          list[str],
         notes_dict:          dict[str, float]
@@ -588,7 +623,7 @@ class DataSonif():
         audio: list       = []
         t = np.linspace(0,
                         note_duration_sec,
-                        int(sample_rate * note_duration_sec),
+                        int(self.sample_rate * note_duration_sec),
                         endpoint=False)
 
         for value in self.data_array:
@@ -603,7 +638,65 @@ class DataSonif():
         audio = np.concatenate(audio).astype(np.float32)
         curr_time_str = Utils.get_curr_time_to_name()
         write(f"output/sonif_analog_{curr_time_str}.wav",
-              sample_rate,
+              self.sample_rate,
+              audio)
+        return
+
+
+    def analog_sonification(
+        self,
+        note_duration_milis: int,
+        notes_used:          list[str],
+        notes_dict:          dict[str, float]
+    ) -> None:
+        sample_amount_for_note: int = int((note_duration_milis/1000) * self.sample_rate)
+        bin_count: int = len(notes_used)
+        audio: list = []
+
+        optimal_dict: dict[str, float] = {}
+        for notename in notes_used:
+            optimal_dict[notename] = notes_dict[notename]
+
+        longest_wavelen_freq: float = optimal_dict[notes_used[0]]
+        longest_wavelen_in_samples: int = math.ceil(self.sample_rate / longest_wavelen_freq)
+
+        first_val_bin   = int(self.data_array[0] * bin_count)
+        first_val_bin  -= (first_val_bin == 5)
+        first_note_name = notes_used[first_val_bin]
+        first_freq      = optimal_dict[first_note_name]
+
+        last_note = Note(
+            first_freq,
+            sample_amount_for_note,
+            longest_wavelen_in_samples)
+        last_note.calculate_tone()
+        audio.append(last_note.get_tone())
+
+        for i in range(1, len(self.data_array)):
+            val_bin  = int(self.data_array[i] * bin_count)
+            val_bin -= (val_bin == 5)
+            curr_note_name = notes_used[val_bin]
+            curr_note_freq = optimal_dict[curr_note_name]
+
+            temp_note = Note(
+                curr_note_freq,
+                sample_amount_for_note,
+                longest_wavelen_in_samples)
+            temp_note.extend_with_lowest_note()
+
+            is_freq_rising = last_note.is_freq_rising_end()
+            last_freq = last_note.get_last_freq()
+            temp_note.cut_tone_to_match(
+                is_freq_rising,
+                last_freq)
+
+            audio.append(temp_note.get_tone())
+            last_note = temp_note
+
+        audio = np.concatenate(audio).astype(np.float32)
+        curr_time_str = Utils.get_curr_time_to_name()
+        write(f"output/sonif_analog_{curr_time_str}.wav",
+              self.sample_rate,
               audio)
         return
 
@@ -615,9 +708,6 @@ class DataSonif():
             "Program does not allow messing these up, so it's likely due to writing directly in these files.\n"
             "To fix it, download both settings.json and notes.json files from repo and replace them in src directory of the project\n"
             "And do not edit these files yourself in the future!")
-        sample_rate: int = Utils.get_val_from_json_fix(
-            self.settings_rel_path,
-            "SAMPLE_RATE")
 
         notes = Utils.get_keys_from_json(self.notes_rel_path)
         while True:
@@ -653,7 +743,7 @@ class DataSonif():
             print(f"Lowest note:          {lowest_note_name} ({lowest_note_freq} Hz)")
             print(f"Highest note:         {highest_note_name} ({highest_note_freq} Hz)")
             print(f"Note duration (ms):   {note_duration_milis}")
-            print(f"Sample rate:          {sample_rate}")
+            print(f"Sample rate:          {self.sample_rate}")
             print(f"Amount of notes:      {self.get_sample_count()}")
             print(f"Final audio duration: {audio_len_human}")
             print()
@@ -744,7 +834,6 @@ class DataSonif():
                     notes_used_amount)
                 try:
                     self.analog_sonification(
-                        sample_rate,
                         note_duration_milis,
                         notes_used,
                         notes_dict)

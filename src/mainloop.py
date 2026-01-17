@@ -5,19 +5,34 @@ from src.askers        import Askers
 from src.datasonif     import DataSonif
 from src.utils         import Utils
 from src.settings_loop import settings_loop
+from src.note          import Note
 
 
 
 settings_rel_path = "src/settings.json"
 notes_rel_path    = "src/notes.json"
-Askers.settings_rel_path = settings_rel_path
-Askers.notes_rel_path    = notes_rel_path
-Utils.settings_rel_path = settings_rel_path
-Utils.notes_rel_path    = notes_rel_path
+Askers.settings_rel_path    = settings_rel_path
+Askers.notes_rel_path       = notes_rel_path
+Utils.settings_rel_path     = settings_rel_path
+Utils.notes_rel_path        = notes_rel_path
+DataSonif.settings_rel_path = settings_rel_path
+DataSonif.notes_rel_path    = notes_rel_path
+
+sample_rate: int = Utils.get_val_from_json_fix(
+    settings_rel_path,
+    "SAMPLE_RATE")
+DataSonif.sample_rate = sample_rate
+Note.sample_rate      = sample_rate
+
+sonif_sim_thold: int = Utils.get_val_from_json_fix(
+    settings_rel_path,
+    "SONIFICATION_SIMILARITY_THRESHOLD")
+Note.similatiry_threshold = sonif_sim_thold
+
 
 def mainloop() -> None:
     while True:
-        loaded_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
+        loaded_data: DataSonif = DataSonif()
         temp_success:     bool = loaded_data.get_datafile_path()
         if not temp_success:
             return
@@ -188,7 +203,7 @@ def mainloop() -> None:
                     loaded_data.binary_sonif_loop()
                     print("\n\n")
                 elif asker_sonif_type == "analog":
-                    loaded_data.analog_sonif_loop(settings_rel_path)
+                    loaded_data.analog_sonif_loop()
                     print("\n\n")
 
             elif action_asker == "show_chart":
@@ -202,11 +217,11 @@ def mainloop() -> None:
                 print()
 
             elif action_asker == "settings":
-                settings_loop(settings_rel_path, notes_rel_path)
+                settings_loop(settings_rel_path)
                 print("\n")
 
             elif action_asker == "change_file":
-                new_data: DataSonif = DataSonif(settings_rel_path, notes_rel_path)
+                new_data: DataSonif = DataSonif()
                 temp_success: bool  = new_data.get_datafile_path()
                 if not temp_success:
                     print("Data will remain unchanged\n\n")

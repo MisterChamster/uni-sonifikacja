@@ -74,7 +74,8 @@ class Utils():
             "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
             "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
             "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
-            "ANAL_SONIFICATION_LOWEST_NOTE"],
+            "ANAL_SONIFICATION_LOWEST_NOTE",
+            "SONIFICATION_SIMILARITY_THRESHOLD"],
         default_val: str|bool|int|float = None
     ) -> str|bool|int|float:
 
@@ -92,7 +93,8 @@ class Utils():
                 "BINARY_SONIFICATION_NOTE_DURATION_MILIS": 300,
                 "ANAL_SONIFICATION_NOTE_DURATION_MILIS":   300,
                 "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES":  20,
-                "ANAL_SONIFICATION_LOWEST_NOTE":          "D3"}
+                "ANAL_SONIFICATION_LOWEST_NOTE":          "D3",
+                "SONIFICATION_SIMILARITY_THRESHOLD":       0.03}
             default_val = default_settings_dict[json_key]
 
         try:
@@ -242,10 +244,7 @@ class Utils():
 
 
     @staticmethod
-    def draw_tone(
-        tone: np.ndarray,
-        sample_rate: int = 44100
-    ) -> None:
+    def draw_tone(tone: np.ndarray) -> None:
         plt.figure()
         plt.plot(tone)
         plt.xlabel("Sample")

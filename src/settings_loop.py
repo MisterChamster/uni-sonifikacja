@@ -4,55 +4,70 @@ from src.utils  import Utils
 
 
 def settings_loop(settings_rel_adress: str) -> None:
+    msg_val_changed = "Value successfully changed\n\n"
     while True:
         asker_settings: str = Askers.ask_settings()
+        print()
 
         if not asker_settings:
             return
 
         if asker_settings == "auto_threshold_at_load":
             Utils.change_setting_to_opposite("AUTOMATIC_THRESHOLD_AT_LOAD")
-            print("Value successfully changed\n")
+            print(msg_val_changed)
 
         elif asker_settings == "show_thold_chart":
             Utils.change_setting_to_opposite("SHOW_THRESHOLD_ON_CHARTS")
-            print("Value successfully changed\n")
+            print(msg_val_changed)
 
         elif asker_settings == "change_cutting_setting_paa":
             Utils.change_setting_to_opposite("CUT_REMAINDER_SAMPLES_PAA")
-            print("Value successfully changed\n")
+            print(msg_val_changed)
 
         elif asker_settings == "change_cutting_setting_dwelltimes":
             Utils.change_setting_to_opposite("CUT_REMAINDER_SAMPLES_DWELLTIMES")
-            print("Value successfully changed\n")
+            print(msg_val_changed)
 
         elif asker_settings == "change_segmenting_setting_paa":
             Utils.change_setting_to_opposite("SEGMENTING_STYLE_PAA")
-            print("Value successfully changed\n")
+            print(msg_val_changed)
 
         elif asker_settings == "change_segmenting_setting_dwelltimes":
             Utils.change_setting_to_opposite("SEGMENTING_STYLE_DWELLTIMES")
-            print("Value successfully changed\n")
+            print(msg_val_changed)
 
         elif asker_settings == "change_binary_low_note":
+            print()
             new_note = Askers.ask_note_binary("low")
             if not new_note:
+                print("\n")
                 continue
             Utils.save_value_to_settings(
-                settings_rel_adress,
                 "BINARY_SONIFICATION_LOW_NOTE",
                 new_note)
-            print("Value successfully changed\n")
+            print(msg_val_changed)
 
         elif asker_settings == "change_binary_high_note":
+            print()
             new_note = Askers.ask_note_binary("high")
             if not new_note:
+                print("\n")
                 continue
             Utils.save_value_to_settings(
-                settings_rel_adress,
                 "BINARY_SONIFICATION_HIGH_NOTE",
                 new_note)
-            print("Value successfully changed\n")
+            print(msg_val_changed)
+
+        elif asker_settings == "change_similarity_threshold":
+            print()
+            new_sim_thold = Askers.ask_similarity_threshold()
+            if not new_sim_thold:
+                print("\n")
+                continue
+            Utils.save_value_to_settings(
+                "SONIFICATION_SIMILARITY_THRESHOLD",
+                new_sim_thold)
+            print(msg_val_changed)
 
         else:
             print("Invalid input!\n")
