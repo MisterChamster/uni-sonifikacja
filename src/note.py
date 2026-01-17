@@ -14,6 +14,7 @@ class Note():
     curr_sample_amount: int
 
     sample_rate: int = 44100
+    similatiry_threshold: float = 0.03
 
 # ================================== INITIAL ==================================
     #OK
@@ -122,8 +123,7 @@ class Note():
         # My approximation threshold will be 0.03. This value is arbitrary and
         # can be changed, but I think that it'll make little, if any, noticeable difference.
         # That value probably can be safely lowered l8r!
-        threshold_var = 0.03
-        if abs(freq1 - freq2) <= threshold_var:
+        if abs(freq1 - freq2) <= self.similatiry_threshold:
             return True
         return False
 
