@@ -4,7 +4,6 @@ from src.utils import Utils
 
 
 class Note():
-    sample_rate: int
     freq:        float
     og_sample_amount: int
     lowest_note_wavelen_samples_roundup: int
@@ -14,16 +13,16 @@ class Note():
     last_freq: float | None
     curr_sample_amount: int
 
+    sample_rate: int = 44100
+
 # ================================== INITIAL ==================================
     #OK
     def __init__(
         self,
-        sample_rate: int,
         freq:        float,
         og_sample_amount: int,
         lowest_note_wavelen_samples_roundup: int
     ) -> None:
-        self.sample_rate = sample_rate
         self.freq        = freq
         self.og_sample_amount   = og_sample_amount
         self.curr_sample_amount = og_sample_amount

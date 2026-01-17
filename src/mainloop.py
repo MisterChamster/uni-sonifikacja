@@ -5,6 +5,7 @@ from src.askers        import Askers
 from src.datasonif     import DataSonif
 from src.utils         import Utils
 from src.settings_loop import settings_loop
+from src.note          import Note
 
 
 
@@ -21,6 +22,8 @@ sample_rate: int = Utils.get_val_from_json_fix(
     settings_rel_path,
     "SAMPLE_RATE")
 DataSonif.sample_rate = sample_rate
+Note.sample_rate = sample_rate
+
 
 def mainloop() -> None:
     while True:
