@@ -26,27 +26,27 @@ class Note():
         lowest_note_wavelen_samples_roundup: int
     ) -> None:
         self.sample_rate = sample_rate
-        self.freq = freq
-        self.length_ms = length_ms
-        self.og_sample_amount = og_sample_amount
+        self.freq        = freq
+        self.length_ms   = length_ms
+        self.og_sample_amount   = og_sample_amount
+        self.curr_sample_amount = og_sample_amount
         self.lowest_note_wavelen_samples_roundup = lowest_note_wavelen_samples_roundup
 
         self.last_freq = None
         self.tone      = None
 
-        self.calculate_linspace_and_lensamples()
+        self.calculate_linspace()
         return
 
 
 # ============================== FUNCTIONALITIES ==============================
     # OK
-    def calculate_linspace_and_lensamples(self) -> None:
+    def calculate_linspace(self) -> None:
         len_in_sec = self.length_ms / 1000
         self.linspace = np.linspace(0,
             len_in_sec,
             int(self.sample_rate * len_in_sec),
             endpoint=False)
-        self.curr_sample_amount = int(self.sample_rate * len_in_sec)
         return
 
 
@@ -62,12 +62,14 @@ class Note():
         lowest_wavelen_sec: float = self.sample_rate / self.lowest_note_wavelen_samples_roundup
         lowest_wavelen_ms:  float = lowest_wavelen_sec / 1000
         self.length_ms += lowest_wavelen_ms
+        self.curr_sample_amount += self.lowest_note_wavelen_samples_roundup
 
-        self.calculate_linspace_and_lensamples()
+        self.calculate_linspace()
         self.calculate_tone()
         return
 
 
+    # NOT OK WITH CUTTING CURR SAMPLES
     def cut_tone_to_match(
         self,
         is_freq_rising:      bool,
@@ -105,7 +107,7 @@ class Note():
         self.last_freq = self.tone[-1]
 
         self.length_ms = (len(self.tone) / self.sample_rate) * 1000
-        self.calculate_linspace_and_lensamples()
+        self.calculate_linspace()
         return
 
 
