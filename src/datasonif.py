@@ -467,7 +467,7 @@ class DataSonif():
 
 
 # ============================ BINARY SONIFICATION ============================
-    def binary_sonification_nontest(
+    def binary_sonification_OBSOLETE(
         self,
         note_duration_milis: int,
         low_note_freq:       float,
