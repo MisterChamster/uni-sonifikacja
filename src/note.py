@@ -126,12 +126,10 @@ class Note():
 
     # OK
     def are_freqs_similar(self, freq1: float, freq2: float) -> bool:
-        # My approximation threshold will be 0.05. This value is arbitrary and
+        # My approximation threshold will be 0.03. This value is arbitrary and
         # can be changed, but I think that it'll make little, if any, noticeable difference.
         # That value probably can be safely lowered l8r!
-        threshold_var = 0.05
-        # print("Isn't this where... ", end="")
-        # print(freq1, freq2)
+        threshold_var = 0.03
         if abs(freq1 - freq2) <= threshold_var:
             return True
         return False
