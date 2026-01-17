@@ -32,8 +32,8 @@ class Note():
         self.curr_sample_amount = og_sample_amount
         self.lowest_note_wavelen_samples_roundup = lowest_note_wavelen_samples_roundup
 
-        self.last_freq = None
         self.tone      = None
+        self.last_freq = None
 
         self.calculate_time_vector()
         return
@@ -41,7 +41,7 @@ class Note():
 
 # ============================== FUNCTIONALITIES ==============================
     # OK
-    def calculate_time_vector(self) -> None:
+    def calculate_time_vector(self) -> None: 
         self.time_vector = np.arange(self.curr_sample_amount) / self.sample_rate
         return
 
@@ -55,11 +55,12 @@ class Note():
 
     # OK
     def extend_with_lowest_note(self) -> None:
+        # These three are obsolete (Do you want my love? Is it obsolete?)
         lowest_wavelen_sec: float = self.sample_rate / self.lowest_note_wavelen_samples_roundup
         lowest_wavelen_ms:  float = lowest_wavelen_sec / 1000
         self.length_ms += lowest_wavelen_ms
-        self.curr_sample_amount += self.lowest_note_wavelen_samples_roundup
 
+        self.curr_sample_amount += self.lowest_note_wavelen_samples_roundup
         self.calculate_time_vector()
         self.calculate_tone()
         return
@@ -119,8 +120,8 @@ class Note():
 
     # OK
     def are_freqs_similar(self, freq1: float, freq2: float) -> bool:
-        # My approximation threshold will be 0.05. This value can be changed,
-        # but I think that it'll make little, if any, noticeable difference.
+        # My approximation threshold will be 0.05. This value is arbitrary and
+        # can be changed, but I think that it'll make little, if any, noticeable difference.
         # That value probably can be safely lowered l8r!
         threshold_var = 0.05
         print("Isn't this where... ", end="")
