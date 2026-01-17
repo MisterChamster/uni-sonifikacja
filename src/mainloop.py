@@ -217,7 +217,7 @@ def mainloop() -> None:
                 print()
 
             elif action_asker == "settings":
-                settings_loop(settings_rel_path, notes_rel_path)
+                settings_loop(settings_rel_path)
                 print("\n")
 
             elif action_asker == "change_file":

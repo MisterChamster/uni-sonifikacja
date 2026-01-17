@@ -175,6 +175,7 @@ class Askers():
             "sd": "change_segmenting_setting_dwelltimes",
             "bl": "change_binary_low_note",
             "bh": "change_binary_high_note",
+            "st": "change_similarity_threshold",
             "r":   None}
 
         # Get current settings from settings.json
@@ -186,6 +187,7 @@ class Askers():
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
         curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
         curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
+        curr_sett_similarity_threshold:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIFICATION_SIMILARITY_THRESHOLD")
 
         msg_auto_thold_disable = "Disable automatic calculation of threshold during data loading (currently enabled)"
         msg_auto_thold_enable  = "Enable automatic calculation of threshold during data loading (currently disabled)"
@@ -226,13 +228,14 @@ class Askers():
         while True:
             print( "Choose an action:\n"
                   f"at - {msg_auto_thold}\n"
-                  f"ct - {msg_show_thold}"
+                  f"ct - {msg_show_thold}\n"
                   f"cp - {msg_cutting_paa}\n"
                   f"cd - {msg_cutting_dtimes}\n"
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
                   f"bl - Change low note in binary sonification (currently {curr_sett_binary_low_note})\n"
                   f"bh - Change high note in binary sonification (currently {curr_sett_binary_high_note})\n"
+                  f"st - Change similarity threshold (currently {curr_sett_similarity_threshold})\n"
                    "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
@@ -361,6 +364,7 @@ class Askers():
                 print("Invalid input!\n")
 
 
+    @staticmethod
     def ask_note_amount(available_notes_count: int) -> int | None:
         min_amount = 5
         max_amount = (30
@@ -386,3 +390,33 @@ class Askers():
                 continue
 
             return asker
+
+
+    @staticmethod
+    def ask_similarity_threshold() -> float:
+        min_val = 0.001
+        max_val = 0.3
+
+        while True:
+            print(f"Enter a new similarity threshold between {min_val} and {max_val}")
+            print("(type 'r' to return)\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == "r":
+                return
+
+            try:
+                asker = float(asker)
+            except (ValueError, TypeError):
+                print("Invalid input.\n\n")
+                continue
+
+            if asker > max_val:
+                print("Number too high.\n\n")
+                continue
+            if asker < min_val:
+                print("Number is probably too low.\n\n")
+                continue
+
+            return asker
+
