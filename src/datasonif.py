@@ -539,16 +539,6 @@ class DataSonif():
 
         print("BREAK\n"*5)
 
-
-        # for val in self.data_array:
-        #     curr_freq = (high_note_freq
-        #                  if val == 1
-        #                  else low_note_freq)
-
-        #     tone = np.sin(2 * np.pi * curr_freq * t)
-        #     audio.append(tone)
-
-
         audio = np.concatenate(audio).astype(np.float32)
         curr_time_str = Utils.get_curr_time_to_name()
         write(f"output/sonif_binary_{curr_time_str}.wav", self.sample_rate, audio)
@@ -578,7 +568,7 @@ class DataSonif():
             final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
             audio_len_human = Utils.human_read_milis(final_length_milis)
-            print( "Sonification type:  Binary")
+            print( "Sonification type:    Binary")
             print(f"Low note:             {low_note_name} ({low_note_freq} Hz)")
             print(f"High note:            {high_note_name} ({high_note_freq} Hz)")
             print(f"Note duration (ms):   {note_duration_milis}")

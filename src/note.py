@@ -4,12 +4,12 @@ from src.utils import Utils
 
 
 class Note():
-    freq:        float
+    freq: float
     og_sample_amount: int
     lowest_note_wavelen_samples_roundup: int
 
-    time_vector:  np.ndarray#[np.float64]
-    tone:      np.ndarray | None#IDK tone val types
+    time_vector: np.ndarray#[np.float64]
+    tone: np.ndarray | None#IDK tone val types
     last_freq: float | None
     curr_sample_amount: int
 
