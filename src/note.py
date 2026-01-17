@@ -80,7 +80,7 @@ class Note():
                 reversed_tone = reversed_tone[:-1]
                 continue
             else:
-                print("...we came in?")
+                # print("They are similar!", prev_note_last_freq, reversed_tone[-1])
                 break
 
         # DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE
@@ -117,8 +117,8 @@ class Note():
         # can be changed, but I think that it'll make little, if any, noticeable difference.
         # That value probably can be safely lowered l8r!
         threshold_var = 0.05
-        print("Isn't this where... ", end="")
-        print(freq1, freq2)
+        # print("Isn't this where... ", end="")
+        # print(freq1, freq2)
         if abs(freq1 - freq2) <= threshold_var:
             return True
         return False

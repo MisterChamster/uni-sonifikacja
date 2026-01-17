@@ -527,19 +527,20 @@ class DataSonif():
                 curr_freq,
                 sample_amount_for_note,
                 longest_wavelen_in_samples)
-            print(temp_note.time_vector)
-            print("B4 EXTENSION", temp_note.curr_sample_amount)
             temp_note.extend_with_lowest_note()
-            print("AFTER EXTENSION", temp_note.curr_sample_amount)
 
             is_freq_rising = last_note.is_freq_rising_end()
             last_freq = last_note.get_last_freq()
             temp_note.cut_tone_to_match(
                 is_freq_rising,
                 last_freq)
+
+            audio.append(temp_note.get_tone())
+            last_note = temp_note
+
             print(i)
 
-        print("BREAK\n"*10)
+        print("BREAK\n"*5)
 
 
         # for val in self.data_array:
