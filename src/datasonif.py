@@ -500,6 +500,7 @@ class DataSonif():
         low_note_freq:       float,
         high_note_freq:      float
     ) -> None:
+        sample_amount_for_note: int = int((note_duration_milis/1000)*sample_rate)
         audio: list = []
         longest_wavelen_in_samples: int = math.ceil(sample_rate / low_note_freq)
 
@@ -510,6 +511,7 @@ class DataSonif():
             sample_rate,
             first_freq,
             note_duration_milis,
+            sample_amount_for_note,
             longest_wavelen_in_samples)
         # last_note.extend_with_lowest_note() NOT NEEDED FOR FIRST
         # GET LOWEST NOTE IN A SMART WAY! FOR BINARY YOU ONLY HAVE 2 NOTES,
@@ -525,6 +527,7 @@ class DataSonif():
                 sample_rate,
                 curr_freq,
                 note_duration_milis,
+                sample_amount_for_note,
                 longest_wavelen_in_samples)
             print(temp_note.linspace)
             print("B4 EXTENSION", temp_note.curr_sample_amount)

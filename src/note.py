@@ -7,12 +7,12 @@ class Note():
     sample_rate: int
     freq:        float
     length_ms:   int
+    og_sample_amount: int
     lowest_note_wavelen_samples_roundup: int
 
     linspace:  np.ndarray#[np.float64]
     tone:      np.ndarray | None#IDK tone val types
     last_freq: float | None
-    og_sample_amount:   int
     curr_sample_amount: int
 
 # ================================== INITIAL ==================================
@@ -22,23 +22,20 @@ class Note():
         sample_rate: int,
         freq:        float,
         length_ms:   int,
+        og_sample_amount: int,
         lowest_note_wavelen_samples_roundup: int
     ) -> None:
         self.sample_rate = sample_rate
         self.freq = freq
         self.length_ms = length_ms
+        self.og_sample_amount = og_sample_amount
         self.lowest_note_wavelen_samples_roundup = lowest_note_wavelen_samples_roundup
 
         self.last_freq = None
         self.tone      = None
 
         self.calculate_linspace_and_lensamples()
-        self.calc_og_samplelen()
         return
-
-    def calc_og_samplelen(self):
-        len_in_sec = self.length_ms / 1000
-        self.og_sample_amount = int(self.sample_rate * len_in_sec)
 
 
 # ============================== FUNCTIONALITIES ==============================
