@@ -12,8 +12,8 @@ class Note():
     linspace:  np.ndarray#[np.float64]
     tone:      np.ndarray | None#IDK tone val types
     last_freq: float | None
-    og_length_samples:   int
-    curr_length_samples: int
+    og_sample_amount:   int
+    curr_sample_amount: int
 
 # ================================== INITIAL ==================================
     #OK
@@ -38,7 +38,7 @@ class Note():
 
     def calc_og_samplelen(self):
         len_in_sec = self.length_ms / 1000
-        self.og_length_samples = self.sample_rate * len_in_sec
+        self.og_sample_amount = int(self.sample_rate * len_in_sec)
 
 
 # ============================== FUNCTIONALITIES ==============================
@@ -49,7 +49,7 @@ class Note():
             len_in_sec,
             int(self.sample_rate * len_in_sec),
             endpoint=False)
-        self.curr_length_samples = int(self.sample_rate * len_in_sec)
+        self.curr_sample_amount = int(self.sample_rate * len_in_sec)
         return
 
 
@@ -98,13 +98,13 @@ class Note():
         # HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH
         # DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE DEATH HERE
         # If reversed tone length is lower then note length
-        if len(reversed_tone) < self.og_length_samples:
-            print("ORIGINAL: ", self.og_length_samples)
+        if len(reversed_tone) < self.og_sample_amount:
+            print("ORIGINAL: ", self.og_sample_amount)
             print("NOT_OG!!: ", len(reversed_tone))
             raise ValueError("[ERROR] Code is written wrong. New tone length is shorter than it should.")
 
         popped_tone = reversed_tone[::-1]
-        self.tone = popped_tone[:self.og_length_samples]
+        self.tone = popped_tone[:self.og_sample_amount]
         self.last_freq = self.tone[-1]
 
         self.length_ms = (len(self.tone) / self.sample_rate) * 1000
