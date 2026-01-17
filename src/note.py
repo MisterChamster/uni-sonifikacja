@@ -42,11 +42,7 @@ class Note():
 # ============================== FUNCTIONALITIES ==============================
     # OK
     def calculate_time_vector(self) -> None:
-        len_in_sec = self.length_ms / 1000
-        self.time_vector = np.linspace(0,
-            len_in_sec,
-            int(self.sample_rate * len_in_sec),
-            endpoint=False)
+        self.time_vector = np.arange(self.curr_sample_amount) / self.sample_rate
         return
 
 
