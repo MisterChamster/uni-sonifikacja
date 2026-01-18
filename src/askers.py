@@ -186,7 +186,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_settings() -> str | None:
+    def ask_data_settings() -> str | None:
         returns_dict = {
             "an": "auto_normalization_at_load",
             "at": "auto_threshold_at_load",
@@ -196,12 +196,8 @@ class Askers():
             "sp": "change_segmenting_setting_paa",
             "sd": "change_segmenting_setting_dwelltimes",
             "se": "change_segmenting_setting_emd",
-            "bl": "change_binary_low_note",
-            "bh": "change_binary_high_note",
-            "st": "change_similarity_threshold",
             "r":   None}
 
-        # Get current settings from settings.json
         curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
         curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
         curr_sett_show_thold_chart:       bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SHOW_THRESHOLD_ON_CHARTS")
@@ -210,26 +206,23 @@ class Askers():
         curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
         curr_sett_seg_style_emd:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_EMD")
-        curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
-        curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
-        curr_sett_similarity_threshold:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIFICATION_SIMILARITY_THRESHOLD")
 
-        msg_auto_normal_disable = "Disable automatic normalization during data loading (currently enabled)"
-        msg_auto_normal_enable  = "Enable automatic normalization during data loading (currently disabled)"
-        msg_auto_thold_disable = "Disable automatic calculation of threshold during data loading (currently enabled)"
-        msg_auto_thold_enable  = "Enable automatic calculation of threshold during data loading (currently disabled)"
-        msg_show_thold_disable = "Disable showing threshold on charts (currently enabled)"
-        msg_show_thold_enable  = "Enable showing threshold on charts (currently disabled)"
-        msg_cutting_paa_disable = "Disable cutting remainder data during PAA (currently enabled)"
-        msg_cutting_paa_enable  = "Enable cutting remainder data during PAA (currently disabled)"
-        msg_cutting_dtimes_disable = "Disable cutting remainder data during dwell times conversion (currently enabled)"
-        msg_cutting_dtimes_enable  = "Enable cutting remainder data during dwell times conversion (currently disabled)"
-        msg_segm_style_paa_tosize  = "size (currently segment count)"
-        msg_segm_style_paa_tocount = "count (currently segment size)"
+        msg_auto_normal_disable       = "Disable automatic normalization during data loading (currently enabled)"
+        msg_auto_normal_enable        = "Enable automatic normalization during data loading (currently disabled)"
+        msg_auto_thold_disable        = "Disable automatic calculation of threshold during data loading (currently enabled)"
+        msg_auto_thold_enable         = "Enable automatic calculation of threshold during data loading (currently disabled)"
+        msg_show_thold_disable        = "Disable showing threshold on charts (currently enabled)"
+        msg_show_thold_enable         = "Enable showing threshold on charts (currently disabled)"
+        msg_cutting_paa_disable       = "Disable cutting remainder data during PAA (currently enabled)"
+        msg_cutting_paa_enable        = "Enable cutting remainder data during PAA (currently disabled)"
+        msg_cutting_dtimes_disable    = "Disable cutting remainder data during dwell times conversion (currently enabled)"
+        msg_cutting_dtimes_enable     = "Enable cutting remainder data during dwell times conversion (currently disabled)"
+        msg_segm_style_paa_tosize     = "size (currently segment count)"
+        msg_segm_style_paa_tocount    = "count (currently segment size)"
         msg_segm_style_dtimes_tosize  = "size (currently segment count)"
         msg_segm_style_dtimes_tocount = "count (currently segment size)"
-        msg_segm_style_emd_tosize  = "size (currently segment count)"
-        msg_segm_style_emd_tocount = "count (currently segment size)"
+        msg_segm_style_emd_tosize     = "size (currently segment count)"
+        msg_segm_style_emd_tocount    = "count (currently segment size)"
 
         msg_auto_normal = (msg_auto_normal_disable
                            if curr_sett_auto_normal
@@ -272,6 +265,29 @@ class Askers():
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
                   f"se - Change segmenting style for EMD extremes finding {msg_segm_style_emd}\n"
+                   "r  - Return to main menu\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]
+
+
+    @staticmethod
+    def ask_sonif_settings() -> str | None:
+        returns_dict = {
+            "bl": "change_binary_low_note",
+            "bh": "change_binary_high_note",
+            "st": "change_similarity_threshold",
+            "r":   None}
+
+        curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
+        curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
+        curr_sett_similarity_threshold:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIFICATION_SIMILARITY_THRESHOLD")
+
+        while True:
+            print( "Choose an action:\n"
                   f"bl - Change low note in binary sonification (currently {curr_sett_binary_low_note})\n"
                   f"bh - Change high note in binary sonification (currently {curr_sett_binary_high_note})\n"
                   f"st - Change similarity threshold (currently {curr_sett_similarity_threshold})\n"
