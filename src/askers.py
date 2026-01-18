@@ -389,6 +389,35 @@ class Askers():
 
 
     @staticmethod
+    def ask_emd_thold(is_high: bool) -> float | None:
+        max_min = (0.9
+                   if is_high
+                   else 0.1)
+        msg_main = (f"Choose a new high threshold (max {max_min})"
+                    if is_high
+                    else f"Choose a new low threshold (min {max_min})")
+
+        while True:
+            print(msg_main, "\n"
+                 "(type 'r' to return)\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == "r":
+                return
+            try:
+                asker = float(asker)
+            except:
+                print("Invalid input!\n")
+                continue
+
+            # This is actually smart
+            if is_high and asker > 0.5 and asker <= max_min:
+                return asker
+            if not is_high and asker >= max_min and asker < 0.5:
+                return asker
+
+
+    @staticmethod
     def ask_sonif_type(
         bin_available:    bool,
         analog_available: bool
