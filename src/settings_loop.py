@@ -47,9 +47,9 @@ def settings_loop() -> None:
                 Utils.change_setting_to_opposite("SEGMENTING_STYLE_DWELLTIMES")
                 print(msg_val_changed)
 
-            elif asker_settings == "change_segmenting_setting_emd":
-                Utils.change_setting_to_opposite("SEGMENTING_STYLE_EMD")
-                print(msg_val_changed)
+            # elif asker_settings == "change_segmenting_setting_emd":
+            #     Utils.change_setting_to_opposite("SEGMENTING_STYLE_EMD")
+            #     print(msg_val_changed)
 
             elif asker_settings == "change_bin_size_emd":
                 print()
