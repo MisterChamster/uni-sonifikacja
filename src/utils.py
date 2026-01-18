@@ -11,6 +11,7 @@ class Utils():
     settings_rel_path: str = "src/settings.json"
     notes_rel_path:    str = "src/notes.json"
 
+
     @staticmethod
     def save_value_to_settings(
         json_key: str,

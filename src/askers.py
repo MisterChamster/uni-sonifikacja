@@ -10,6 +10,7 @@ class Askers():
     settings_rel_path: str = "src/settings.json"
     notes_rel_path:    str = "src/notes.json"
 
+
     @staticmethod
     def ask_path_filedialog(
         node_type: str,
@@ -282,9 +283,9 @@ class Askers():
             "st": "change_similarity_threshold",
             "r":   None}
 
-        curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
-        curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
-        curr_sett_similarity_threshold:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIFICATION_SIMILARITY_THRESHOLD")
+        curr_sett_binary_low_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
+        curr_sett_binary_high_note:       str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
+        curr_sett_similarity_threshold: float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIFICATION_SIMILARITY_THRESHOLD")
 
         while True:
             print( "Choose an action:\n"
