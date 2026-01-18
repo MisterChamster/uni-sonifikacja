@@ -213,7 +213,9 @@ class Askers():
         "change_segmenting_setting_paa",
         "change_segmenting_setting_dwelltimes",
         # "change_segmenting_setting_emd",
-        "change_bin_size_emd"] | None:
+        "change_bin_size_emd",
+        "change_emd_thold_low",
+        "change_emd_thold_high"] | None:
         returns_dict = {
             "an": "auto_normalization_at_load",
             "at": "auto_threshold_at_load",
@@ -224,6 +226,8 @@ class Askers():
             "sd": "change_segmenting_setting_dwelltimes",
             # "se": "change_segmenting_setting_emd",
             "eb": "change_bin_size_emd",
+            "el": "change_emd_thold_low",
+            "eh": "change_emd_thold_high",
             "r":   None}
 
         curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
@@ -235,6 +239,8 @@ class Askers():
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
         # curr_sett_seg_style_emd:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_EMD")
         curr_sett_bin_size_emd:            int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BIN_SIZE_EMD")
+        curr_sett_emd_thold_low:         float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_LOW")
+        curr_sett_emd_thold_high:        float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_HIGH")
 
         msg_to_size  = "size (currently segment count)"
         msg_to_count = "count (currently segment size)"
@@ -297,6 +303,8 @@ class Askers():
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
                 #   f"se - Change segmenting style for EMD extremes finding {msg_segm_style_emd}\n"
                   f"eb - Change bin size for EMD extremes finding segmentation (currently {curr_sett_bin_size_emd})\n"
+                  f"el - Change low threshold for EMD extremes finding (currently {curr_sett_emd_thold_low})\n"
+                  f"eh - Change high threshold for EMD extremes finding (currently {curr_sett_emd_thold_high})\n"
                    "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 

@@ -60,6 +60,24 @@ def settings_loop() -> None:
                 Utils.save_value_to_settings("BIN_SIZE_EMD", asker)
                 print(msg_val_changed)
 
+            elif asker_settings == "change_emd_thold_low":
+                print()
+                asker: float|None = Askers.ask_emd_thold(False)
+                if not asker:
+                    print("\n")
+                    continue
+                Utils.save_value_to_settings("EMD_THRESHOLD_LOW", asker)
+                print(msg_val_changed)
+
+            elif asker_settings == "change_emd_thold_high":
+                print()
+                asker: float|None = Askers.ask_emd_thold(True)
+                if not asker:
+                    print("\n")
+                    continue
+                Utils.save_value_to_settings("EMD_THRESHOLD_HIGH", asker)
+                print(msg_val_changed)
+
             else:
                 print("Invalid input!\n")
 
