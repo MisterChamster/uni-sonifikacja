@@ -113,6 +113,9 @@ class DataSonif():
 
         self.data_array = self.data_array.to_numpy().flatten()
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
+        self._update_min_max()
+        self.is_og_order = True
+        self.is_og_sign  = True
 
         is_normalization_automatic = Utils.get_val_from_json_fix(
             self.settings_rel_path,
@@ -125,10 +128,6 @@ class DataSonif():
             "AUTOMATIC_THRESHOLD_AT_LOAD")
         if is_threshold_automatic:
             self.calculate_threshold()
-
-        self._update_min_max()
-        self.is_og_order = True
-        self.is_og_sign  = True
         return
 
 
