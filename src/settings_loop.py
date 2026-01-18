@@ -12,7 +12,11 @@ def settings_loop() -> None:
         if not asker_settings:
             return
 
-        if asker_settings == "auto_threshold_at_load":
+        if asker_settings == "auto_normalization_at_load":
+            Utils.change_setting_to_opposite("AUTOMATIC_NORMALIZATION_AT_LOAD")
+            print(msg_val_changed)
+
+        elif asker_settings == "auto_threshold_at_load":
             Utils.change_setting_to_opposite("AUTOMATIC_THRESHOLD_AT_LOAD")
             print(msg_val_changed)
 
