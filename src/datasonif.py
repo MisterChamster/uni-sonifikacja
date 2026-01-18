@@ -880,13 +880,16 @@ class DataSonif():
         self,
         up_or_down: Literal["up", "down"]
     ) -> list[list[int, np.float64]] | None:
-        # FIXED SIZE VALS, CAN BE CHANGED L8R
-        upper_threshold = 0.8
-        lower_threshold = 0.2
-
-        curr_envelope_thold = (upper_threshold
+        low_threshold = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "EMD_THRESHOLD_LOW")
+        high_threshold = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "EMD_THRESHOLD_HIGH")
+        curr_envelope_thold = (high_threshold
                                if up_or_down == "up"
-                               else lower_threshold)
+                               else low_threshold)
+
         extrema_bin_size = Utils.get_val_from_json_fix(
             self.settings_rel_path,
             "BIN_SIZE_EMD")
@@ -920,20 +923,16 @@ class DataSonif():
                 continue
 
 
-            # print("DWELL TIME HAS CHUNKS:", len(dwell_time_chunks))
             i = 0
             while i < len(dwell_time_chunks):
                 curr_chunk = dwell_time_chunks[i]
-                # print(dwell_time_chunks[i].index_start, dwell_time_chunks[i].index_end)
 
                 if up_or_down == "up":
                     if curr_chunk.data_mean < curr_envelope_thold:
                         dwell_time_chunks.pop(i)
-                        # print("Deleting chunk mean", curr_envelope_thold, curr_chunk.data_mean)
                 elif up_or_down == "down":
                     if curr_chunk.data_mean > curr_envelope_thold:
                         dwell_time_chunks.pop(i)
-                        # print("Deleting chunk mean", curr_envelope_thold, curr_chunk.data_mean)
 
                 i += 1
 
