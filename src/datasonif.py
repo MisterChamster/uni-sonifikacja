@@ -863,6 +863,7 @@ class DataSonif():
 
 
     def get_abstract_pseudoextremes(self) -> list[(int, float)]:
+        # HELLO. YOU SHOULD MAKE A NEW BIN SIZE FOR THIS FUNCTION
         return None
 
 
