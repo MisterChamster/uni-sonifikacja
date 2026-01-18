@@ -110,9 +110,7 @@ class Utils():
 
 
     @staticmethod
-    def change_setting_to_opposite(
-        json_key:    str
-    ) -> None:
+    def change_setting_to_opposite(json_key: str) -> None:
         setting_val = Utils.get_val_from_json_fix(
             Utils.settings_rel_path,
             json_key)
@@ -120,7 +118,7 @@ class Utils():
         if isinstance(setting_val, bool):
             setting_val = not setting_val
         elif setting_val in ["size", "count"]:
-            setting_val = "size" if setting_val == "count" else "size"
+            setting_val = "size" if setting_val == "count" else "count"
         else:
             raise ValueError("[ERROR] Code is written badly. Incorrect value in settings.json")
 
