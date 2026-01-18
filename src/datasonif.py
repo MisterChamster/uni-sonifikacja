@@ -942,7 +942,15 @@ class DataSonif():
             first_index = dwell_time_chunks[0].index_start
             last_index = dwell_time_chunks[0].index_end
             mid_index = int((first_index + last_index) / 2)
-            extrema_xes.append([mid_index, self.data_array[mid_index]])
+
+            dwell_chunk = Chunk(
+                first_index,
+                last_index,
+                self.data_array[first_index: last_index])
+            dwell_chunk_extreme = dwell_chunk.get_abstract_extreme(
+                up_or_down,
+                curr_envelope_thold)
+            extrema_xes.append([mid_index, dwell_chunk_extreme])
 
         return extrema_xes
 
