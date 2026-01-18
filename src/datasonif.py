@@ -874,7 +874,9 @@ class DataSonif():
         up_or_down: Literal["up", "down"]
     ) -> list[np.ndarray] | None:
         # FIXED SIZE VALS, CAN BE CHANGED L8R
-        extrema_bin_size = 500
+        extrema_bin_size = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "BIN_SIZE_EMD")
         upper_threshold = 0.8
         lower_threshold = 0.2
 

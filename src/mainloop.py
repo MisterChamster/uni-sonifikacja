@@ -186,7 +186,6 @@ def mainloop() -> None:
                             settings_rel_path,
                             "SEGMENTING_STYLE_EMD")
 
-
                         print("Applying EMD...")
                         emd_applied = loaded_data.apply_emd()
                         if emd_applied:
