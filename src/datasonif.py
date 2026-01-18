@@ -931,7 +931,9 @@ class DataSonif():
             if len(dwell_time_chunks) == 0:
                 continue
 
-            
+            first_index = dwell_time_chunks[0].index_start
+            last_index = dwell_time_chunks[0].index_end
+            mid_index = int((first_index + last_index) / 2)
 
 
         return None
