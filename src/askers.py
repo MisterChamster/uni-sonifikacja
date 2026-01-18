@@ -38,7 +38,7 @@ class Askers():
         while True:
             print("Downsample data (Pick every n-th line of data)\n"
                   "Max value is 10, but highest reasonable is 5.\n"
-                  f"Press Enter to skip. {stroing}\n"
+                 f"Press Enter to skip. {stroing}\n"
                   "n = ", end="")
             asker = input().strip().lower()
 
@@ -144,8 +144,8 @@ class Askers():
             string1 = "size of a segment"
 
         while True:
-            print(f"Number of samples: {data_length}")
-            print(f"Input a {string1} (type 'r' to return):\n>> ", end="")
+            print(f"Number of samples: {data_length}\n"
+                  f"Input a {string1} (type 'r' to return):\n>> ", end="")
             segment_value = input().strip().lower()
 
             if segment_value == "r":
@@ -279,9 +279,9 @@ class Askers():
             temp_dict_key)
 
         while True:
-            print(f"Choose a new {low_or_high} note for binary sonification (currently {current_note})")
-            print(f"Available notes from {lowest_note} to {highest_note}")
-            print("(type 'r' to return)\n>> ", end="")
+            print(f"Choose a new {low_or_high} note for binary sonification (currently {current_note})\n"
+                  f"Available notes from {lowest_note} to {highest_note}\n"
+                   "(type 'r' to return)\n>> ", end="")
             asker = input().strip().upper() #Upper here is crucial!
 
             if asker in available_notes:
@@ -312,10 +312,9 @@ class Askers():
                 if analog_available
                 else "a - Sonify analog data... (UNAVAILABLE)")
 
-            print("Choose a method of sonification (type 'r' to return):")
-            print(bin_msg)
-            print(analog_msg)
-            print(">> ", end="")
+            print("Choose a method of sonification (type 'r' to return):\n"
+                 f"{bin_msg}\n"
+                 f"{analog_msg}\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == "r":
@@ -340,8 +339,8 @@ class Askers():
     @staticmethod
     def ask_note_duration() -> int | None:
         while True:
-            print("Input new note duration (ms):")
-            print("(type 'r' to return)\n>> ", end="")
+            print("Input new note duration (ms):\n"
+                  "(type 'r' to return)\n>> ", end="")
             asker = input().strip()
 
             if asker == "r":
@@ -371,9 +370,9 @@ class Askers():
         highest_possible_index = notes.index(highest_lowest_note_possible)
         available_notes = notes[:highest_possible_index+1]
         while True:
-            print(f"Choose a new lowest note for analog sonification (currently {current_lowest_note_name})")
-            print(f"Available notes from {lowest_lowest_note_possible} to {highest_lowest_note_possible}")
-            print("(type 'r' to return)\n>> ", end="")
+            print(f"Choose a new lowest note for analog sonification (currently {current_lowest_note_name})\n"
+                  f"Available notes from {lowest_lowest_note_possible} to {highest_lowest_note_possible}\n"
+                   "(type 'r' to return)\n>> ", end="")
             asker = input().strip().upper()
 
             if asker in available_notes:
@@ -392,8 +391,8 @@ class Askers():
                       else available_notes_count)
 
         while True:
-            print(f"Enter a new amount of notes (value between {min_amount} and {max_amount})")
-            print("(type 'r' to return)\n>> ", end="")
+            print(f"Enter a new amount of notes (value between {min_amount} and {max_amount})\n"
+                   "(type 'r' to return)\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == "r":
@@ -418,8 +417,8 @@ class Askers():
         max_val = 0.3
 
         while True:
-            print(f"Enter a new similarity threshold between {min_val} and {max_val}")
-            print("(type 'r' to return)\n>> ", end="")
+            print(f"Enter a new similarity threshold between {min_val} and {max_val}"
+                   "(type 'r' to return)\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == "r":
