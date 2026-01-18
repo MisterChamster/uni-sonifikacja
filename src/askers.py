@@ -167,6 +167,25 @@ class Askers():
 
 
     @staticmethod
+    def ask_settings_type() -> Literal["data_settings", "sonif_settings"] | None:
+        returns_dict = {
+            "d": "data_settings",
+            "s": "sonif_settings",
+            "r": None}
+
+        while True:
+            print("Choose settings type (type 'r' to return):\n"
+                  "d - Data settings\n"
+                  "s - Sonification settings\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]
+
+
+    @staticmethod
     def ask_settings() -> str | None:
         returns_dict = {
             "an": "auto_normalization_at_load",

@@ -5,6 +5,12 @@ from src.utils  import Utils
 
 def settings_loop() -> None:
     msg_val_changed = "Value successfully changed\n\n"
+
+    settings_type = Askers.ask_settings_type()
+    if not settings_type:
+        return
+
+
     while True:
         asker_settings: str = Askers.ask_settings()
         print()
