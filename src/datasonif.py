@@ -860,12 +860,56 @@ class DataSonif():
         if not self.is_normalized:
             print("EMD cannot be applied - data is not normalized")
             return False
+        
+        if not self.threshold:
+            self.calculate_threshold()
 
-        abstract_pseudoextremes: list[(int, float)] = self.get_abstract_pseudoextremes()
+        abstract_pseudoextrema_up:   list = self.get_abstract_pseudoextrema("up")
+        # abstract_pseudoextrema_down: list = self.get_abstract_pseudoextrema("down")
         return True
 
 
-    def get_abstract_pseudoextremes(self) -> list[(int, float)]:
+    def get_abstract_pseudoextrema(
+        self,
+        up_or_down: Literal["up", "down"]
+    ) -> list[np.ndarray] | None:
+        # FIXED SIZE VALS, CAN BE CHANGED L8R
+        extrema_bin_size = 500
+        upper_threshold = 0.8
+        lower_threshold = 0.2
+
+        extrema_xes = []
+
+        incr = 0
+        while incr < self.get_sample_count():
+            dwell_time_chunks: list[Chunk] = []
+
+            while incr < self.get_sample_count():
+                index_end = incr + 499
+                if index_end >= self.get_sample_count():
+                    index_end = self.get_sample_count()
+                temp_chunk = Chunk(incr, index_end, self.data_array[incr: index_end+1])
+                temp_chunk.calculate_mean_from_data()
+                temp_mean = temp_chunk.data_mean
+                
+                if up_or_down == "up" and temp_mean < self.threshold:
+                    incr += extrema_bin_size
+                    break
+                if up_or_down == "down" and temp_mean >= self.threshold:
+                    incr += extrema_bin_size
+                    break
+
+                temp_chunk.del_data_array()
+                dwell_time_chunks.append(temp_chunk)
+
+                incr += extrema_bin_size
+
+            if len(dwell_time_chunks) > 0:
+                print("DWELL TIME HAS CHUNKS:", len(dwell_time_chunks))
+            for val in dwell_time_chunks:
+                print(val.index_start, val.index_end)
+
+
         return None
 
 
