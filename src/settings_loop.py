@@ -3,7 +3,7 @@ from src.utils  import Utils
 
 
 
-def settings_loop(settings_rel_adress: str) -> None:
+def settings_loop() -> None:
     msg_val_changed = "Value successfully changed\n\n"
     while True:
         asker_settings: str = Askers.ask_settings()
