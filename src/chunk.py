@@ -41,6 +41,7 @@ class Chunk():
         return
 
 
+# ================================== SETTERS ===================================
     def input_data_array(self, new_array: np.ndarray[np.float64] | np.ndarray[bool]) -> None:
         if len(new_array) != self.num_of_samples:
             raise Exception("CODE IS BROKEN. INCORRECT ARRAY LENGTH COMPARED TO INDEX VALUES!")
@@ -49,10 +50,12 @@ class Chunk():
         return
 
 
+# ================================== GETTERS ===================================
+    def get_data_mean(self) -> np.float64 | float | None:
+        return self.data_mean
+
+
+# ================================== DELETERS ==================================
     def del_data_array(self) -> None:
         self.__data_array = None
         return
-
-
-    def get_data_mean(self) -> np.float64 | float | None:
-        return self.data_mean
