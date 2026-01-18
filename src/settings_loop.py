@@ -10,6 +10,7 @@ def settings_loop() -> None:
     if not settings_type:
         return
 
+
     print("\n")
     if settings_type == "data_settings":
         while True:
