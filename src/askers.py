@@ -176,6 +176,7 @@ class Askers():
             "cd": "change_cutting_setting_dwelltimes",
             "sp": "change_segmenting_setting_paa",
             "sd": "change_segmenting_setting_dwelltimes",
+            "se": "change_segmenting_setting_emd",
             "bl": "change_binary_low_note",
             "bh": "change_binary_high_note",
             "st": "change_similarity_threshold",
@@ -189,6 +190,7 @@ class Askers():
         curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
+        curr_sett_seg_style_emd:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_EMD")
         curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
         curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
         curr_sett_similarity_threshold:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIFICATION_SIMILARITY_THRESHOLD")
@@ -207,6 +209,8 @@ class Askers():
         msg_segm_style_paa_tocount = "count (currently segment size)"
         msg_segm_style_dtimes_tosize  = "size (currently segment count)"
         msg_segm_style_dtimes_tocount = "count (currently segment size)"
+        msg_segm_style_emd_tosize  = "size (currently segment count)"
+        msg_segm_style_emd_tocount = "count (currently segment size)"
 
         msg_auto_normal = (msg_auto_normal_disable
                            if curr_sett_auto_normal
@@ -233,6 +237,11 @@ class Askers():
                                  else msg_segm_style_dtimes_tocount
                                  if curr_sett_seg_style_dwelltimes == "size"
                                  else "ERROR")
+        msg_segm_style_emd = (msg_segm_style_emd_tosize
+                                 if curr_sett_seg_style_emd == "count"
+                                 else msg_segm_style_emd_tocount
+                                 if curr_sett_seg_style_emd == "size"
+                                 else "ERROR")
 
         while True:
             print( "Choose an action:\n"
@@ -243,6 +252,7 @@ class Askers():
                   f"cd - {msg_cutting_dtimes}\n"
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
+                  f"se - Change segmenting style for EMD extremes finding {msg_segm_style_emd}\n"
                   f"bl - Change low note in binary sonification (currently {curr_sett_binary_low_note})\n"
                   f"bh - Change high note in binary sonification (currently {curr_sett_binary_high_note})\n"
                   f"st - Change similarity threshold (currently {curr_sett_similarity_threshold})\n"
