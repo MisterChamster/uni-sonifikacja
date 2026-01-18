@@ -103,6 +103,7 @@ class Askers():
             "b": "convert_to_bin",
             "t": "convert_to_dwelltimes",
             "c": "convert_to_dwelltimes_condensed",
+            "e": "appy_emd",
             "o": "original_data",
             "r": None}
         normalized_msg = "already normalized" if is_normalized else "not normalized"
@@ -120,6 +121,7 @@ class Askers():
                  f"b - Convert data to binary ({binary_msg})\n"
                   "t - Convert data to dwell times\n"
                   "c - Convert data to condensed dwell times\n"
+                  "e - Apply EMD method\n"
                   "o - Revert to original data set\n"
                   "r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()

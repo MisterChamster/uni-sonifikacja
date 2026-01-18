@@ -289,7 +289,7 @@ class DataSonif():
         return
 
 
-# ============================ BINARY CONVERSION ==============================
+# ============================= BINARY CONVERSION =============================
     def convert_data_to_binary(self) -> None:
         if not self.is_normalized:
             self.normalize_data()
@@ -852,7 +852,12 @@ class DataSonif():
                 print("Invalid input.\n\n")
 
 
-# ================================= PLOTTING ==================================
+# ==================================== EMD ====================================
+    def apply_emd(self) -> None:
+        return
+
+
+# ================================== PLOTTING ==================================
     def show_chart(self) -> None:
         # Getting x signs for evey state approximate midpoint
         # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
