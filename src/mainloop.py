@@ -182,8 +182,9 @@ def mainloop() -> None:
 
                     elif data_processing_asker == "appy_emd":
                         print("Applying EMD...")
-                        loaded_data.apply_emd()
-                        print("Done!\n\n")
+                        emd_applied = loaded_data.apply_emd()
+                        if emd_applied:
+                            print("Done!\n\n")
 
                     elif data_processing_asker == "original_data":
                         if not os.path.exists(loaded_data.file_path):

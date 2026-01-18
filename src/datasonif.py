@@ -853,8 +853,17 @@ class DataSonif():
 
 
 # ==================================== EMD ====================================
-    def apply_emd(self) -> None:
-        return
+    def apply_emd(self) -> bool:
+        if not self.is_normalized:
+            print("EMD cannot be applied - data is not normalized")
+            return False
+
+        abstract_pseudoextremes: list[(int, float)] = self.get_abstract_pseudoextremes()
+        return True
+
+
+    def get_abstract_pseudoextremes(self) -> list[(int, float)]:
+        return None
 
 
 # ================================== PLOTTING ==================================
