@@ -853,19 +853,19 @@ class DataSonif():
 
 
 # ==================================== EMD ====================================
-    def apply_emd(
-        self,
-        segmenting_style_emd: Literal["count", "size"]
-    ) -> bool:
+    def apply_emd(self) -> bool:
+        # segmenting_style_emd: Literal["count", "size"]
         if not self.is_normalized:
             print("EMD cannot be applied - data is not normalized")
             return False
-        
+
         if not self.threshold:
             self.calculate_threshold()
 
         abstract_pseudoextrema_up:   list = self.get_abstract_pseudoextrema("up")
-        # abstract_pseudoextrema_down: list = self.get_abstract_pseudoextrema("down")
+        abstract_pseudoextrema_down: list = self.get_abstract_pseudoextrema("down")
+        print(abstract_pseudoextrema_up)
+        print(abstract_pseudoextrema_down)
         return True
 
 
@@ -934,9 +934,9 @@ class DataSonif():
             first_index = dwell_time_chunks[0].index_start
             last_index = dwell_time_chunks[0].index_end
             mid_index = int((first_index + last_index) / 2)
+            extrema_xes.append(mid_index)
 
-
-        return None
+        return extrema_xes
 
 
 # ================================== PLOTTING ==================================

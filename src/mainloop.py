@@ -188,7 +188,7 @@ def mainloop() -> None:
 
 
                         print("Applying EMD...")
-                        emd_applied = loaded_data.apply_emd(segmenting_style_emd)
+                        emd_applied = loaded_data.apply_emd()
                         if emd_applied:
                             print("Done!\n\n")
 
