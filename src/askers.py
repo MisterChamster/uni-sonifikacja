@@ -10,6 +10,7 @@ class Askers():
     settings_rel_path: str = "src/settings.json"
     notes_rel_path:    str = "src/notes.json"
 
+
     @staticmethod
     def ask_path_filedialog(
         node_type: str,
@@ -38,7 +39,7 @@ class Askers():
         while True:
             print("Downsample data (Pick every n-th line of data)\n"
                   "Max value is 10, but highest reasonable is 5.\n"
-                  f"Press Enter to skip. {stroing}\n"
+                 f"Press Enter to skip. {stroing}\n"
                   "n = ", end="")
             asker = input().strip().lower()
 
@@ -60,7 +61,13 @@ class Askers():
 
 
     @staticmethod
-    def ask_action() -> str:
+    def ask_action() -> Literal[
+        "process_data",
+        "sonify",
+        "show_chart",
+        "show_histogram",
+        "settings",
+        "exit"]:
         returns_dict = {
             "p": "process_data",
             "s": "sonify",
@@ -92,7 +99,18 @@ class Askers():
         is_normalized: str,
         is_threshold:  str,
         is_binary:     str
-    ) -> str | None:
+    ) -> Literal[
+        "reverse_order",
+        "reverse_sign",
+        "normalization",
+        "calculate_threshold",
+        "downsample_data",
+        "apply_paa",
+        "convert_to_bin",
+        "convert_to_dwelltimes",
+        "convert_to_dwelltimes_condensed",
+        "appy_emd",
+        "original_data"] | None:
         returns_dict = {
             "x": "reverse_order",
             "y": "reverse_sign",
@@ -136,7 +154,7 @@ class Askers():
     def ask_segment_value(
         data_length:      int,
         segmenting_style: Literal["count", "size"]
-    ) -> str|None:
+    ) -> int | None:
 
         if segmenting_style == "count":
             string1 = "number of segments"
@@ -144,8 +162,8 @@ class Askers():
             string1 = "size of a segment"
 
         while True:
-            print(f"Number of samples: {data_length}")
-            print(f"Input a {string1} (type 'r' to return):\n>> ", end="")
+            print(f"Number of samples: {data_length}\n"
+                  f"Input a {string1} (type 'r' to return):\n>> ", end="")
             segment_value = input().strip().lower()
 
             if segment_value == "r":
@@ -167,7 +185,34 @@ class Askers():
 
 
     @staticmethod
-    def ask_settings() -> str | None:
+    def ask_settings_type() -> Literal["data_settings", "sonif_settings"] | None:
+        returns_dict = {
+            "d": "data_settings",
+            "s": "sonif_settings",
+            "r": None}
+
+        while True:
+            print("Choose settings type (type 'r' to return):\n"
+                  "d - Data settings\n"
+                  "s - Sonification settings\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]
+
+
+    @staticmethod
+    def ask_data_settings() -> Literal[
+        "auto_normalization_at_load",
+        "auto_threshold_at_load",
+        "show_thold_chart",
+        "change_cutting_setting_paa",
+        "change_cutting_setting_dwelltimes",
+        "change_segmenting_setting_paa",
+        "change_segmenting_setting_dwelltimes",
+        "change_segmenting_setting_emd"] | None:
         returns_dict = {
             "an": "auto_normalization_at_load",
             "at": "auto_threshold_at_load",
@@ -177,12 +222,8 @@ class Askers():
             "sp": "change_segmenting_setting_paa",
             "sd": "change_segmenting_setting_dwelltimes",
             "se": "change_segmenting_setting_emd",
-            "bl": "change_binary_low_note",
-            "bh": "change_binary_high_note",
-            "st": "change_similarity_threshold",
             "r":   None}
 
-        # Get current settings from settings.json
         curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
         curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
         curr_sett_show_thold_chart:       bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SHOW_THRESHOLD_ON_CHARTS")
@@ -191,26 +232,23 @@ class Askers():
         curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
         curr_sett_seg_style_emd:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_EMD")
-        curr_sett_binary_low_note:         str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
-        curr_sett_binary_high_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
-        curr_sett_similarity_threshold:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIFICATION_SIMILARITY_THRESHOLD")
 
-        msg_auto_normal_disable = "Disable automatic normalization during data loading (currently enabled)"
-        msg_auto_normal_enable  = "Enable automatic normalization during data loading (currently disabled)"
-        msg_auto_thold_disable = "Disable automatic calculation of threshold during data loading (currently enabled)"
-        msg_auto_thold_enable  = "Enable automatic calculation of threshold during data loading (currently disabled)"
-        msg_show_thold_disable = "Disable showing threshold on charts (currently enabled)"
-        msg_show_thold_enable  = "Enable showing threshold on charts (currently disabled)"
-        msg_cutting_paa_disable = "Disable cutting remainder data during PAA (currently enabled)"
-        msg_cutting_paa_enable  = "Enable cutting remainder data during PAA (currently disabled)"
-        msg_cutting_dtimes_disable = "Disable cutting remainder data during dwell times conversion (currently enabled)"
-        msg_cutting_dtimes_enable  = "Enable cutting remainder data during dwell times conversion (currently disabled)"
-        msg_segm_style_paa_tosize  = "size (currently segment count)"
-        msg_segm_style_paa_tocount = "count (currently segment size)"
+        msg_auto_normal_disable       = "Disable automatic normalization during data loading (currently enabled)"
+        msg_auto_normal_enable        = "Enable automatic normalization during data loading (currently disabled)"
+        msg_auto_thold_disable        = "Disable automatic calculation of threshold during data loading (currently enabled)"
+        msg_auto_thold_enable         = "Enable automatic calculation of threshold during data loading (currently disabled)"
+        msg_show_thold_disable        = "Disable showing threshold on charts (currently enabled)"
+        msg_show_thold_enable         = "Enable showing threshold on charts (currently disabled)"
+        msg_cutting_paa_disable       = "Disable cutting remainder data during PAA (currently enabled)"
+        msg_cutting_paa_enable        = "Enable cutting remainder data during PAA (currently disabled)"
+        msg_cutting_dtimes_disable    = "Disable cutting remainder data during dwell times conversion (currently enabled)"
+        msg_cutting_dtimes_enable     = "Enable cutting remainder data during dwell times conversion (currently disabled)"
+        msg_segm_style_paa_tosize     = "size (currently segment count)"
+        msg_segm_style_paa_tocount    = "count (currently segment size)"
         msg_segm_style_dtimes_tosize  = "size (currently segment count)"
         msg_segm_style_dtimes_tocount = "count (currently segment size)"
-        msg_segm_style_emd_tosize  = "size (currently segment count)"
-        msg_segm_style_emd_tocount = "count (currently segment size)"
+        msg_segm_style_emd_tosize     = "size (currently segment count)"
+        msg_segm_style_emd_tocount    = "count (currently segment size)"
 
         msg_auto_normal = (msg_auto_normal_disable
                            if curr_sett_auto_normal
@@ -253,6 +291,32 @@ class Askers():
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
                   f"se - Change segmenting style for EMD extremes finding {msg_segm_style_emd}\n"
+                   "r  - Return to main menu\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]
+
+
+    @staticmethod
+    def ask_sonif_settings() -> Literal[
+            "change_binary_low_note",
+            "change_binary_high_note",
+            "change_similarity_threshold"] | None:
+        returns_dict = {
+            "bl": "change_binary_low_note",
+            "bh": "change_binary_high_note",
+            "st": "change_similarity_threshold",
+            "r":   None}
+
+        curr_sett_binary_low_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_LOW_NOTE")
+        curr_sett_binary_high_note:       str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIFICATION_HIGH_NOTE")
+        curr_sett_similarity_threshold: float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIFICATION_SIMILARITY_THRESHOLD")
+
+        while True:
+            print( "Choose an action:\n"
                   f"bl - Change low note in binary sonification (currently {curr_sett_binary_low_note})\n"
                   f"bh - Change high note in binary sonification (currently {curr_sett_binary_high_note})\n"
                   f"st - Change similarity threshold (currently {curr_sett_similarity_threshold})\n"
@@ -268,7 +332,7 @@ class Askers():
     @staticmethod
     def ask_note_binary(
         low_or_high: Literal["low", "high"]
-    ) -> str|None:
+    ) -> str | None:
         available_notes = Utils.get_keys_from_json(Askers.notes_rel_path)
         lowest_note     = available_notes[0]
         highest_note    = available_notes[-1]
@@ -279,9 +343,9 @@ class Askers():
             temp_dict_key)
 
         while True:
-            print(f"Choose a new {low_or_high} note for binary sonification (currently {current_note})")
-            print(f"Available notes from {lowest_note} to {highest_note}")
-            print("(type 'r' to return)\n>> ", end="")
+            print(f"Choose a new {low_or_high} note for binary sonification (currently {current_note})\n"
+                  f"Available notes from {lowest_note} to {highest_note}\n"
+                   "(type 'r' to return)\n>> ", end="")
             asker = input().strip().upper() #Upper here is crucial!
 
             if asker in available_notes:
@@ -299,11 +363,10 @@ class Askers():
     ) -> Literal["binary", "analog"] | None:
         returns_dict = {
             "b": "binary",
-            "a": "analog"
-        }
+            "a": "analog"}
 
         while True:
-            bin_msg    = (
+            bin_msg = (
                 "b - Sonify binary data..."
                 if bin_available
                 else "b - Sonify binary data... (UNAVAILABLE)")
@@ -312,10 +375,9 @@ class Askers():
                 if analog_available
                 else "a - Sonify analog data... (UNAVAILABLE)")
 
-            print("Choose a method of sonification (type 'r' to return):")
-            print(bin_msg)
-            print(analog_msg)
-            print(">> ", end="")
+            print("Choose a method of sonification (type 'r' to return):\n"
+                 f"{bin_msg}\n"
+                 f"{analog_msg}\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == "r":
@@ -340,8 +402,8 @@ class Askers():
     @staticmethod
     def ask_note_duration() -> int | None:
         while True:
-            print("Input new note duration (ms):")
-            print("(type 'r' to return)\n>> ", end="")
+            print("Input new note duration (ms):\n"
+                  "(type 'r' to return)\n>> ", end="")
             asker = input().strip()
 
             if asker == "r":
@@ -370,10 +432,11 @@ class Askers():
         lowest_lowest_note_possible: str = notes[0]
         highest_possible_index = notes.index(highest_lowest_note_possible)
         available_notes = notes[:highest_possible_index+1]
+
         while True:
-            print(f"Choose a new lowest note for analog sonification (currently {current_lowest_note_name})")
-            print(f"Available notes from {lowest_lowest_note_possible} to {highest_lowest_note_possible}")
-            print("(type 'r' to return)\n>> ", end="")
+            print(f"Choose a new lowest note for analog sonification (currently {current_lowest_note_name})\n"
+                  f"Available notes from {lowest_lowest_note_possible} to {highest_lowest_note_possible}\n"
+                   "(type 'r' to return)\n>> ", end="")
             asker = input().strip().upper()
 
             if asker in available_notes:
@@ -392,8 +455,8 @@ class Askers():
                       else available_notes_count)
 
         while True:
-            print(f"Enter a new amount of notes (value between {min_amount} and {max_amount})")
-            print("(type 'r' to return)\n>> ", end="")
+            print(f"Enter a new amount of notes (value between {min_amount} and {max_amount})\n"
+                   "(type 'r' to return)\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == "r":
@@ -418,8 +481,8 @@ class Askers():
         max_val = 0.3
 
         while True:
-            print(f"Enter a new similarity threshold between {min_val} and {max_val}")
-            print("(type 'r' to return)\n>> ", end="")
+            print(f"Enter a new similarity threshold between {min_val} and {max_val}"
+                   "(type 'r' to return)\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == "r":

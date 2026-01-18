@@ -16,6 +16,7 @@ class Note():
     sample_rate: int = 44100
     similatiry_threshold: float = 0.03
 
+
 # ================================== INITIAL ==================================
     #OK
     def __init__(

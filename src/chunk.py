@@ -9,6 +9,7 @@ class Chunk():
     data_mean:      np.float64 | float | None
     __data_array:   np.ndarray[np.float64] | np.ndarray[bool] | None
 
+
     def __init__(
         self,
         in_start:      int,
