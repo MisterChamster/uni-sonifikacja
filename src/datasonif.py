@@ -862,27 +862,34 @@ class DataSonif():
         if not self.threshold:
             self.calculate_threshold()
 
-        abstract_pseudoextrema_up:   list = self.get_abstract_pseudoextrema("up")
-        abstract_pseudoextrema_down: list = self.get_abstract_pseudoextrema("down")
-        print(abstract_pseudoextrema_up)
-        print(abstract_pseudoextrema_down)
+        pseudoextrema_2dlist_up:   list = self.get_abstract_pseudoextrema("up")
+        pseudoextrema_2dlist_down: list = self.get_abstract_pseudoextrema("down")
+
+        abstract_pseudoextrema_posi_up:   list = [a[0] for a in pseudoextrema_2dlist_up]
+        abstract_pseudoextrema_posi_down: list = [a[0] for a in pseudoextrema_2dlist_down]
+        abstract_pseudoextrema_vals_up:   list = [a[1] for a in pseudoextrema_2dlist_up]
+        abstract_pseudoextrema_vals_down: list = [a[1] for a in pseudoextrema_2dlist_down]
+        print(abstract_pseudoextrema_posi_up)
+        print(abstract_pseudoextrema_posi_down)
+        print(abstract_pseudoextrema_vals_up)
+        print(abstract_pseudoextrema_vals_down)
         return True
 
 
     def get_abstract_pseudoextrema(
         self,
         up_or_down: Literal["up", "down"]
-    ) -> list[np.ndarray] | None:
+    ) -> list[list[int, np.float64]] | None:
         # FIXED SIZE VALS, CAN BE CHANGED L8R
-        extrema_bin_size = Utils.get_val_from_json_fix(
-            self.settings_rel_path,
-            "BIN_SIZE_EMD")
         upper_threshold = 0.8
         lower_threshold = 0.2
 
         curr_envelope_thold = (upper_threshold
                                if up_or_down == "up"
                                else lower_threshold)
+        extrema_bin_size = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "BIN_SIZE_EMD")
         extrema_xes = []
 
         incr = 0
@@ -936,7 +943,7 @@ class DataSonif():
             first_index = dwell_time_chunks[0].index_start
             last_index = dwell_time_chunks[0].index_end
             mid_index = int((first_index + last_index) / 2)
-            extrema_xes.append(mid_index)
+            extrema_xes.append([mid_index, self.data_array[mid_index]])
 
         return extrema_xes
 
