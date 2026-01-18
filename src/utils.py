@@ -62,6 +62,7 @@ class Utils():
     def get_val_from_json_fix(
         adress:      str,
         json_key:    Literal[
+            "AUTOMATIC_NORMALIZATION_AT_LOAD",
             "AUTOMATIC_THRESHOLD_AT_LOAD",
             "SHOW_THRESHOLD_ON_CHARTS",
             "CUT_REMAINDER_SAMPLES_PAA",
@@ -81,6 +82,7 @@ class Utils():
 
         if not default_val:
             default_settings_dict = {
+                "AUTOMATIC_NORMALIZATION_AT_LOAD":         True,
                 "AUTOMATIC_THRESHOLD_AT_LOAD":             True,
                 "SHOW_THRESHOLD_ON_CHARTS":                True,
                 "CUT_REMAINDER_SAMPLES_PAA":               True,

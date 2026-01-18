@@ -114,6 +114,12 @@ class DataSonif():
         self.data_array = self.data_array.to_numpy().flatten()
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
 
+        is_normalization_automatic = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "AUTOMATIC_NORMALIZATION_AT_LOAD")
+        if is_normalization_automatic:
+            self.normalize_data()
+
         is_threshold_automatic = Utils.get_val_from_json_fix(
             self.settings_rel_path,
             "AUTOMATIC_THRESHOLD_AT_LOAD")
