@@ -6,8 +6,8 @@ class Chunk():
     index_start:    int
     index_end:      int
     num_of_samples: int
-    data_mean:      np.float64 | float | None
     __data_array:   np.ndarray[np.float64] | np.ndarray[bool] | None
+    data_mean:      np.float64 | float | None
 
 
     def __init__(
@@ -46,6 +46,11 @@ class Chunk():
             raise Exception("CODE IS BROKEN. INCORRECT ARRAY LENGTH COMPARED TO INDEX VALUES!")
 
         self.__data_array = new_array
+        return
+
+
+    def del_data_array(self) -> None:
+        self.__data_array = None
         return
 
 
