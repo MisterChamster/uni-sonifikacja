@@ -212,7 +212,8 @@ class Askers():
         "change_cutting_setting_dwelltimes",
         "change_segmenting_setting_paa",
         "change_segmenting_setting_dwelltimes",
-        "change_segmenting_setting_emd"] | None:
+        "change_segmenting_setting_emd",
+        "change_bin_size_emd"] | None:
         returns_dict = {
             "an": "auto_normalization_at_load",
             "at": "auto_threshold_at_load",
@@ -222,6 +223,7 @@ class Askers():
             "sp": "change_segmenting_setting_paa",
             "sd": "change_segmenting_setting_dwelltimes",
             "se": "change_segmenting_setting_emd",
+            "eb": "change_bin_size_emd",
             "r":   None}
 
         curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
@@ -232,7 +234,10 @@ class Askers():
         curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
         curr_sett_seg_style_emd:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_EMD")
+        curr_sett_bin_size_emd:            int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BIN_SIZE_EMD")
 
+        msg_to_size  = "size (currently segment count)"
+        msg_to_count = "count (currently segment size)"
         msg_auto_normal_disable       = "Disable automatic normalization during data loading (currently enabled)"
         msg_auto_normal_enable        = "Enable automatic normalization during data loading (currently disabled)"
         msg_auto_thold_disable        = "Disable automatic calculation of threshold during data loading (currently enabled)"
@@ -243,12 +248,12 @@ class Askers():
         msg_cutting_paa_enable        = "Enable cutting remainder data during PAA (currently disabled)"
         msg_cutting_dtimes_disable    = "Disable cutting remainder data during dwell times conversion (currently enabled)"
         msg_cutting_dtimes_enable     = "Enable cutting remainder data during dwell times conversion (currently disabled)"
-        msg_segm_style_paa_tosize     = "size (currently segment count)"
-        msg_segm_style_paa_tocount    = "count (currently segment size)"
-        msg_segm_style_dtimes_tosize  = "size (currently segment count)"
-        msg_segm_style_dtimes_tocount = "count (currently segment size)"
-        msg_segm_style_emd_tosize     = "size (currently segment count)"
-        msg_segm_style_emd_tocount    = "count (currently segment size)"
+        msg_segm_style_paa_tosize     = msg_to_size
+        msg_segm_style_paa_tocount    = msg_to_count
+        msg_segm_style_dtimes_tosize  = msg_to_size
+        msg_segm_style_dtimes_tocount = msg_to_count
+        msg_segm_style_emd_tosize     = msg_to_size
+        msg_segm_style_emd_tocount    = msg_to_count
 
         msg_auto_normal = (msg_auto_normal_disable
                            if curr_sett_auto_normal
@@ -276,10 +281,10 @@ class Askers():
                                  if curr_sett_seg_style_dwelltimes == "size"
                                  else "ERROR")
         msg_segm_style_emd = (msg_segm_style_emd_tosize
-                                 if curr_sett_seg_style_emd == "count"
-                                 else msg_segm_style_emd_tocount
-                                 if curr_sett_seg_style_emd == "size"
-                                 else "ERROR")
+                              if curr_sett_seg_style_emd == "count"
+                              else msg_segm_style_emd_tocount
+                              if curr_sett_seg_style_emd == "size"
+                              else "ERROR")
 
         while True:
             print( "Choose an action:\n"
@@ -291,6 +296,7 @@ class Askers():
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
                   f"se - Change segmenting style for EMD extremes finding {msg_segm_style_emd}\n"
+                  f"eb - Change bin size for EMD extremes finding segmentation (currently {curr_sett_bin_size_emd})\n"
                    "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
@@ -357,6 +363,32 @@ class Askers():
 
 
     @staticmethod
+    def ask_bin_size_emd() -> int | None:
+        min_size = 100
+        max_size = 10000
+
+        while True:
+            print(f"Enter a new bin size between {min_size} and {max_size} for EMD extrema finding:\n"
+                  "(type 'r' to return)\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == "r":
+                return
+            if not asker.isdigit():
+                print("Invalid input.\n")
+                continue
+
+            asker = int(asker)
+            if asker > max_size:
+                print(f"Size is too big (max {max_size})\n")
+                continue
+            elif asker < min_size:
+                print(f"Size is too small (min {min_size})\n")
+                continue
+            return asker
+
+
+    @staticmethod
     def ask_sonif_type(
         bin_available:    bool,
         analog_available: bool
@@ -419,8 +451,7 @@ class Askers():
             elif asker < 1:
                 print("Duration is too short (min 1)\n")
                 continue
-            else:
-                return asker
+            return asker
 
 
     @staticmethod

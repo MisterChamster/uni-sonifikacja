@@ -51,6 +51,15 @@ def settings_loop() -> None:
                 Utils.change_setting_to_opposite("SEGMENTING_STYLE_EMD")
                 print(msg_val_changed)
 
+            elif asker_settings == "change_bin_size_emd":
+                print()
+                asker: int|None = Askers.ask_bin_size_emd()
+                if not asker:
+                    print("\n")
+                    continue
+                Utils.save_value_to_settings("BIN_SIZE_EMD", asker)
+                print(msg_val_changed)
+
             else:
                 print("Invalid input!\n")
 
