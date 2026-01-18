@@ -907,24 +907,31 @@ class DataSonif():
 
                 incr += extrema_bin_size
 
-            if len(dwell_time_chunks) > 0:
-                print("DWELL TIME HAS CHUNKS:", len(dwell_time_chunks))
+            if len(dwell_time_chunks) == 0:
+                continue
 
-                i = 0
-                while i < len(dwell_time_chunks):
-                    curr_chunk = dwell_time_chunks[i]
-                    # print(dwell_time_chunks[i].index_start, dwell_time_chunks[i].index_end)
 
-                    if up_or_down == "up":
-                        if curr_chunk.data_mean < curr_envelope_thold:
-                            dwell_time_chunks.pop(i)
-                            # print("Deleting chunk mean", curr_envelope_thold, curr_chunk.data_mean)
-                    elif up_or_down == "down":
-                        if curr_chunk.data_mean > curr_envelope_thold:
-                            dwell_time_chunks.pop(i)
-                            # print("Deleting chunk mean", curr_envelope_thold, curr_chunk.data_mean)
-    
-                    i += 1
+            # print("DWELL TIME HAS CHUNKS:", len(dwell_time_chunks))
+            i = 0
+            while i < len(dwell_time_chunks):
+                curr_chunk = dwell_time_chunks[i]
+                # print(dwell_time_chunks[i].index_start, dwell_time_chunks[i].index_end)
+
+                if up_or_down == "up":
+                    if curr_chunk.data_mean < curr_envelope_thold:
+                        dwell_time_chunks.pop(i)
+                        # print("Deleting chunk mean", curr_envelope_thold, curr_chunk.data_mean)
+                elif up_or_down == "down":
+                    if curr_chunk.data_mean > curr_envelope_thold:
+                        dwell_time_chunks.pop(i)
+                        # print("Deleting chunk mean", curr_envelope_thold, curr_chunk.data_mean)
+
+                i += 1
+
+            if len(dwell_time_chunks) == 0:
+                continue
+
+            
 
 
         return None
