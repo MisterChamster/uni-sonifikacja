@@ -182,8 +182,13 @@ def mainloop() -> None:
                         print("Done!\n\n")
 
                     elif data_processing_asker == "appy_emd":
+                        segmenting_style_emd: Literal["count", "size"] = Utils.get_val_from_json_fix(
+                            settings_rel_path,
+                            "SEGMENTING_STYLE_EMD")
+
+
                         print("Applying EMD...")
-                        emd_applied = loaded_data.apply_emd()
+                        emd_applied = loaded_data.apply_emd(segmenting_style_emd)
                         if emd_applied:
                             print("Done!\n\n")
 

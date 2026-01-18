@@ -853,7 +853,10 @@ class DataSonif():
 
 
 # ==================================== EMD ====================================
-    def apply_emd(self) -> bool:
+    def apply_emd(
+        self,
+        segmenting_style_emd: Literal["count", "size"]
+    ) -> bool:
         if not self.is_normalized:
             print("EMD cannot be applied - data is not normalized")
             return False
@@ -863,9 +866,6 @@ class DataSonif():
 
 
     def get_abstract_pseudoextremes(self) -> list[(int, float)]:
-        segmenting_style_emd: Literal["count", "size"] = Utils.get_val_from_json_fix(
-            self.settings_rel_path,
-            "SEGMENTING_STYLE_EMD")
         return None
 
 
