@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Literal
 
 
 
@@ -39,6 +40,24 @@ class Chunk():
         array_len = len(self.__data_array)
         self.data_mean = data_sum / array_len
         return
+
+
+    def get_abstract_extreme(
+        self,
+        up_or_down: Literal["up", "down"],
+        threshold:  float
+    ) -> float:
+        if self.__data_array is None:
+            raise ValueError("[ERROR] Code is written badly. No data array in chunk!")
+
+        temp_arr = []
+        if up_or_down == "up":
+            temp_arr = [val for val in self.__data_array if val > threshold]
+        else:
+            temp_arr = [val for val in self.__data_array if val < threshold]
+
+        temp_extreme: float = sum(temp_arr) / len(temp_arr)
+        return temp_extreme
 
 
 # ================================== SETTERS ===================================
