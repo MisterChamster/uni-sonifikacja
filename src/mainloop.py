@@ -57,8 +57,8 @@ def mainloop() -> None:
             action_asker = Askers.ask_action()
             print("\n")
 
-            # ========================== DATA ALTERING =========================
-            if action_asker == "alter_data":
+            # ========================= DATA PROCESSING ========================
+            if action_asker == "process_data":
                 while True:
                     ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
                     sign:              str = "Original" if loaded_data.is_og_sign  else "Opposite"
@@ -76,36 +76,36 @@ def mainloop() -> None:
                     print(f"Num of loaded samples:    {loaded_data.get_sample_count()}")
                     print()
                     is_treshold = False if not loaded_data.threshold else True
-                    alter_asker = Askers.ask_alter_data(
+                    data_processing_asker = Askers.ask_process_data(
                         loaded_data.is_normalized,
                         is_treshold,
                         loaded_data.is_converted_to_binary)
                     print("\n")
 
-                    if not alter_asker:
+                    if not data_processing_asker:
                         break
 
-                    elif alter_asker == "reverse_order":
+                    elif data_processing_asker == "reverse_order":
                         print("Reversing order...")
                         loaded_data.reverse_data_order()
                         print("Done!\n\n")
 
-                    elif alter_asker == "reverse_sign":
+                    elif data_processing_asker == "reverse_sign":
                         print("Reversing order...")
                         loaded_data.reverse_data_sign()
                         print("Done!\n\n")
 
-                    elif alter_asker == "normalization":
+                    elif data_processing_asker == "normalization":
                         print("Normalizing...")
                         loaded_data.normalize_data()
                         print("Done!\n\n")
 
-                    elif alter_asker == "calculate_threshold":
+                    elif data_processing_asker == "calculate_threshold":
                         print("Calculating threshold...")
                         loaded_data.calculate_threshold()
                         print("Done!\n\n")
 
-                    elif alter_asker == "downsample_data":
+                    elif data_processing_asker == "downsample_data":
                         asker_downsample = Askers.ask_downsampling()
                         if not asker_downsample or asker_downsample == 1:
                             print("\n")
@@ -115,7 +115,7 @@ def mainloop() -> None:
                         loaded_data.downsample_data(asker_downsample)
                         print("Done!\n\n")
 
-                    elif alter_asker == "apply_paa":
+                    elif data_processing_asker == "apply_paa":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
                             "SEGMENTING_STYLE_PAA")
@@ -135,12 +135,12 @@ def mainloop() -> None:
                             segmenting_style)
                         print("Data successfully aggregated!\n\n")
 
-                    elif alter_asker == "convert_to_bin":
+                    elif data_processing_asker == "convert_to_bin":
                         print("Converting data to binary...")
                         loaded_data.convert_data_to_binary()
                         print("Done!\n\n")
 
-                    elif alter_asker == "convert_to_dwelltimes":
+                    elif data_processing_asker == "convert_to_dwelltimes":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
                             "SEGMENTING_STYLE_DWELLTIMES")
@@ -160,7 +160,7 @@ def mainloop() -> None:
                             segmenting_style)
                         print("Done!\n\n")
 
-                    elif alter_asker == "convert_to_dwelltimes_condensed":
+                    elif data_processing_asker == "convert_to_dwelltimes_condensed":
                         segmenting_style = Utils.get_val_from_json_fix(
                             settings_rel_path,
                             "SEGMENTING_STYLE_DWELLTIMES")
@@ -180,7 +180,7 @@ def mainloop() -> None:
                             segmenting_style)
                         print("Done!\n\n")
 
-                    elif alter_asker == "original_data":
+                    elif data_processing_asker == "original_data":
                         if not os.path.exists(loaded_data.file_path):
                             print(f"Chosen file no longer exists in path {loaded_data.file_path}")
                             continue

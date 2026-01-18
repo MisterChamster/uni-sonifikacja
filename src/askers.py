@@ -62,7 +62,7 @@ class Askers():
     @staticmethod
     def ask_action() -> str:
         returns_dict = {
-            "a": "alter_data",
+            "p": "process_data",
             "s": "sonify",
             "c": "show_chart",
             "h": "show_histogram",
@@ -72,7 +72,7 @@ class Askers():
 
         while True:
             print("Choose an action:\n"
-                  "a - Alter data...\n"
+                  "p - Process data...\n"
                   "s - Sonify data...\n"
                   "c - Show chart\n"
                   "h - Show histogram\n"
@@ -88,7 +88,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_alter_data(
+    def ask_process_data(
         is_normalized: str,
         is_threshold:  str,
         is_binary:     str
@@ -419,4 +419,3 @@ class Askers():
                 continue
 
             return asker
-
