@@ -214,7 +214,6 @@ class Askers():
         "change_cutting_setting_dwelltimes",
         "change_segmenting_setting_paa",
         "change_segmenting_setting_dwelltimes"
-        # "change_segmenting_setting_emd",
     ] | None:
         returns_dict = {
             "an": "auto_normalization_at_load",
@@ -224,7 +223,6 @@ class Askers():
             "cd": "change_cutting_setting_dwelltimes",
             "sp": "change_segmenting_setting_paa",
             "sd": "change_segmenting_setting_dwelltimes",
-            # "se": "change_segmenting_setting_emd",
             "r":   None}
 
         curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
@@ -234,7 +232,6 @@ class Askers():
         curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
-        # curr_sett_seg_style_emd:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_EMD")
 
         msg_to_size  = "size (currently segment count)"
         msg_to_count = "count (currently segment size)"
@@ -252,8 +249,6 @@ class Askers():
         msg_segm_style_paa_tocount    = msg_to_count
         msg_segm_style_dtimes_tosize  = msg_to_size
         msg_segm_style_dtimes_tocount = msg_to_count
-        # msg_segm_style_emd_tosize     = msg_to_size
-        # msg_segm_style_emd_tocount    = msg_to_count
 
         msg_auto_normal = (msg_auto_normal_disable
                            if curr_sett_auto_normal
@@ -280,11 +275,6 @@ class Askers():
                                  else msg_segm_style_dtimes_tocount
                                  if curr_sett_seg_style_dwelltimes == "size"
                                  else "ERROR")
-        # msg_segm_style_emd = (msg_segm_style_emd_tosize
-        #                       if curr_sett_seg_style_emd == "count"
-        #                       else msg_segm_style_emd_tocount
-        #                       if curr_sett_seg_style_emd == "size"
-        #                       else "ERROR")
 
         while True:
             print( "Choose an action:\n"
@@ -295,10 +285,6 @@ class Askers():
                   f"cd - {msg_cutting_dtimes}\n"
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
-                #   f"se - Change segmenting style for EMD extremes finding {msg_segm_style_emd}\n"
-                  f"eb - Change bin size for EMD extremes finding segmentation (currently {curr_sett_bin_size_emd})\n"
-                  f"el - Change low threshold for EMD extremes finding (currently {curr_sett_emd_thold_low})\n"
-                  f"eh - Change high threshold for EMD extremes finding (currently {curr_sett_emd_thold_high})\n"
                    "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
