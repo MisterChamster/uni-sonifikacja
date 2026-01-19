@@ -550,13 +550,13 @@ class DataSonif():
     def binary_sonif_loop(self) -> None:
         low_note_name: str = Utils.get_val_from_json_fix(
             self.settings_rel_path,
-            "BINARY_SONIFICATION_LOW_NOTE")
+            "BINARY_SONIF_LOW_NOTE")
         low_note_freq: float = Utils.get_val_from_json(
             self.notes_rel_path,
             low_note_name)
         high_note_name: str = Utils.get_val_from_json_fix(
             self.settings_rel_path,
-            "BINARY_SONIFICATION_HIGH_NOTE")
+            "BINARY_SONIF_HIGH_NOTE")
         high_note_freq: float = Utils.get_val_from_json(
             self.notes_rel_path,
             high_note_name)
@@ -564,7 +564,7 @@ class DataSonif():
         while True:
             note_duration_milis: int = Utils.get_val_from_json_fix(
                 self.settings_rel_path,
-                "BINARY_SONIFICATION_NOTE_DURATION_MILIS")
+                "BINARY_SONIF_NOTE_DURATION_MILIS")
 
             final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
@@ -593,7 +593,7 @@ class DataSonif():
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
-                    "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
+                    "BINARY_SONIF_NOTE_DURATION_MILIS",
                     new_note_duration)
 
             elif asker == "s":
@@ -719,16 +719,16 @@ class DataSonif():
         while True:
             lowest_note_name: str = Utils.get_val_from_json_fix(
                 self.settings_rel_path,
-                "ANAL_SONIFICATION_LOWEST_NOTE")
+                "ANAL_SONIF_LOWEST_NOTE")
             lowest_note_freq: float = Utils.get_val_from_json(
                 self.notes_rel_path,
                 lowest_note_name)
             note_duration_milis: int = Utils.get_val_from_json_fix(
                 self.settings_rel_path,
-                "ANAL_SONIFICATION_NOTE_DURATION_MILIS")
+                "ANAL_SONIF_NOTE_DURATION_MILIS")
             notes_used_amount: int = Utils.get_val_from_json_fix(
                 self.settings_rel_path,
-                "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES")
+                "ANAL_SONIF_AMOUNT_OF_USED_NOTES")
 
             highest_note_name = Utils.get_highest_note_anal_safe(
                 notes,
@@ -772,7 +772,7 @@ class DataSonif():
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
-                    "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
+                    "ANAL_SONIF_NOTE_DURATION_MILIS",
                     new_note_duration)
 
             elif asker == "l":
@@ -788,7 +788,7 @@ class DataSonif():
                     continue
 
                 Utils.save_value_to_settings(
-                    "ANAL_SONIFICATION_LOWEST_NOTE",
+                    "ANAL_SONIF_LOWEST_NOTE",
                     new_lowest_note)
 
             elif asker == "a":
@@ -800,7 +800,7 @@ class DataSonif():
                 # recalculate itself in next loop iteration.
                 if amount_asker < notes_used_amount:
                     Utils.save_value_to_settings(
-                        "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                        "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                         amount_asker)
                     continue
 
@@ -814,7 +814,7 @@ class DataSonif():
                         amount_asker)
                     if is_possible:
                         Utils.save_value_to_settings(
-                            "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                            "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                             amount_asker)
                         continue
 
@@ -822,10 +822,10 @@ class DataSonif():
                         notes,
                         amount_asker)
                     Utils.save_value_to_settings(
-                        "ANAL_SONIFICATION_LOWEST_NOTE",
+                        "ANAL_SONIF_LOWEST_NOTE",
                         new_lowest_note)
                     Utils.save_value_to_settings(
-                        "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                        "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                         amount_asker)
                     print("[WARNING] A higher amount of notes forces the lowest note to be lowered")
                     print(f"Previous lowest note: {lowest_note_name}")

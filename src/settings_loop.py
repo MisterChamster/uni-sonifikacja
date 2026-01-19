@@ -101,7 +101,7 @@ def settings_loop() -> None:
                     print("\n")
                     continue
                 Utils.save_value_to_settings(
-                    "BINARY_SONIFICATION_LOW_NOTE",
+                    "BINARY_SONIF_LOW_NOTE",
                     new_note)
                 print(msg_val_changed)
 
@@ -112,7 +112,7 @@ def settings_loop() -> None:
                     print("\n")
                     continue
                 Utils.save_value_to_settings(
-                    "BINARY_SONIFICATION_HIGH_NOTE",
+                    "BINARY_SONIF_HIGH_NOTE",
                     new_note)
                 print(msg_val_changed)
 
@@ -123,7 +123,7 @@ def settings_loop() -> None:
                     print("\n")
                     continue
                 Utils.save_value_to_settings(
-                    "SONIFICATION_SIMILARITY_THRESHOLD",
+                    "SONIF_SIMILARITY_THRESHOLD",
                     new_sim_thold)
                 print(msg_val_changed)
 

@@ -27,7 +27,7 @@ Note.sample_rate      = sample_rate
 
 sonif_sim_thold: int = Utils.get_val_from_json_fix(
     settings_rel_path,
-    "SONIFICATION_SIMILARITY_THRESHOLD")
+    "SONIF_SIMILARITY_THRESHOLD")
 Note.similatiry_threshold = sonif_sim_thold
 
 
