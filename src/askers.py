@@ -298,23 +298,31 @@ class Askers():
     def ask_emd_settings() -> Literal[
         "change_bin_size_emd",
         "change_emd_thold_low",
-        "change_emd_thold_high"
+        "change_emd_thold_high",
+        "change_emd_repeat_style",
+        "change_emd_fixed_repeats"
     ] | None:
         returns_dict = {
             "eb": "change_bin_size_emd",
             "el": "change_emd_thold_low",
             "eh": "change_emd_thold_high",
+            "er": "change_emd_repeat_style",
+            "ef": "change_emd_fixed_repeats",
             "r":   None}
 
-        curr_sett_bin_size_emd:   int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BIN_SIZE_EMD")
-        curr_sett_emd_thold_low:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_LOW")
-        curr_sett_emd_thold_high: float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_HIGH")
+        curr_sett_bin_size_emd:      int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BIN_SIZE_EMD")
+        curr_sett_emd_thold_low:   float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_LOW")
+        curr_sett_emd_thold_high:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_HIGH")
+        curr_sett_emd_repeat_style:  str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_REPEAT_STYLE")
+        curr_sett_emd_fixed_repeats: int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_FIXED_REPEATS")
 
         while True:
             print("Choose an action:\n"
-                 f"eb - Change bin size for EMD extremes finding segmentation (currently {curr_sett_bin_size_emd})\n"
-                 f"el - Change low threshold for EMD extremes finding (currently {curr_sett_emd_thold_low})\n"
-                 f"eh - Change high threshold for EMD extremes finding (currently {curr_sett_emd_thold_high})\n"
+                 f"eb - Change bin size for extrema finding segmentation (currently {curr_sett_bin_size_emd})\n"
+                 f"el - Change low threshold for extrema finding (currently {curr_sett_emd_thold_low})\n"
+                 f"eh - Change high threshold for extrema finding (currently {curr_sett_emd_thold_high})\n"
+                 f"er - Change repeat style (currently {curr_sett_emd_repeat_style})\n"
+                 f"ef - Change repeat fixed value (currently {curr_sett_emd_fixed_repeats})\n"
                   "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
@@ -411,9 +419,9 @@ class Askers():
         max_min = (0.9
                    if is_high
                    else 0.1)
-        msg_main = (f"Choose a new high threshold (between 0.5 and {max_min})"
+        msg_main = (f"Enter a new high threshold (between 0.5 and {max_min})"
                     if is_high
-                    else f"Choose a new low threshold (between {max_min} and 0.5)")
+                    else f"Enter a new low threshold (between {max_min} and 0.5)")
 
         while True:
             print(msg_main, "\n"
@@ -434,6 +442,33 @@ class Askers():
             if not is_high and asker >= max_min and asker < 0.5:
                 return asker
             print("Invalid input!\n")
+
+
+    @staticmethod
+    def ask_emd_fixed_repeats() -> int | None:
+        min_repeats = 1
+        max_repeats = 30
+
+        while True:
+            print(f"Enter an amount of repeats (values between {min_repeats} and {max_repeats})\n"
+                   "(type 'r' to return)\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == "r":
+                return
+            try:
+                asker = int(asker)
+            except:
+                print("Invalid input!\n")
+                continue
+
+            if asker > max_repeats:
+                print(f"Amount is too big (max {max_repeats})\n")
+                continue
+            elif asker < min_repeats:
+                print(f"SAmountize is too small (min {min_repeats})\n")
+                continue
+            return asker
 
 
     @staticmethod

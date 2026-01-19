@@ -84,6 +84,19 @@ def settings_loop() -> None:
                 Utils.save_value_to_settings("EMD_THRESHOLD_HIGH", asker)
                 print(msg_val_changed)
 
+            elif asker_settings == "change_emd_repeat_style":
+                Utils.change_setting_to_opposite("EMD_REPEAT_STYLE")
+                print(msg_val_changed)
+
+            elif asker_settings == "change_emd_fixed_repeats":
+                print()
+                asker: float|None = Askers.ask_emd_fixed_repeats()
+                if not asker:
+                    print("\n")
+                    continue
+                Utils.save_value_to_settings("EMD_FIXED_REPEATS", asker)
+                print(msg_val_changed)
+
             else:
                 print("Invalid input!\n")
 
