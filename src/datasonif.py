@@ -548,6 +548,7 @@ class DataSonif():
 
 
     def binary_sonif_loop(self) -> None:
+        msg_val_changed = "Value successfully changed\n\n"
         low_note_name: str = Utils.get_val_from_json_fix(
             self.settings_rel_path,
             "BINARY_SONIF_LOW_NOTE")
@@ -595,6 +596,7 @@ class DataSonif():
                 Utils.save_value_to_settings(
                     "BINARY_SONIF_NOTE_DURATION_MILIS",
                     new_note_duration)
+                print(msg_val_changed)
 
             elif asker == "s":
                 print("Sonifying...")
@@ -714,6 +716,7 @@ class DataSonif():
             "Program does not allow messing these up, so it's likely due to writing directly in these files.\n"
             "To fix it, download both settings.json and notes.json files from repo and replace them in src directory of the project\n"
             "And do not edit these files yourself in the future!")
+        msg_val_changed = "Value successfully changed\n\n"
 
         notes = Utils.get_keys_from_json(self.notes_rel_path)
         while True:
@@ -774,6 +777,7 @@ class DataSonif():
                 Utils.save_value_to_settings(
                     "ANAL_SONIF_NOTE_DURATION_MILIS",
                     new_note_duration)
+                print(msg_val_changed)
 
             elif asker == "l":
                 highest_lowest_note: str = Utils.get_highest_lowest_note_possible_for_amount(
@@ -790,6 +794,7 @@ class DataSonif():
                 Utils.save_value_to_settings(
                     "ANAL_SONIF_LOWEST_NOTE",
                     new_lowest_note)
+                print(msg_val_changed)
 
             elif asker == "a":
                 amount_asker = Askers.ask_note_amount(len(notes))
@@ -802,6 +807,7 @@ class DataSonif():
                     Utils.save_value_to_settings(
                         "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                         amount_asker)
+                    print(msg_val_changed)
                     continue
 
                 # If higher then previous - check if exceeds available notes
@@ -816,6 +822,7 @@ class DataSonif():
                         Utils.save_value_to_settings(
                             "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                             amount_asker)
+                        print(msg_val_changed)
                         continue
 
                     new_lowest_note: str = Utils.get_highest_lowest_note_possible_for_amount(
@@ -827,6 +834,7 @@ class DataSonif():
                     Utils.save_value_to_settings(
                         "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                         amount_asker)
+                    print(msg_val_changed)
                     print("[WARNING] A higher amount of notes forces the lowest note to be lowered")
                     print(f"Previous lowest note: {lowest_note_name}")
                     print(f"Updated lowest note:  {new_lowest_note}")
