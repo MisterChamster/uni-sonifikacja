@@ -855,13 +855,12 @@ class DataSonif():
 
 # ==================================== EMD ====================================
     def apply_emd(self) -> bool:
-        # segmenting_style_emd: Literal["count", "size"]
         if not self.is_normalized:
             print("EMD cannot be applied - data is not normalized")
             return False
 
-        if not self.threshold:
-            self.calculate_threshold()
+        self.data_array -= 0.5
+        self.calculate_threshold()
 
         pseudoextrema_2dlist_up:   list = self.get_abstract_pseudoextrema("up")
         pseudoextrema_2dlist_down: list = self.get_abstract_pseudoextrema("down")
@@ -908,9 +907,6 @@ class DataSonif():
         values_envelope_down = None
 
         envelopes_mean = (upper_envelope + lower_envelope) / 2
-        # upper_envelope = None
-        # lower_envelope = None
-
         self.data_array = self.data_array-envelopes_mean
 
         plt.plot(starting_linspace, self.data_array)
@@ -919,6 +915,8 @@ class DataSonif():
         plt.plot(starting_linspace, envelopes_mean, 'r')
         plt.legend()
         plt.show()
+        upper_envelope = None
+        lower_envelope = None
 
         return True
 
@@ -936,6 +934,7 @@ class DataSonif():
         curr_envelope_thold = (high_threshold
                                if up_or_down == "up"
                                else low_threshold)
+        curr_envelope_thold -= 0.5
 
         extrema_bin_size = Utils.get_val_from_json_fix(
             self.settings_rel_path,

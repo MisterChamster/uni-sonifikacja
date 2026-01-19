@@ -188,12 +188,14 @@ class Askers():
     def ask_settings_type() -> Literal["data_settings", "sonif_settings"] | None:
         returns_dict = {
             "d": "data_settings",
+            "e": "emd_settings",
             "s": "sonif_settings",
             "r": None}
 
         while True:
             print("Choose settings type (type 'r' to return):\n"
                   "d - Data settings\n"
+                  "e - EMD settings\n"
                   "s - Sonification settings\n>> ", end="")
             asker = input().strip().lower()
 
@@ -211,11 +213,9 @@ class Askers():
         "change_cutting_setting_paa",
         "change_cutting_setting_dwelltimes",
         "change_segmenting_setting_paa",
-        "change_segmenting_setting_dwelltimes",
+        "change_segmenting_setting_dwelltimes"
         # "change_segmenting_setting_emd",
-        "change_bin_size_emd",
-        "change_emd_thold_low",
-        "change_emd_thold_high"] | None:
+    ] | None:
         returns_dict = {
             "an": "auto_normalization_at_load",
             "at": "auto_threshold_at_load",
@@ -225,9 +225,6 @@ class Askers():
             "sp": "change_segmenting_setting_paa",
             "sd": "change_segmenting_setting_dwelltimes",
             # "se": "change_segmenting_setting_emd",
-            "eb": "change_bin_size_emd",
-            "el": "change_emd_thold_low",
-            "eh": "change_emd_thold_high",
             "r":   None}
 
         curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
@@ -238,9 +235,6 @@ class Askers():
         curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
         # curr_sett_seg_style_emd:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_EMD")
-        curr_sett_bin_size_emd:            int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BIN_SIZE_EMD")
-        curr_sett_emd_thold_low:         float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_LOW")
-        curr_sett_emd_thold_high:        float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_HIGH")
 
         msg_to_size  = "size (currently segment count)"
         msg_to_count = "count (currently segment size)"
@@ -306,6 +300,36 @@ class Askers():
                   f"el - Change low threshold for EMD extremes finding (currently {curr_sett_emd_thold_low})\n"
                   f"eh - Change high threshold for EMD extremes finding (currently {curr_sett_emd_thold_high})\n"
                    "r  - Return to main menu\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]
+
+
+    @staticmethod
+    def ask_emd_settings() -> Literal[
+        "change_bin_size_emd",
+        "change_emd_thold_low",
+        "change_emd_thold_high"
+    ] | None:
+        returns_dict = {
+            "eb": "change_bin_size_emd",
+            "el": "change_emd_thold_low",
+            "eh": "change_emd_thold_high",
+            "r":   None}
+
+        curr_sett_bin_size_emd:   int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BIN_SIZE_EMD")
+        curr_sett_emd_thold_low:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_LOW")
+        curr_sett_emd_thold_high: float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_HIGH")
+
+        while True:
+            print("Choose an action:\n"
+                 f"eb - Change bin size for EMD extremes finding segmentation (currently {curr_sett_bin_size_emd})\n"
+                 f"el - Change low threshold for EMD extremes finding (currently {curr_sett_emd_thold_low})\n"
+                 f"eh - Change high threshold for EMD extremes finding (currently {curr_sett_emd_thold_high})\n"
+                  "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
             if asker not in returns_dict:
@@ -401,9 +425,9 @@ class Askers():
         max_min = (0.9
                    if is_high
                    else 0.1)
-        msg_main = (f"Choose a new high threshold (max {max_min})"
+        msg_main = (f"Choose a new high threshold (between 0.5 and {max_min})"
                     if is_high
-                    else f"Choose a new low threshold (min {max_min})")
+                    else f"Choose a new low threshold (between {max_min} and 0.5)")
 
         while True:
             print(msg_main, "\n"
@@ -423,6 +447,7 @@ class Askers():
                 return asker
             if not is_high and asker >= max_min and asker < 0.5:
                 return asker
+            print("Invalid input!\n")
 
 
     @staticmethod

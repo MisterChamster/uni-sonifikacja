@@ -14,7 +14,7 @@ def settings_loop() -> None:
     print("\n")
     if settings_type == "data_settings":
         while True:
-            asker_settings: str = Askers.ask_data_settings()
+            asker_settings: str|None = Askers.ask_data_settings()
 
             if not asker_settings:
                 return
@@ -51,6 +51,16 @@ def settings_loop() -> None:
             #     Utils.change_setting_to_opposite("SEGMENTING_STYLE_EMD")
             #     print(msg_val_changed)
 
+            else:
+                print("Invalid input!\n")
+
+    elif settings_type == "emd_settings":
+        while True:
+            asker_settings: str|None = Askers.ask_emd_settings()
+
+            if not asker_settings:
+                return
+
             elif asker_settings == "change_bin_size_emd":
                 print()
                 asker: int|None = Askers.ask_bin_size_emd()
@@ -81,10 +91,9 @@ def settings_loop() -> None:
             else:
                 print("Invalid input!\n")
 
-
     elif settings_type == "sonif_settings":
         while True:
-            asker_settings: str = Askers.ask_sonif_settings()
+            asker_settings: str|None = Askers.ask_sonif_settings()
 
             if not asker_settings:
                 return
