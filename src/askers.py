@@ -437,6 +437,24 @@ class Askers():
 
 
     @staticmethod
+    def ask_emd_user_repeat() -> bool:
+        returns_dict = {
+            "y": True,
+            "n": False}
+
+        while True:
+            print("Do You want to repeat EMD?\n"
+                  "y - Yes\n"
+                  "n - No\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker not in returns_dict:
+                print("Invalid input!\n")
+            else:
+                return returns_dict[asker]
+
+
+    @staticmethod
     def ask_sonif_type(
         bin_available:    bool,
         analog_available: bool

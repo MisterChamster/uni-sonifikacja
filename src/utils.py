@@ -73,6 +73,8 @@ class Utils():
             "BIN_SIZE_EMD",
             "EMD_THRESHOLD_LOW",
             "EMD_THRESHOLD_HIGH",
+            "EMD_REPEAT_STYLE",
+            "EMD_FIXED_REPEATS",
             "SAMPLE_RATE",
             "BINARY_SONIFICATION_LOW_NOTE",
             "BINARY_SONIFICATION_HIGH_NOTE",
@@ -96,6 +98,8 @@ class Utils():
                 "BIN_SIZE_EMD":                            1000,
                 "EMD_THRESHOLD_LOW":                       0.2,
                 "EMD_THRESHOLD_HIGH":                      0.8,
+                "EMD_REPEAT_STYLE":                       "fixed",
+                "EMD_FIXED_REPEATS":                       4,
                 "SAMPLE_RATE":                             44100,
                 "BINARY_SONIFICATION_LOW_NOTE":           "D3",
                 "BINARY_SONIFICATION_HIGH_NOTE":          "A4",
@@ -124,6 +128,8 @@ class Utils():
             setting_val = not setting_val
         elif setting_val in ["size", "count"]:
             setting_val = "size" if setting_val == "count" else "count"
+        elif setting_val in ["fixed", "user"]:
+            setting_val = "fixed" if setting_val == "user" else "user"
         else:
             raise ValueError("[ERROR] Code is written badly. Incorrect value in settings.json")
 
