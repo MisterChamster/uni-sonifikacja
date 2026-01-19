@@ -1034,15 +1034,6 @@ class DataSonif():
 
 # ================================== PLOTTING ==================================
     def show_chart(self) -> None:
-        # Getting x signs for evey state approximate midpoint
-        # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
-        # peak_xes = [a[0] for a in peak_coords]
-        # peak_ys  = [a[1] for a in peak_coords]
-        # if self.is_normalized == True:
-        #     difference = self.max_val - self.min_val
-        #     for i in range(len(peak_ys)):
-        #         peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
-        # plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
         plt.scatter(np.arange(self.data_array.shape[0]),
                               self.data_array,
                               s=1)
