@@ -7,6 +7,7 @@ from matplotlib.ticker import MultipleLocator
 from pathlib           import Path
 from typing            import Literal
 from scipy.io.wavfile  import write
+from scipy.interpolate import CubicSpline
 
 from src.utils  import Utils
 from src.askers import Askers
@@ -865,14 +866,60 @@ class DataSonif():
         pseudoextrema_2dlist_up:   list = self.get_abstract_pseudoextrema("up")
         pseudoextrema_2dlist_down: list = self.get_abstract_pseudoextrema("down")
 
-        abstract_pseudoextrema_posi_up:   list = [a[0] for a in pseudoextrema_2dlist_up]
-        abstract_pseudoextrema_posi_down: list = [a[0] for a in pseudoextrema_2dlist_down]
-        abstract_pseudoextrema_vals_up:   list = [a[1] for a in pseudoextrema_2dlist_up]
-        abstract_pseudoextrema_vals_down: list = [a[1] for a in pseudoextrema_2dlist_down]
-        print(abstract_pseudoextrema_posi_up)
-        print(abstract_pseudoextrema_posi_down)
-        print(abstract_pseudoextrema_vals_up)
-        print(abstract_pseudoextrema_vals_down)
+        pseudoextrema_up_indexes:   list = [a[0] for a in pseudoextrema_2dlist_up]
+        pseudoextrema_up_vals:      list = [a[1] for a in pseudoextrema_2dlist_up]
+        pseudoextrema_down_indexes: list = [a[0] for a in pseudoextrema_2dlist_down]
+        pseudoextrema_down_vals:    list = [a[1] for a in pseudoextrema_2dlist_down]
+
+        starting_linspace = np.linspace(0, 1, self.get_sample_count())
+        samples_envelope_up = np.concatenate((
+            [2*starting_linspace[0] - starting_linspace[pseudoextrema_up_indexes[0]]],
+            starting_linspace[pseudoextrema_up_indexes],
+            [2*starting_linspace[-1] - starting_linspace[pseudoextrema_up_indexes[-1]]]))
+
+        values_envelope_up = self.data_array
+        for i in range(len(pseudoextrema_up_indexes)):
+            values_envelope_up[pseudoextrema_up_indexes[i]] = pseudoextrema_up_vals[i]
+        values_envelope_up = np.concatenate((
+            [values_envelope_up[pseudoextrema_up_indexes[0]]],
+            values_envelope_up[pseudoextrema_up_indexes],
+            [values_envelope_up[pseudoextrema_up_indexes[-1]]]))
+        upper_envelope = CubicSpline(samples_envelope_up, values_envelope_up, bc_type="natural")
+        upper_envelope = upper_envelope(starting_linspace)
+        samples_envelope_up = None
+        values_envelope_up = None
+
+
+        samples_envelope_down = np.concatenate((
+            [2*starting_linspace[0] - starting_linspace[pseudoextrema_down_indexes[0]]],
+            starting_linspace[pseudoextrema_down_indexes],
+            [2*starting_linspace[-1] - starting_linspace[pseudoextrema_down_indexes[-1]]]))
+
+        values_envelope_down = self.data_array
+        for i in range(len(pseudoextrema_down_indexes)):
+            values_envelope_down[pseudoextrema_down_indexes[i]] = pseudoextrema_down_vals[i]
+        values_envelope_down = np.concatenate((
+            [values_envelope_down[pseudoextrema_down_indexes[0]]],
+            values_envelope_down[pseudoextrema_down_indexes],
+            [values_envelope_down[pseudoextrema_down_indexes[-1]]]))
+        lower_envelope = CubicSpline(samples_envelope_down, values_envelope_down, bc_type="natural")
+        lower_envelope = lower_envelope(starting_linspace)
+        samples_envelope_down = None
+        values_envelope_down = None
+
+        envelopes_mean = (upper_envelope + lower_envelope) / 2
+        # upper_envelope = None
+        # lower_envelope = None
+
+        self.data_array = self.data_array-envelopes_mean
+
+        plt.plot(starting_linspace, self.data_array)
+        plt.plot(starting_linspace, upper_envelope, 'r')
+        plt.plot(starting_linspace, lower_envelope, 'r')
+        plt.plot(starting_linspace, envelopes_mean, 'r')
+        plt.legend()
+        plt.show()
+
         return True
 
 
