@@ -10,7 +10,6 @@ def settings_loop() -> None:
     if not settings_type:
         return
 
-
     print("\n")
     if settings_type == "data_settings":
         while True:
@@ -45,56 +44,6 @@ def settings_loop() -> None:
 
             elif asker_settings == "change_segmenting_setting_dwelltimes":
                 Utils.change_setting_to_opposite("SEGMENTING_STYLE_DWELLTIMES")
-                print(msg_val_changed)
-
-            else:
-                print("Invalid input!\n")
-
-    elif settings_type == "emd_settings":
-        while True:
-            asker_settings: str|None = Askers.ask_emd_settings()
-
-            if not asker_settings:
-                return
-
-            elif asker_settings == "change_bin_size_emd":
-                print()
-                asker: int|None = Askers.ask_bin_size_emd()
-                if not asker:
-                    print("\n")
-                    continue
-                Utils.save_value_to_settings("BIN_SIZE_EMD", asker)
-                print(msg_val_changed)
-
-            elif asker_settings == "change_emd_thold_low":
-                print()
-                asker: float|None = Askers.ask_emd_thold(False)
-                if not asker:
-                    print("\n")
-                    continue
-                Utils.save_value_to_settings("EMD_THRESHOLD_LOW", asker)
-                print(msg_val_changed)
-
-            elif asker_settings == "change_emd_thold_high":
-                print()
-                asker: float|None = Askers.ask_emd_thold(True)
-                if not asker:
-                    print("\n")
-                    continue
-                Utils.save_value_to_settings("EMD_THRESHOLD_HIGH", asker)
-                print(msg_val_changed)
-
-            elif asker_settings == "change_emd_repeat_style":
-                Utils.change_setting_to_opposite("EMD_REPEAT_STYLE")
-                print(msg_val_changed)
-
-            elif asker_settings == "change_emd_fixed_repeats":
-                print()
-                asker: float|None = Askers.ask_emd_fixed_repeats()
-                if not asker:
-                    print("\n")
-                    continue
-                Utils.save_value_to_settings("EMD_FIXED_REPEATS", asker)
                 print(msg_val_changed)
 
             else:

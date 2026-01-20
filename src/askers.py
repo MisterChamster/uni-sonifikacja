@@ -188,14 +188,12 @@ class Askers():
     def ask_settings_type() -> Literal["data_settings", "sonif_settings"] | None:
         returns_dict = {
             "d": "data_settings",
-            "e": "emd_settings",
             "s": "sonif_settings",
             "r": None}
 
         while True:
             print("Choose settings type (type 'r' to return):\n"
                   "d - Data settings\n"
-                  "e - EMD settings\n"
                   "s - Sonification settings\n>> ", end="")
             asker = input().strip().lower()
 
@@ -295,44 +293,6 @@ class Askers():
 
 
     @staticmethod
-    def ask_emd_settings() -> Literal[
-        "change_bin_size_emd",
-        "change_emd_thold_low",
-        "change_emd_thold_high",
-        "change_emd_repeat_style",
-        "change_emd_fixed_repeats"
-    ] | None:
-        returns_dict = {
-            "eb": "change_bin_size_emd",
-            "el": "change_emd_thold_low",
-            "eh": "change_emd_thold_high",
-            "er": "change_emd_repeat_style",
-            "ef": "change_emd_fixed_repeats",
-            "r":   None}
-
-        curr_sett_bin_size_emd:      int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BIN_SIZE_EMD")
-        curr_sett_emd_thold_low:   float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_LOW")
-        curr_sett_emd_thold_high:  float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_THRESHOLD_HIGH")
-        curr_sett_emd_repeat_style:  str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_REPEAT_STYLE")
-        curr_sett_emd_fixed_repeats: int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_FIXED_REPEATS")
-
-        while True:
-            print("Choose an action:\n"
-                 f"eb - Change bin size for extrema finding segmentation (currently {curr_sett_bin_size_emd})\n"
-                 f"el - Change low threshold for extrema finding (currently {curr_sett_emd_thold_low})\n"
-                 f"eh - Change high threshold for extrema finding (currently {curr_sett_emd_thold_high})\n"
-                 f"er - Change repeat style (currently {curr_sett_emd_repeat_style})\n"
-                 f"ef - Change repeat fixed value (currently {curr_sett_emd_fixed_repeats})\n"
-                  "r  - Return to main menu\n>> ", end="")
-            asker = input().strip().lower()
-
-            if asker not in returns_dict:
-                print("Invalid input!\n")
-            else:
-                return returns_dict[asker]
-
-
-    @staticmethod
     def ask_sonif_settings() -> Literal[
             "change_binary_low_note",
             "change_binary_high_note",
@@ -386,107 +346,6 @@ class Askers():
                 return
             else:
                 print("Invalid input!\n")
-
-
-    @staticmethod
-    def ask_bin_size_emd() -> int | None:
-        min_size = 100
-        max_size = 10000
-
-        while True:
-            print(f"Enter a new bin size between {min_size} and {max_size} for EMD extrema finding:\n"
-                  "(type 'r' to return)\n>> ", end="")
-            asker = input().strip().lower()
-
-            if asker == "r":
-                return
-            if not asker.isdigit():
-                print("Invalid input.\n")
-                continue
-
-            asker = int(asker)
-            if asker > max_size:
-                print(f"Size is too big (max {max_size})\n")
-                continue
-            elif asker < min_size:
-                print(f"Size is too small (min {min_size})\n")
-                continue
-            return asker
-
-
-    @staticmethod
-    def ask_emd_thold(is_high: bool) -> float | None:
-        max_min = (0.9
-                   if is_high
-                   else 0.1)
-        msg_main = (f"Enter a new high threshold (between 0.5 and {max_min})"
-                    if is_high
-                    else f"Enter a new low threshold (between {max_min} and 0.5)")
-
-        while True:
-            print(msg_main, "\n"
-                 "(type 'r' to return)\n>> ", end="")
-            asker = input().strip().lower()
-
-            if asker == "r":
-                return
-            try:
-                asker = float(asker)
-            except:
-                print("Invalid input!\n")
-                continue
-
-            # This is actually smart
-            if is_high and asker > 0.5 and asker <= max_min:
-                return asker
-            if not is_high and asker >= max_min and asker < 0.5:
-                return asker
-            print("Invalid input!\n")
-
-
-    @staticmethod
-    def ask_emd_fixed_repeats() -> int | None:
-        min_repeats = 1
-        max_repeats = 30
-
-        while True:
-            print(f"Enter an amount of repeats (values between {min_repeats} and {max_repeats})\n"
-                   "(type 'r' to return)\n>> ", end="")
-            asker = input().strip().lower()
-
-            if asker == "r":
-                return
-            try:
-                asker = int(asker)
-            except:
-                print("Invalid input!\n")
-                continue
-
-            if asker > max_repeats:
-                print(f"Amount is too big (max {max_repeats})\n")
-                continue
-            elif asker < min_repeats:
-                print(f"SAmountize is too small (min {min_repeats})\n")
-                continue
-            return asker
-
-
-    @staticmethod
-    def ask_emd_user_repeat() -> bool:
-        returns_dict = {
-            "y": True,
-            "n": False}
-
-        while True:
-            print("Do You want to repeat EMD?\n"
-                  "y - Yes\n"
-                  "n - No\n>> ", end="")
-            asker = input().strip().lower()
-
-            if asker not in returns_dict:
-                print("Invalid input!\n")
-            else:
-                return returns_dict[asker]
 
 
     @staticmethod
