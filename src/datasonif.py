@@ -7,6 +7,7 @@ from matplotlib.ticker import MultipleLocator
 from pathlib           import Path
 from typing            import Literal
 from scipy.io.wavfile  import write
+from PyEMD             import EMD
 
 from src.utils  import Utils
 from src.askers import Askers
@@ -289,7 +290,7 @@ class DataSonif():
         return
 
 
-# ============================ BINARY CONVERSION ==============================
+# ============================= BINARY CONVERSION =============================
     def convert_data_to_binary(self) -> None:
         if not self.is_normalized:
             self.normalize_data()
@@ -547,15 +548,16 @@ class DataSonif():
 
 
     def binary_sonif_loop(self) -> None:
+        msg_val_changed = "Value successfully changed\n\n"
         low_note_name: str = Utils.get_val_from_json_fix(
             self.settings_rel_path,
-            "BINARY_SONIFICATION_LOW_NOTE")
+            "BINARY_SONIF_LOW_NOTE")
         low_note_freq: float = Utils.get_val_from_json(
             self.notes_rel_path,
             low_note_name)
         high_note_name: str = Utils.get_val_from_json_fix(
             self.settings_rel_path,
-            "BINARY_SONIFICATION_HIGH_NOTE")
+            "BINARY_SONIF_HIGH_NOTE")
         high_note_freq: float = Utils.get_val_from_json(
             self.notes_rel_path,
             high_note_name)
@@ -563,7 +565,7 @@ class DataSonif():
         while True:
             note_duration_milis: int = Utils.get_val_from_json_fix(
                 self.settings_rel_path,
-                "BINARY_SONIFICATION_NOTE_DURATION_MILIS")
+                "BINARY_SONIF_NOTE_DURATION_MILIS")
 
             final_length_milis: int = (note_duration_milis *
                                        self.get_sample_count())
@@ -592,8 +594,9 @@ class DataSonif():
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
-                    "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
+                    "BINARY_SONIF_NOTE_DURATION_MILIS",
                     new_note_duration)
+                print(msg_val_changed)
 
             elif asker == "s":
                 print("Sonifying...")
@@ -713,21 +716,22 @@ class DataSonif():
             "Program does not allow messing these up, so it's likely due to writing directly in these files.\n"
             "To fix it, download both settings.json and notes.json files from repo and replace them in src directory of the project\n"
             "And do not edit these files yourself in the future!")
+        msg_val_changed = "Value successfully changed\n\n"
 
         notes = Utils.get_keys_from_json(self.notes_rel_path)
         while True:
             lowest_note_name: str = Utils.get_val_from_json_fix(
                 self.settings_rel_path,
-                "ANAL_SONIFICATION_LOWEST_NOTE")
+                "ANAL_SONIF_LOWEST_NOTE")
             lowest_note_freq: float = Utils.get_val_from_json(
                 self.notes_rel_path,
                 lowest_note_name)
             note_duration_milis: int = Utils.get_val_from_json_fix(
                 self.settings_rel_path,
-                "ANAL_SONIFICATION_NOTE_DURATION_MILIS")
+                "ANAL_SONIF_NOTE_DURATION_MILIS")
             notes_used_amount: int = Utils.get_val_from_json_fix(
                 self.settings_rel_path,
-                "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES")
+                "ANAL_SONIF_AMOUNT_OF_USED_NOTES")
 
             highest_note_name = Utils.get_highest_note_anal_safe(
                 notes,
@@ -771,8 +775,9 @@ class DataSonif():
                 if not new_note_duration:
                     continue
                 Utils.save_value_to_settings(
-                    "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
+                    "ANAL_SONIF_NOTE_DURATION_MILIS",
                     new_note_duration)
+                print(msg_val_changed)
 
             elif asker == "l":
                 highest_lowest_note: str = Utils.get_highest_lowest_note_possible_for_amount(
@@ -787,8 +792,9 @@ class DataSonif():
                     continue
 
                 Utils.save_value_to_settings(
-                    "ANAL_SONIFICATION_LOWEST_NOTE",
+                    "ANAL_SONIF_LOWEST_NOTE",
                     new_lowest_note)
+                print(msg_val_changed)
 
             elif asker == "a":
                 amount_asker = Askers.ask_note_amount(len(notes))
@@ -799,8 +805,9 @@ class DataSonif():
                 # recalculate itself in next loop iteration.
                 if amount_asker < notes_used_amount:
                     Utils.save_value_to_settings(
-                        "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                        "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                         amount_asker)
+                    print(msg_val_changed)
                     continue
 
                 # If higher then previous - check if exceeds available notes
@@ -813,19 +820,21 @@ class DataSonif():
                         amount_asker)
                     if is_possible:
                         Utils.save_value_to_settings(
-                            "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                            "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                             amount_asker)
+                        print(msg_val_changed)
                         continue
 
                     new_lowest_note: str = Utils.get_highest_lowest_note_possible_for_amount(
                         notes,
                         amount_asker)
                     Utils.save_value_to_settings(
-                        "ANAL_SONIFICATION_LOWEST_NOTE",
+                        "ANAL_SONIF_LOWEST_NOTE",
                         new_lowest_note)
                     Utils.save_value_to_settings(
-                        "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
+                        "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
                         amount_asker)
+                    print(msg_val_changed)
                     print("[WARNING] A higher amount of notes forces the lowest note to be lowered")
                     print(f"Previous lowest note: {lowest_note_name}")
                     print(f"Updated lowest note:  {new_lowest_note}")
@@ -852,17 +861,72 @@ class DataSonif():
                 print("Invalid input.\n\n")
 
 
-# ================================= PLOTTING ==================================
+# ==================================== EMD ====================================
+    def apply_emd(self) -> bool:
+        if not self.is_normalized:
+            print("EMD cannot be applied - data is not normalized")
+            return False
+        original_dataarr = self.data_array.copy()
+
+        consider_imfs_from = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "EMD_CONSIDER_IMFS_FROM")
+
+        emd = EMD()
+        IMFs = emd.emd(self.data_array)
+        # residue = self.data_array - IMFs.sum(axis=0)
+
+        # Determine how many IMFs will actually be plotted
+        num_imfs_to_plot = len(IMFs) - consider_imfs_from + 1
+        # Total subplots = 1 for original signal + number of IMFs to plot
+        total_subplots = 1 + max(0, num_imfs_to_plot)
+
+        # Create figure and adjust layout
+        plt.subplots_adjust(
+            top=0.95,
+            bottom=0.06,
+            left=0.08,
+            right=0.97,
+            hspace=0.5
+        )
+
+        # ---- Original Signal ----
+        ax_signal = plt.subplot(total_subplots, 1, 1)
+        ax_signal.plot(self.data_array, linewidth=1.5)
+        ax_signal.set_title("Original Signal", fontsize=14, fontweight="bold")
+        ax_signal.set_ylabel("Amplitude")
+        ax_signal.grid(True, alpha=0.3)
+
+        # ---- IMFs ----
+        subplot_index = 2
+        for i, imf in enumerate(IMFs, start=1):
+            if i < consider_imfs_from:
+                continue
+            ax = plt.subplot(total_subplots, 1, subplot_index)
+            ax.plot(imf, linewidth=1)
+            ax.set_ylabel(f"IMF {i}")
+            ax.grid(True, alpha=0.3)
+            subplot_index += 1
+
+        plt.show(block=False)
+
+        while True:
+            asker = Askers.ask_imf_num(consider_imfs_from, len(IMFs))
+            print()
+            if not asker:
+                plt.close()
+                return
+            elif isinstance(asker, int):
+                imf_index = asker - 1
+                self.data_array = IMFs[imf_index].copy()
+                self.data_array += 0.5
+                self.calculate_threshold()
+                self._update_min_max()
+                return
+
+
+# ================================== PLOTTING ==================================
     def show_chart(self) -> None:
-        # Getting x signs for evey state approximate midpoint
-        # peak_coords = get_peak_coordinates(str(self.file_path), 2000, self.min_val, self.max_val)
-        # peak_xes = [a[0] for a in peak_coords]
-        # peak_ys  = [a[1] for a in peak_coords]
-        # if self.is_normalized == True:
-        #     difference = self.max_val - self.min_val
-        #     for i in range(len(peak_ys)):
-        #         peak_ys[i] = (peak_ys[i]-self.min_val)/(difference)
-        # plt.scatter(peak_xes, peak_ys, marker="x", colorizer="red", s=220, linewidths=3)
         plt.scatter(np.arange(self.data_array.shape[0]),
                               self.data_array,
                               s=1)

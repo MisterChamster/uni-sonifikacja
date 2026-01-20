@@ -11,6 +11,7 @@ class Utils():
     settings_rel_path: str = "src/settings.json"
     notes_rel_path:    str = "src/notes.json"
 
+
     @staticmethod
     def save_value_to_settings(
         json_key: str,
@@ -69,34 +70,36 @@ class Utils():
             "CUT_REMAINDER_SAMPLES_DWELLTIMES",
             "SEGMENTING_STYLE_PAA",
             "SEGMENTING_STYLE_DWELLTIMES",
+            "EMD_CONSIDER_IMFS_FROM",
             "SAMPLE_RATE",
-            "BINARY_SONIFICATION_LOW_NOTE",
-            "BINARY_SONIFICATION_HIGH_NOTE",
-            "BINARY_SONIFICATION_NOTE_DURATION_MILIS",
-            "ANAL_SONIFICATION_NOTE_DURATION_MILIS",
-            "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES",
-            "ANAL_SONIFICATION_LOWEST_NOTE",
-            "SONIFICATION_SIMILARITY_THRESHOLD"],
+            "BINARY_SONIF_LOW_NOTE",
+            "BINARY_SONIF_HIGH_NOTE",
+            "BINARY_SONIF_NOTE_DURATION_MILIS",
+            "ANAL_SONIF_NOTE_DURATION_MILIS",
+            "ANAL_SONIF_AMOUNT_OF_USED_NOTES",
+            "ANAL_SONIF_LOWEST_NOTE",
+            "SONIF_SIMILARITY_THRESHOLD"],
         default_val: str|bool|int|float = None
     ) -> str|bool|int|float:
 
         if not default_val:
             default_settings_dict = {
-                "AUTOMATIC_NORMALIZATION_AT_LOAD":         True,
-                "AUTOMATIC_THRESHOLD_AT_LOAD":             True,
-                "SHOW_THRESHOLD_ON_CHARTS":                True,
-                "CUT_REMAINDER_SAMPLES_PAA":               True,
-                "CUT_REMAINDER_SAMPLES_DWELLTIMES":        True,
-                "SEGMENTING_STYLE_PAA":                   "count",
-                "SEGMENTING_STYLE_DWELLTIMES":            "count",
-                "SAMPLE_RATE":                             44100,
-                "BINARY_SONIFICATION_LOW_NOTE":           "D3",
-                "BINARY_SONIFICATION_HIGH_NOTE":          "A4",
-                "BINARY_SONIFICATION_NOTE_DURATION_MILIS": 300,
-                "ANAL_SONIFICATION_NOTE_DURATION_MILIS":   300,
-                "ANAL_SONIFICATION_AMOUNT_OF_USED_NOTES":  20,
-                "ANAL_SONIFICATION_LOWEST_NOTE":          "D3",
-                "SONIFICATION_SIMILARITY_THRESHOLD":       0.03}
+                "AUTOMATIC_NORMALIZATION_AT_LOAD":  True,
+                "AUTOMATIC_THRESHOLD_AT_LOAD":      True,
+                "SHOW_THRESHOLD_ON_CHARTS":         True,
+                "CUT_REMAINDER_SAMPLES_PAA":        True,
+                "CUT_REMAINDER_SAMPLES_DWELLTIMES": True,
+                "SEGMENTING_STYLE_PAA":            "count",
+                "SEGMENTING_STYLE_DWELLTIMES":     "count",
+                "EMD_CONSIDER_IMFS_FROM":           10,
+                "SAMPLE_RATE":                      44100,
+                "BINARY_SONIF_LOW_NOTE":           "D3",
+                "BINARY_SONIF_HIGH_NOTE":          "A4",
+                "BINARY_SONIF_NOTE_DURATION_MILIS": 300,
+                "ANAL_SONIF_NOTE_DURATION_MILIS":   300,
+                "ANAL_SONIF_AMOUNT_OF_USED_NOTES":  20,
+                "ANAL_SONIF_LOWEST_NOTE":          "D3",
+                "SONIF_SIMILARITY_THRESHOLD":       0.03}
             default_val = default_settings_dict[json_key]
 
         try:
@@ -108,9 +111,7 @@ class Utils():
 
 
     @staticmethod
-    def change_setting_to_opposite(
-        json_key:    str
-    ) -> None:
+    def change_setting_to_opposite(json_key: str) -> None:
         setting_val = Utils.get_val_from_json_fix(
             Utils.settings_rel_path,
             json_key)
@@ -118,7 +119,9 @@ class Utils():
         if isinstance(setting_val, bool):
             setting_val = not setting_val
         elif setting_val in ["size", "count"]:
-            setting_val = "size" if setting_val == "count" else "size"
+            setting_val = "size" if setting_val == "count" else "count"
+        elif setting_val in ["fixed", "user"]:
+            setting_val = "fixed" if setting_val == "user" else "user"
         else:
             raise ValueError("[ERROR] Code is written badly. Incorrect value in settings.json")
 

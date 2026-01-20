@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing  import Literal
 import os
 
 from src.askers        import Askers
@@ -26,7 +27,7 @@ Note.sample_rate      = sample_rate
 
 sonif_sim_thold: int = Utils.get_val_from_json_fix(
     settings_rel_path,
-    "SONIFICATION_SIMILARITY_THRESHOLD")
+    "SONIF_SIMILARITY_THRESHOLD")
 Note.similatiry_threshold = sonif_sim_thold
 
 
@@ -116,13 +117,13 @@ def mainloop() -> None:
                         print("Done!\n\n")
 
                     elif data_processing_asker == "apply_paa":
-                        segmenting_style = Utils.get_val_from_json_fix(
+                        segmenting_style_paa: Literal["count", "size"] = Utils.get_val_from_json_fix(
                             settings_rel_path,
                             "SEGMENTING_STYLE_PAA")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
-                            segmenting_style)
+                            segmenting_style_paa)
 
                         print()
                         if not asker_segment_value:
@@ -132,7 +133,7 @@ def mainloop() -> None:
                         print("Processing...")
                         loaded_data.apply_paa_aggregation(
                             asker_segment_value,
-                            segmenting_style)
+                            segmenting_style_paa)
                         print("Data successfully aggregated!\n\n")
 
                     elif data_processing_asker == "convert_to_bin":
@@ -141,13 +142,13 @@ def mainloop() -> None:
                         print("Done!\n\n")
 
                     elif data_processing_asker == "convert_to_dwelltimes":
-                        segmenting_style = Utils.get_val_from_json_fix(
+                        segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_json_fix(
                             settings_rel_path,
                             "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
-                            segmenting_style)
+                            segmenting_style_dwt)
 
                         print()
                         if not asker_segment_value:
@@ -157,17 +158,17 @@ def mainloop() -> None:
                         print("Converting data to dwell times...")
                         loaded_data.convert_to_dwell_times(
                             asker_segment_value,
-                            segmenting_style)
+                            segmenting_style_dwt)
                         print("Done!\n\n")
 
                     elif data_processing_asker == "convert_to_dwelltimes_condensed":
-                        segmenting_style = Utils.get_val_from_json_fix(
+                        segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_json_fix(
                             settings_rel_path,
                             "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
                             loaded_data.get_sample_count(),
-                            segmenting_style)
+                            segmenting_style_dwt)
 
                         print()
                         if not asker_segment_value:
@@ -177,15 +178,20 @@ def mainloop() -> None:
                         print("Converting data to condensed dwell times...")
                         loaded_data.convert_to_dwell_times_CONDENSED(
                             asker_segment_value,
-                            segmenting_style)
+                            segmenting_style_dwt)
                         print("Done!\n\n")
+
+                    elif data_processing_asker == "appy_emd":
+                        print("Applying EMD...")
+                        emd_applied = loaded_data.apply_emd()
+                        if emd_applied:
+                            print("Done!\n\n")
 
                     elif data_processing_asker == "original_data":
                         if not os.path.exists(loaded_data.file_path):
                             print(f"Chosen file no longer exists in path {loaded_data.file_path}")
                             continue
                         print(loaded_data.file_path, "\n")
-
                         loaded_data.load_data()
                         continue
 
