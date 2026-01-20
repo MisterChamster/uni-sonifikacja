@@ -921,6 +921,7 @@ class DataSonif():
                 self.data_array = IMFs[imf_index].copy()
                 self.data_array += 0.5
                 self.calculate_threshold()
+                self.is_converted_to_binary = False
                 self._update_min_max()
                 return
 
