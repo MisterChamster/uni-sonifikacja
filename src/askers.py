@@ -151,6 +151,33 @@ class Askers():
 
 
     @staticmethod
+    def ask_imf_num(lowest: int, highest: int) -> int | Literal["again"] | None:
+        while True:
+            print("Enter a number of IMF You want to set as new data\n"
+                  "(type 'a' to show plot again or 'r' to return)\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == 'r':
+                return
+            if asker == "a":
+                return "again"
+
+            if not asker.isdigit():
+                print("Invalid input!\n")
+                continue
+
+            asker = int(asker)
+            if asker < lowest:
+                print("Value is too low.\n")
+                continue
+            if asker > highest:
+                print("Value is too high.\n")
+                continue
+
+            return asker
+
+
+    @staticmethod
     def ask_segment_value(
         data_length:      int,
         segmenting_style: Literal["count", "size"]
