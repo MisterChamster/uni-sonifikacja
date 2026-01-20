@@ -42,24 +42,6 @@ class Chunk():
         return
 
 
-    def get_abstract_extreme(
-        self,
-        up_or_down: Literal["up", "down"],
-        threshold:  float
-    ) -> float:
-        if self.__data_array is None:
-            raise ValueError("[ERROR] Code is written badly. No data array in chunk!")
-
-        temp_arr = []
-        if up_or_down == "up":
-            temp_arr = [val for val in self.__data_array if val > threshold]
-        else:
-            temp_arr = [val for val in self.__data_array if val < threshold]
-
-        temp_extreme: float = sum(temp_arr) / len(temp_arr)
-        return temp_extreme
-
-
 # ================================== SETTERS ===================================
     def input_data_array(self, new_array: np.ndarray[np.float64] | np.ndarray[bool]) -> None:
         if len(new_array) != self.num_of_samples:
