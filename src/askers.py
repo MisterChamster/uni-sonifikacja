@@ -181,7 +181,7 @@ class Askers():
     def ask_imf_num(lowest: int, highest: int) -> int | None:
         while True:
             print("Enter a number of IMF You want to set as new data\n"
-                  "(type 'a' to show plot again or 'r' to return)\n>> ", end="")
+                  "(type 'r' to return)\n>> ", end="")
             asker = input().strip().lower()
 
             if asker == 'r':

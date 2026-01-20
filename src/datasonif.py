@@ -919,7 +919,7 @@ class DataSonif():
             elif isinstance(asker, int):
                 imf_index = asker - 1
                 self.data_array = IMFs[imf_index].copy()
-                self.normalize_data()
+                self.data_array += 0.5
                 self.calculate_threshold()
                 self._update_min_max()
                 return
