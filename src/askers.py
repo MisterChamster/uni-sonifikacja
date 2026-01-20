@@ -151,7 +151,34 @@ class Askers():
 
 
     @staticmethod
-    def ask_imf_num(lowest: int, highest: int) -> int | Literal["again"] | None:
+    def ask_new_imfs_from() -> int | None:
+        min_num = 1
+        max_num = 20
+
+        while True:
+            print(f"Enter a number from which IMFs will be shown (between {min_num} and {max_num})\n"
+                   "(enter 'r' to return)\n>> ", end="")
+            asker = input().strip().lower()
+
+            if asker == "r":
+                return
+            if not asker.isdigit():
+                print("Invalid input!\n")
+                continue
+            asker = int(asker)
+
+            if asker < min_num:
+                print("Value is too low.\n")
+                continue
+            if asker > max_num:
+                print("Value is too high.\n")
+                continue
+
+            return asker
+
+
+    @staticmethod
+    def ask_imf_num(lowest: int, highest: int) -> int | None:
         while True:
             print("Enter a number of IMF You want to set as new data\n"
                   "(type 'a' to show plot again or 'r' to return)\n>> ", end="")
@@ -159,8 +186,6 @@ class Askers():
 
             if asker == 'r':
                 return
-            if asker == "a":
-                return "again"
 
             if not asker.isdigit():
                 print("Invalid input!\n")
@@ -238,7 +263,8 @@ class Askers():
         "change_cutting_setting_paa",
         "change_cutting_setting_dwelltimes",
         "change_segmenting_setting_paa",
-        "change_segmenting_setting_dwelltimes"
+        "change_segmenting_setting_dwelltimes",
+        "change_imfs_from"
     ] | None:
         returns_dict = {
             "an": "auto_normalization_at_load",
@@ -248,6 +274,7 @@ class Askers():
             "cd": "change_cutting_setting_dwelltimes",
             "sp": "change_segmenting_setting_paa",
             "sd": "change_segmenting_setting_dwelltimes",
+            "if": "change_imfs_from",
             "r":   None}
 
         curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
@@ -257,6 +284,7 @@ class Askers():
         curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
         curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
+        curr_sett_imfs_from:               int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_CONSIDER_IMFS_FROM")
 
         msg_to_size  = "size (currently segment count)"
         msg_to_count = "count (currently segment size)"
@@ -310,6 +338,7 @@ class Askers():
                   f"cd - {msg_cutting_dtimes}\n"
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
+                  f"if - Change starting number of imfs shown (currently {curr_sett_imfs_from})"
                    "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 

@@ -46,6 +46,17 @@ def settings_loop() -> None:
                 Utils.change_setting_to_opposite("SEGMENTING_STYLE_DWELLTIMES")
                 print(msg_val_changed)
 
+            elif asker_settings == "change_imfs_from":
+                print()
+                asker = Askers.ask_new_imfs_from()
+                if not asker:
+                    print("\n")
+                    continue
+                Utils.save_value_to_settings(
+                    "EMD_CONSIDER_IMFS_FROM",
+                    asker)
+                print(msg_val_changed)
+
             else:
                 print("Invalid input!\n")
 

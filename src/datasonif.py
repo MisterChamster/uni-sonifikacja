@@ -7,6 +7,7 @@ from matplotlib.ticker import MultipleLocator
 from pathlib           import Path
 from typing            import Literal
 from scipy.io.wavfile  import write
+from PyEMD             import EMD
 
 from src.utils  import Utils
 from src.askers import Askers
@@ -865,8 +866,63 @@ class DataSonif():
         if not self.is_normalized:
             print("EMD cannot be applied - data is not normalized")
             return False
+        original_dataarr = self.data_array.copy()
 
+        consider_imfs_from = Utils.get_val_from_json_fix(
+            self.settings_rel_path,
+            "EMD_CONSIDER_IMFS_FROM")
 
+        emd = EMD()
+        IMFs = emd.emd(self.data_array)
+        # residue = self.data_array - IMFs.sum(axis=0)
+
+        # Determine how many IMFs will actually be plotted
+        num_imfs_to_plot = len(IMFs) - consider_imfs_from + 1
+        # Total subplots = 1 for original signal + number of IMFs to plot
+        total_subplots = 1 + max(0, num_imfs_to_plot)
+
+        # Create figure and adjust layout
+        plt.subplots_adjust(
+            top=0.95,
+            bottom=0.06,
+            left=0.08,
+            right=0.97,
+            hspace=0.5
+        )
+
+        # ---- Original Signal ----
+        ax_signal = plt.subplot(total_subplots, 1, 1)
+        ax_signal.plot(self.data_array, linewidth=1.5)
+        ax_signal.set_title("Original Signal", fontsize=14, fontweight="bold")
+        ax_signal.set_ylabel("Amplitude")
+        ax_signal.grid(True, alpha=0.3)
+
+        # ---- IMFs ----
+        subplot_index = 2
+        for i, imf in enumerate(IMFs, start=1):
+            if i < consider_imfs_from:
+                continue
+            ax = plt.subplot(total_subplots, 1, subplot_index)
+            ax.plot(imf, linewidth=1)
+            ax.set_ylabel(f"IMF {i}")
+            ax.grid(True, alpha=0.3)
+            subplot_index += 1
+
+        plt.show(block=False)
+
+        while True:
+            asker = Askers.ask_imf_num(consider_imfs_from, len(IMFs))
+            print()
+            if not asker:
+                plt.close()
+                return
+            elif isinstance(asker, int):
+                imf_index = asker - 1
+                self.data_array = IMFs[imf_index].copy()
+                self.normalize_data()
+                self.calculate_threshold()
+                self._update_min_max()
+                return
 
 
 # ================================== PLOTTING ==================================
