@@ -67,6 +67,8 @@ class Askers():
         "show_chart",
         "show_histogram",
         "settings",
+        "original_data",
+        "change_file",
         "exit"]:
         returns_dict = {
             "p": "process_data",
@@ -74,6 +76,7 @@ class Askers():
             "c": "show_chart",
             "h": "show_histogram",
             "t": "settings",
+            "o": "original_data",
             "f": "change_file",
             "exit": "exit"}
 
@@ -84,6 +87,7 @@ class Askers():
                   "c - Show chart\n"
                   "h - Show histogram\n"
                   "t - Settings...\n"
+                  "o - Revert to original data set\n"
                   "f - Change file\n"
                   "exit - Exit program\n>> ", end="")
             asker = input().strip().lower()
@@ -109,8 +113,7 @@ class Askers():
         "convert_to_bin",
         "convert_to_dwelltimes",
         "convert_to_dwelltimes_condensed",
-        "appy_emd",
-        "original_data"] | None:
+        "appy_emd"] | None:
         returns_dict = {
             "x": "reverse_order",
             "y": "reverse_sign",
@@ -122,7 +125,6 @@ class Askers():
             "t": "convert_to_dwelltimes",
             "c": "convert_to_dwelltimes_condensed",
             "e": "appy_emd",
-            "o": "original_data",
             "r": None}
         normalized_msg = "already normalized" if is_normalized else "not normalized"
         threshold_msg  = "already calculated" if is_threshold  else "not calculated"
@@ -140,7 +142,6 @@ class Askers():
                   "t - Convert data to dwell times\n"
                   "c - Convert data to condensed dwell times\n"
                   "e - Apply EMD method\n"
-                  "o - Revert to original data set\n"
                   "r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 

@@ -181,14 +181,6 @@ def mainloop() -> None:
                         if emd_applied:
                             print("Done!\n\n")
 
-                    elif data_processing_asker == "original_data":
-                        if not os.path.exists(loaded_data.file_path):
-                            print(f"Chosen file no longer exists in path {loaded_data.file_path}")
-                            continue
-                        print(loaded_data.file_path, "\n")
-                        loaded_data.load_data()
-                        continue
-
 
             # ========================== OTHER OPTIONS =========================
             elif action_asker == "sonify":
@@ -219,6 +211,14 @@ def mainloop() -> None:
             elif action_asker == "settings":
                 settings_loop()
                 print("\n")
+
+            elif action_asker == "original_data":
+                if not os.path.exists(loaded_data.file_path):
+                    print(f"Chosen file no longer exists in path {loaded_data.file_path}")
+                    continue
+                print(loaded_data.file_path, "\n")
+                loaded_data.load_data()
+                continue
 
             elif action_asker == "change_file":
                 new_data: DataSonif = DataSonif()
