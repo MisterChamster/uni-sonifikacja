@@ -40,16 +40,13 @@ def mainloop() -> None:
         loaded_data.load_data()
 
         while True:
-            ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
-            sign:              str = "Original" if loaded_data.is_og_sign  else "Opposite"
-            downsampling_info: str = ("None"
-                                      if loaded_data.downsampling_performed == []
-                                      else " ,".join(map(str, loaded_data.downsampling_performed)))
+            downsampling_info: str = (
+                "None"
+                if loaded_data.downsampling_performed == []
+                else " ,".join(map(str, loaded_data.downsampling_performed)))
 
             print(f"Chosen file:           {loaded_data.file_path}")
             print(f"Data downsampling:     {downsampling_info}")
-            print(f"Data order (x):        {ordering}")
-            print(f"Data sign (y):         {sign}")
             print(f"Data normalization:    {loaded_data.is_normalized}")
             print(f"Num of bins (hist):    {loaded_data.bins_count}")
             print(f"State threshold:       {loaded_data.threshold}")
@@ -61,16 +58,13 @@ def mainloop() -> None:
             # ========================= DATA PROCESSING ========================
             if action_asker == "process_data":
                 while True:
-                    ordering:          str = "Original" if loaded_data.is_og_order else "Reverse"
-                    sign:              str = "Original" if loaded_data.is_og_sign  else "Opposite"
-                    downsampling_info: str = ("None"
-                                              if loaded_data.downsampling_performed == []
-                                              else " ,".join(map(str, loaded_data.downsampling_performed)))
+                    downsampling_info: str = (
+                        "None"
+                        if loaded_data.downsampling_performed == []
+                        else " ,".join(map(str, loaded_data.downsampling_performed)))
 
                     print(f"Chosen file:              {loaded_data.file_path}")
                     print(f"Data downsampling:        {downsampling_info}")
-                    print(f"Data order (x):           {ordering}")
-                    print(f"Data sign (y):            {sign}")
                     print(f"Data normalization:       {loaded_data.is_normalized}")
                     print(f"Num of bins (hist/thold): {loaded_data.bins_count}")
                     print(f"State threshold:          {loaded_data.threshold}")
