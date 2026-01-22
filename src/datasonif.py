@@ -37,6 +37,11 @@ class DataSonif():
 
     def __init__(self) -> None:
         self.file_path   = None
+        self.reset_instance_fields()
+        return
+
+
+    def reset_instance_fields(self) -> None:
         self.data_array  = None
         self.data_sign   = None
         self.is_og_order = None
@@ -49,7 +54,6 @@ class DataSonif():
         self.is_normalized = False
         self.downsampling_performed = []
         self.is_converted_to_binary = False
-        return
 
 
     def downsample_data(self, n: int) -> None:
@@ -86,10 +90,12 @@ class DataSonif():
         return True
 
 
-    def load_data(self) -> None:
+    def load_data(self) -> bool:
+        self.reset_instance_fields()
+
         asker_downsample: int = Askers.ask_downsampling(True)
         if not asker_downsample:
-            return
+            return False
         print("\n")
 
         if asker_downsample == 1:
@@ -99,8 +105,9 @@ class DataSonif():
                     header=None,
                     names=["values"],
                     skipinitialspace=True)
-            except:
-                raise Exception("Data loading has failed.\n")
+            except Exception as e:
+                print(f"[ERROR] Data loading has failed.\n{e}")
+                return False
         else:
             try:
                 self.data_array = pd.read_csv(
@@ -109,8 +116,9 @@ class DataSonif():
                     names=["values"],
                     skiprows=lambda i: i % asker_downsample != 0,
                     skipinitialspace=True)
-            except:
-                raise Exception("Data loading has failed.\n")
+            except Exception as e:
+                print(f"[ERROR] Data loading has failed.\n{e}")
+                return False
 
         self.data_array = self.data_array.to_numpy().flatten()
         self.data_sign  = "-" if self.data_array[0] < 0 else "+"
@@ -129,7 +137,7 @@ class DataSonif():
             "AUTOMATIC_THRESHOLD_AT_LOAD")
         if is_threshold_automatic:
             self.calculate_threshold()
-        return
+        return True
 
 
     def _update_min_max(self) -> None:

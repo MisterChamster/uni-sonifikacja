@@ -37,7 +37,10 @@ def mainloop() -> None:
         temp_success:     bool = loaded_data.get_datafile_path()
         if not temp_success:
             return
-        loaded_data.load_data()
+        load_success: bool = loaded_data.load_data()
+        if not load_success:
+            print("Data has not been loaded.\n\n")
+            continue
 
         while True:
             downsampling_info: str = (
@@ -217,17 +220,20 @@ def mainloop() -> None:
                     print(f"Chosen file no longer exists in path {loaded_data.file_path}")
                     continue
                 print(loaded_data.file_path, "\n")
-                loaded_data.load_data()
+                load_success: bool = loaded_data.load_data()
+                if not load_success:
+                    print("Data has not been loaded.\n\n")
                 continue
 
             elif action_asker == "change_file":
-                new_data: DataSonif = DataSonif()
-                temp_success: bool  = new_data.get_datafile_path()
+                loaded_data: DataSonif = DataSonif()
+                temp_success: bool     = loaded_data.get_datafile_path()
                 if not temp_success:
                     print("Data will remain unchanged\n\n")
                     continue
-                loaded_data = new_data
-                loaded_data.load_data()
+                load_success: bool = loaded_data.load_data()
+                if not load_success:
+                    print("Data has not been loaded.\n\n")
 
             elif action_asker == "exit":
                 return

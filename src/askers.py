@@ -339,7 +339,7 @@ class Askers():
                   f"cd - {msg_cutting_dtimes}\n"
                   f"sp - Change segmenting style for PAA to segment {msg_segm_style_paa}\n"
                   f"sd - Change segmenting style for dwell times conversion to segment {msg_segm_style_dtimes}\n"
-                  f"if - Change starting number of imfs shown (currently {curr_sett_imfs_from})"
+                  f"if - Change starting number of imfs shown (currently {curr_sett_imfs_from})\n"
                    "r  - Return to main menu\n>> ", end="")
             asker = input().strip().lower()
 
