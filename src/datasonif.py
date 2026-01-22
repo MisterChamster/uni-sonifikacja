@@ -146,16 +146,26 @@ class DataSonif():
 
     def reverse_data_sign(self) -> None:
         self.data_array = -self.data_array
+        self._update_min_max()
+
+        self.data_sign = (
+            "+"
+            if self.data_sign == "-"
+            else "-")
 
         if self.data_sign == "-":
-            self.data_sign = "+"
-        else:
-            self.data_sign = "-"
+            self.is_normalized = False
+            self.is_converted_to_binary = False
 
-        self._update_min_max()
+        elif self.data_sign == "+":
+            if self.min_val == 0 and self.max_val == 1:
+                self.is_normalized = True
+            if self.data_array[0] not in (0, 1) and self.data_array[1] not in (0, 1):
+                self.is_converted_to_binary = False
+
+        self.is_og_sign = not self.is_og_sign
         if self.threshold:
             self.calculate_threshold()
-            self.is_og_sign = not self.is_og_sign
         return
 
 
