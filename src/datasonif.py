@@ -36,6 +36,11 @@ class DataSonif():
 
 
     def __init__(self) -> None:
+        self.create_obj()
+        return
+
+
+    def create_obj(self) -> None:
         self.file_path   = None
         self.data_array  = None
         self.data_sign   = None
@@ -49,7 +54,6 @@ class DataSonif():
         self.is_normalized = False
         self.downsampling_performed = []
         self.is_converted_to_binary = False
-        return
 
 
     def downsample_data(self, n: int) -> None:
@@ -123,12 +127,16 @@ class DataSonif():
             "AUTOMATIC_NORMALIZATION_AT_LOAD")
         if is_normalization_automatic:
             self.normalize_data()
+        else:
+            self.is_normalized = False
 
         is_threshold_automatic = Utils.get_val_from_json_fix(
             self.settings_rel_path,
             "AUTOMATIC_THRESHOLD_AT_LOAD")
         if is_threshold_automatic:
             self.calculate_threshold()
+        else:
+            self.threshold = None
         return
 
 
