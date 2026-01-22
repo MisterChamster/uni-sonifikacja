@@ -122,7 +122,7 @@ class Askers():
             "d": "downsample_data",
             "p": "apply_paa",
             "b": "convert_to_bin",
-            "t": "convert_to_dwelltimes",
+            "i": "convert_to_dwelltimes",
             "c": "convert_to_dwelltimes_condensed",
             "e": "appy_emd",
             "r": None}
@@ -139,7 +139,7 @@ class Askers():
                   "d - Downsample data\n"
                   "p - Apply PAA downsampling\n"
                  f"b - Convert data to binary ({binary_msg})\n"
-                  "t - Convert data to dwell times\n"
+                  "i - Convert data to dwell times\n"
                   "c - Convert data to condensed dwell times\n"
                   "e - Apply EMD method\n"
                   "r - Return to main menu\n>> ", end="")
