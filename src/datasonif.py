@@ -327,6 +327,7 @@ class DataSonif():
         self._update_min_max()
         self.is_normalized = True
         self.is_converted_to_binary = True
+        self.calculate_threshold()
         return
 
 
