@@ -183,7 +183,9 @@ class DataSonif():
             return
 
         difference = self.max_val - self.min_val
-        self.data_array = (self.data_array - self.min_val)/(difference)
+        self.data_array -= self.min_val
+        self.data_array /= difference
+        # self.data_array = (self.data_array - self.min_val)/(difference)
 
         # Normalize threshold
         if self.threshold:
