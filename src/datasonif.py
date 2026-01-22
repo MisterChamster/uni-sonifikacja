@@ -36,11 +36,11 @@ class DataSonif():
 
 
     def __init__(self) -> None:
-        self.create_obj()
+        self.reset_instance_fields()
         return
 
 
-    def create_obj(self) -> None:
+    def reset_instance_fields(self) -> None:
         self.file_path   = None
         self.data_array  = None
         self.data_sign   = None
