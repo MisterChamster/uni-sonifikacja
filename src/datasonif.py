@@ -414,6 +414,7 @@ class DataSonif():
             segmenting_style)
         return
 
+
 # =========================== CONDENSED DWELL TIMES ===========================
     def __binary_to_dwelltimes_CONDENSED(
         self,
