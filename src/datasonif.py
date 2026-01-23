@@ -693,7 +693,7 @@ class DataSonif():
         longest_wavelen_in_samples: int = math.ceil(self.sample_rate / longest_wavelen_freq)
 
         first_val_bin  = int(self.data_array[0] * bin_count)
-        first_val_bin -= (first_val_bin == 5)
+        first_val_bin -= (first_val_bin == bin_count)
         first_freq     = freqs_used[first_val_bin]
 
         last_note = Note(
@@ -705,7 +705,7 @@ class DataSonif():
 
         for i in range(1, len(self.data_array)):
             val_bin  = int(self.data_array[i] * bin_count)
-            val_bin -= (val_bin == 5)
+            val_bin -= (val_bin == bin_count)
             curr_note_freq = freqs_used[val_bin]
 
             temp_note = Note(
