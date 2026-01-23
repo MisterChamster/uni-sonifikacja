@@ -495,32 +495,6 @@ class DataSonif():
 
 
 # ============================ BINARY SONIFICATION ============================
-    def binary_sonification_OBSOLETE(
-        self,
-        note_duration_milis: int,
-        low_note_freq:       float,
-        high_note_freq:      float
-    ) -> None:
-        note_duration_sec = note_duration_milis / 1000
-        audio: list = []
-        t = np.linspace(0,
-                        note_duration_sec,
-                        int(self.sample_rate * note_duration_sec),
-                        endpoint=False)
-
-        for val in self.data_array:
-            curr_freq = (high_note_freq
-                         if val == 1
-                         else low_note_freq)
-            tone = np.sin(2 * np.pi * curr_freq * t)
-            audio.append(tone)
-
-        audio = np.concatenate(audio).astype(np.float32)
-        curr_time_str = Utils.get_curr_time_to_name()
-        write(f"output/sonif_binary_{curr_time_str}.wav", self.sample_rate, audio)
-        return
-
-
     def binary_sonification(
         self,
         note_duration_milis: int,
@@ -638,41 +612,6 @@ class DataSonif():
 
 
 # ============================ ANALOG SONIFICATION ============================
-    def analog_sonification_OBSOLETE(
-        self,
-        note_duration_milis: int,
-        notes_used:          list[str],
-        notes_dict:          dict[str, float]
-    ) -> None:
-        optimal_dict: dict[str, float] = {}
-        for notename in notes_used:
-            optimal_dict[notename] = notes_dict[notename]
-
-        bin_count: int    = len(notes_used)
-        note_duration_sec = note_duration_milis / 1000
-        audio: list       = []
-        t = np.linspace(0,
-                        note_duration_sec,
-                        int(self.sample_rate * note_duration_sec),
-                        endpoint=False)
-
-        for value in self.data_array:
-            val_bin  = int(value*bin_count)
-            val_bin -= (val_bin == 5)
-            temp_note_name = notes_used[val_bin]
-            temp_note_freq = optimal_dict[temp_note_name]
-
-            tone = np.sin(2 * np.pi * temp_note_freq * t)
-            audio.append(tone)
-
-        audio = np.concatenate(audio).astype(np.float32)
-        curr_time_str = Utils.get_curr_time_to_name()
-        write(f"output/sonif_analog_{curr_time_str}.wav",
-              self.sample_rate,
-              audio)
-        return
-
-
     def analog_sonification(
         self,
         note_duration_milis: int,
