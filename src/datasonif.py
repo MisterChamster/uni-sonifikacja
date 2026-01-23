@@ -1,14 +1,13 @@
-import pandas as pd
-import numpy  as np
+import pandas            as pd
+import numpy             as np
+import soundfile         as sf
 import matplotlib.pyplot as plt
 from PyEMD             import EMD
 from matplotlib.ticker import MultipleLocator
-from scipy.io.wavfile  import write
-# import soundfile as sf
 
 import math
-from pathlib           import Path
-from typing            import Literal
+from pathlib import Path
+from typing  import Literal
 
 from src.utils  import Utils
 from src.askers import Askers
@@ -540,7 +539,12 @@ class DataSonif():
 
         audio = np.concatenate(audio).astype(np.float32)
         curr_time_str = Utils.get_curr_time_to_name()
-        write(f"output/sonif_binary_{curr_time_str}.wav", self.sample_rate, audio)
+        sf.write(
+            f"output/sonif_binary_{curr_time_str}.flac",
+            audio,
+            self.sample_rate,
+            format="FLAC",
+            subtype="PCM_16") # or PCM_24 or PCM_32
         return
 
 
@@ -665,9 +669,12 @@ class DataSonif():
 
         audio = np.concatenate(audio).astype(np.float32)
         curr_time_str = Utils.get_curr_time_to_name()
-        write(f"output/sonif_analog_{curr_time_str}.wav",
-              self.sample_rate,
-              audio)
+        sf.write(
+            f"output/sonif_analog_{curr_time_str}.flac",
+            audio,
+            self.sample_rate,
+            format="FLAC",
+            subtype="PCM_16") # or PCM_24 or PCM_32
         return
 
 

@@ -6,7 +6,10 @@ __pycache__
 venv
 data/*.txt
 data/*.csv
+output/*.flac
 output/*.wav
+output/*.mp3
+output/*.ogg
 
 
 priv_notes.txt
