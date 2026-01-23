@@ -98,6 +98,7 @@ class DataSonif():
             return False
         print("\n")
 
+        self.downsampling_performed.append(asker_downsample)
         if asker_downsample == 1:
             try:
                 self.data_array = pd.read_csv(
