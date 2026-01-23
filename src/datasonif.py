@@ -683,18 +683,18 @@ class DataSonif():
         bin_count: int = len(notes_used)
         audio: list = []
 
-        optimal_dict: dict[str, float] = {}
+        freqs_used = []
         for i in range(len(notes_used)):
-            notename = notes_used[i]
-            optimal_dict[notename] = notes_dict[notename]
+            temp_notename = notes_used[i]
+            temp_freq = notes_dict[temp_notename]
+            freqs_used.append(temp_freq)
 
-        longest_wavelen_freq: float = optimal_dict[notes_used[0]]
+        longest_wavelen_freq: float = freqs_used[0]
         longest_wavelen_in_samples: int = math.ceil(self.sample_rate / longest_wavelen_freq)
 
-        first_val_bin   = int(self.data_array[0] * bin_count)
-        first_val_bin  -= (first_val_bin == 5)
-        first_note_name = notes_used[first_val_bin]
-        first_freq      = optimal_dict[first_note_name]
+        first_val_bin  = int(self.data_array[0] * bin_count)
+        first_val_bin -= (first_val_bin == 5)
+        first_freq     = freqs_used[first_val_bin]
 
         last_note = Note(
             first_freq,
@@ -706,8 +706,7 @@ class DataSonif():
         for i in range(1, len(self.data_array)):
             val_bin  = int(self.data_array[i] * bin_count)
             val_bin -= (val_bin == 5)
-            curr_note_name = notes_used[val_bin]
-            curr_note_freq = optimal_dict[curr_note_name]
+            curr_note_freq = freqs_used[val_bin]
 
             temp_note = Note(
                 curr_note_freq,
