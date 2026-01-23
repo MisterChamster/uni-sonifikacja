@@ -684,7 +684,8 @@ class DataSonif():
         audio: list = []
 
         optimal_dict: dict[str, float] = {}
-        for notename in notes_used:
+        for i in range(len(notes_used)):
+            notename = notes_used[i]
             optimal_dict[notename] = notes_dict[notename]
 
         longest_wavelen_freq: float = optimal_dict[notes_used[0]]
