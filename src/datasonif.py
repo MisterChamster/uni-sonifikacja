@@ -18,7 +18,7 @@ from src.note   import Note
 
 class DataSonif():
     file_path:   Path | None
-    data_array:  np.ndarray[np.float64] | None
+    data_array:  np.ndarray[np.float64] | np.ndarray[bool] | None
     data_sign:   str | None
     is_og_order: bool | None
     is_og_sign:  bool | None
