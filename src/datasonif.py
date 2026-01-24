@@ -836,7 +836,6 @@ class DataSonif():
         if not self.is_normalized:
             print("EMD cannot be applied - data is not normalized")
             return False
-        original_dataarr = self.data_array.copy()
 
         consider_imfs_from = Utils.get_val_from_json_fix(
             self.settings_rel_path,
@@ -846,28 +845,25 @@ class DataSonif():
         IMFs = emd.emd(self.data_array)
         # residue = self.data_array - IMFs.sum(axis=0)
 
-        # Determine how many IMFs will actually be plotted
         num_imfs_to_plot = len(IMFs) - consider_imfs_from + 1
-        # Total subplots = 1 for original signal + number of IMFs to plot
         total_subplots = 1 + max(0, num_imfs_to_plot)
 
-        # Create figure and adjust layout
+        # Create figure
         plt.subplots_adjust(
             top=0.95,
             bottom=0.06,
             left=0.08,
             right=0.97,
-            hspace=0.5
-        )
+            hspace=0.5)
 
-        # ---- Original Signal ----
+        # OG Signal
         ax_signal = plt.subplot(total_subplots, 1, 1)
         ax_signal.plot(self.data_array, linewidth=1.5)
         ax_signal.set_title("Original Signal", fontsize=14, fontweight="bold")
         ax_signal.set_ylabel("Amplitude")
         ax_signal.grid(True, alpha=0.3)
 
-        # ---- IMFs ----
+        # IMFs
         subplot_index = 2
         for i, imf in enumerate(IMFs, start=1):
             if i < consider_imfs_from:
