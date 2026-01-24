@@ -371,12 +371,15 @@ class DataSonif():
 
         # Putting segment means to temparr
         index_segment: int = 0
-        iterative: int     = 0
+        iterative:     int = 0
 
         while iterative < segment_count:
             chunk_end: int = index_segment + segment_size
-            temp_chunk     = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
-            segment_mean   = temp_chunk.get_data_mean()
+            temp_chunk     = Chunk(
+                index_segment,
+                chunk_end,
+                self.data_array[index_segment: chunk_end])
+            segment_mean: np.float64 = temp_chunk.get_data_mean()
 
             segment_val = 0 if segment_mean <= self.threshold else 1
             for i in range(index_segment, index_segment+segment_size):

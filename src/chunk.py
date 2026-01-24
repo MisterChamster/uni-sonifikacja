@@ -51,7 +51,7 @@ class Chunk():
 
 
 # ================================== GETTERS ===================================
-    def get_data_mean(self) -> np.float64 | float | None:
+    def get_data_mean(self) -> np.float64 | None:
         return self.data_mean
 
 
