@@ -17,7 +17,6 @@ class Note():
 
 
 # ================================== INITIAL ==================================
-    #OK
     def __init__(
         self,
         freq: float,
@@ -37,20 +36,17 @@ class Note():
 
 
 # ============================== FUNCTIONALITIES ==============================
-    # OK
     def calculate_time_vector(self) -> None: 
         self.time_vector = np.arange(self.curr_sample_amount) / self.sample_rate
         return
 
 
-    # OK
     def calculate_tone(self) -> None:
         self.tone      = np.sin(2 * np.pi * self.freq * self.time_vector)
         self.last_freq = self.tone[-1]
         return
 
 
-    # OK
     def extend_with_lowest_note(self) -> None:
         self.curr_sample_amount += self.lowest_note_wavelen_samples_roundup
         self.calculate_time_vector()
@@ -58,7 +54,6 @@ class Note():
         return
 
 
-    # NOT OK WITH CUTTING CURR SAMPLES
     def cut_tone_to_match(
         self,
         is_freq_rising:      bool,
@@ -111,14 +106,12 @@ class Note():
 # =============================== BOOL CHECKERS ===============================
     # This does not check if tone is calculated for faster working
     # Check if tone is calculated before loop that uses this fun!
-    # OK
     def is_freq_rising_end(self) -> bool:
         if self.tone[-2] < self.tone[-1]:
             return True
         return False
 
 
-    # OK
     def are_freqs_similar(self, freq1: float, freq2: float) -> bool:
         # My approximation threshold will be 0.03. This value is arbitrary and
         # can be changed, but I think that it'll make little, if any, noticeable difference.
