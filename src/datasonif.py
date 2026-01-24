@@ -256,7 +256,7 @@ class DataSonif():
     ) -> None:
 
         cut_string_paa = Utils.get_val_from_json_fix(
-            "src/settings.json",
+            self.settings_rel_path,
             "CUT_REMAINDER_SAMPLES_PAA")
 
         if segmenting_style == "count":
@@ -340,7 +340,7 @@ class DataSonif():
     ) -> None:
 
         cut_string_paa = Utils.get_val_from_json_fix(
-            "src/settings.json",
+            self.settings_rel_path,
             "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         if not self.threshold:
             self.calculate_threshold()
@@ -424,7 +424,7 @@ class DataSonif():
     ) -> None:
 
         cut_string_paa = Utils.get_val_from_json_fix(
-            "src/settings.json",
+            self.settings_rel_path,
             "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         if not self.threshold:
             self.calculate_threshold()
