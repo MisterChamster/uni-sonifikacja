@@ -298,11 +298,11 @@ class DataSonif():
 
         # Calculating mean of the segment with remaining data (no cutting route)
         if not cut_string_paa:
-            chunk_end: int     = index_segment + segment_size
+            chunk_end:     int = index_segment + segment_size
             temp_chunk         = Chunk(index_segment, chunk_end, self.data_array[index_segment: chunk_end])
             temparr[iterative] = temp_chunk.get_data_mean()
 
-        self.data_array = temparr
+        self.data_array = temparr.copy()
         # Update fields accordingly
         self.is_converted_to_binary = False #if paa perfectly converts to binary, this line will save false data
         self._update_min_max()
