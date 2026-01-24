@@ -533,7 +533,7 @@ class DataSonif():
             temp_note.extend_with_lowest_note()
 
             is_freq_rising = last_note.is_freq_rising_end()
-            last_freq = last_note.get_last_freq()
+            last_freq      = last_note.get_last_freq()
             temp_note.cut_tone_to_match(
                 is_freq_rising,
                 last_freq)
