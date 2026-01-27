@@ -30,8 +30,8 @@ class DataSonif():
     downsampling_performed: list[int]
     is_converted_to_binary: bool
 
-    settings_rel_path: str = "src/settings.json"
-    notes_rel_path:    str = "src/notes.json"
+    settings_rel_path: Path
+    notes_rel_path:    Path
     sample_rate:       int = 44100
 
 
