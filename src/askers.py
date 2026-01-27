@@ -8,8 +8,8 @@ from src.utils import Utils
 
 
 class Askers():
-    settings_rel_path: Path
-    notes_rel_path:    Path
+    settings_path: Path
+    notes_path:    Path
 
 
     @staticmethod
@@ -279,14 +279,14 @@ class Askers():
             "if": "change_imfs_from",
             "r":   None}
 
-        curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
-        curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
-        curr_sett_show_thold_chart:       bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SHOW_THRESHOLD_ON_CHARTS")
-        curr_sett_cut_samples_paa:        bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_PAA")
-        curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(Askers.settings_rel_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
-        curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_PAA")
-        curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SEGMENTING_STYLE_DWELLTIMES")
-        curr_sett_imfs_from:               int = Utils.get_val_from_json_fix(Askers.settings_rel_path, "EMD_CONSIDER_IMFS_FROM")
+        curr_sett_auto_normal:            bool = Utils.get_val_from_json_fix(Askers.settings_path, "AUTOMATIC_NORMALIZATION_AT_LOAD")
+        curr_sett_auto_thold:             bool = Utils.get_val_from_json_fix(Askers.settings_path, "AUTOMATIC_THRESHOLD_AT_LOAD")
+        curr_sett_show_thold_chart:       bool = Utils.get_val_from_json_fix(Askers.settings_path, "SHOW_THRESHOLD_ON_CHARTS")
+        curr_sett_cut_samples_paa:        bool = Utils.get_val_from_json_fix(Askers.settings_path, "CUT_REMAINDER_SAMPLES_PAA")
+        curr_sett_cut_samples_dwelltimes: bool = Utils.get_val_from_json_fix(Askers.settings_path, "CUT_REMAINDER_SAMPLES_DWELLTIMES")
+        curr_sett_seg_style_paa:           str = Utils.get_val_from_json_fix(Askers.settings_path, "SEGMENTING_STYLE_PAA")
+        curr_sett_seg_style_dwelltimes:    str = Utils.get_val_from_json_fix(Askers.settings_path, "SEGMENTING_STYLE_DWELLTIMES")
+        curr_sett_imfs_from:               int = Utils.get_val_from_json_fix(Askers.settings_path, "EMD_CONSIDER_IMFS_FROM")
 
         msg_to_size  = "size (currently segment count)"
         msg_to_count = "count (currently segment size)"
@@ -361,9 +361,9 @@ class Askers():
             "st": "change_similarity_threshold",
             "r":   None}
 
-        curr_sett_binary_low_note:        str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIF_LOW_NOTE")
-        curr_sett_binary_high_note:       str = Utils.get_val_from_json_fix(Askers.settings_rel_path, "BINARY_SONIF_HIGH_NOTE")
-        curr_sett_similarity_threshold: float = Utils.get_val_from_json_fix(Askers.settings_rel_path, "SONIF_SIMILARITY_THRESHOLD")
+        curr_sett_binary_low_note:        str = Utils.get_val_from_json_fix(Askers.settings_path, "BINARY_SONIF_LOW_NOTE")
+        curr_sett_binary_high_note:       str = Utils.get_val_from_json_fix(Askers.settings_path, "BINARY_SONIF_HIGH_NOTE")
+        curr_sett_similarity_threshold: float = Utils.get_val_from_json_fix(Askers.settings_path, "SONIF_SIMILARITY_THRESHOLD")
 
         while True:
             print( "Choose an action:\n"
@@ -383,13 +383,13 @@ class Askers():
     def ask_note_binary(
         low_or_high: Literal["low", "high"]
     ) -> str | None:
-        available_notes = Utils.get_keys_from_json(Askers.notes_rel_path)
+        available_notes = Utils.get_keys_from_json(Askers.notes_path)
         lowest_note     = available_notes[0]
         highest_note    = available_notes[-1]
 
         temp_dict_key = "BINARY_SONIF_LOW_NOTE" if low_or_high == "low" else "BINARY_SONIF_HIGH_NOTE"
         current_note  = Utils.get_val_from_json_fix(
-            Askers.settings_rel_path,
+            Askers.settings_path,
             temp_dict_key)
 
         while True:
