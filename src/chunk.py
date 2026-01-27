@@ -51,7 +51,9 @@ class Chunk():
 
 
 # ================================== GETTERS ===================================
-    def get_data_mean(self) -> np.float64 | None:
+    def get_data_mean(self) -> np.float64:
+        if self.data_mean is None:
+            raise Exception("CODE IS BROKEN. NO DATA MEAN HAS BEEN CALCULATED!")
         return self.data_mean
 
 
