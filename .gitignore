@@ -10,6 +10,7 @@ output/*.flac
 output/*.wav
 output/*.mp3
 output/*.ogg
+docs/build/*
 
 
 priv_notes.txt
