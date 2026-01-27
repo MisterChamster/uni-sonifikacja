@@ -40,7 +40,6 @@ def mainloop() -> None:
     prompting user to choose a txt/csv file to load data from. Then, main 
     menu begins where user is presented with various options to choose from. 
     Their options are:
-
     - Process data, which opens a menu asking them for specific processing 
     technique and responding accordingly.
     - Sonify data, which opens a menu to choose correct sonificatin type 
