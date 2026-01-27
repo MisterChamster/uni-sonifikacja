@@ -11,6 +11,7 @@ from src.note          import Note
 
 
 src_path = Path(__file__).resolve().parent
+filebox_startpath = str(src_path.parent / "data")
 settings_path: Path = src_path / "settings.json"
 notes_path:    Path = src_path / "settings.json"
 Askers.settings_path    = settings_path
@@ -54,7 +55,7 @@ def mainloop() -> None:
 
     while True:
         loaded_data: DataSonif = DataSonif()
-        temp_success:     bool = loaded_data.get_datafile_path()
+        temp_success:     bool = loaded_data.get_datafile_path(filebox_startpath)
         if not temp_success:
             return
         load_success: bool = loaded_data.load_data()
@@ -247,7 +248,7 @@ def mainloop() -> None:
 
             elif action_asker == "change_file":
                 loaded_data: DataSonif = DataSonif()
-                temp_success: bool     = loaded_data.get_datafile_path()
+                temp_success: bool     = loaded_data.get_datafile_path(filebox_startpath)
                 if not temp_success:
                     print("Data will remain unchanged\n\n")
                     continue

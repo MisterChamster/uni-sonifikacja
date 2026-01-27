@@ -74,14 +74,11 @@ class DataSonif():
         return
 
 
-    def get_datafile_path(self) -> bool:
+    def get_datafile_path(self, filebox_startpath: str) -> bool:
         print("Choose data file in txt/csv format:")
-        datafile_path = Askers.ask_path_filedialog("f", "Choose data txt file")
+        datafile_path = Askers.ask_path_filedialog(filebox_startpath)
         if not datafile_path:
             print("No file has been chosen.")
-            return False
-        if not datafile_path.endswith((".txt", ".csv")):
-            print("Wrong file format.")
             return False
         print(f"{datafile_path}\n\n")
 
