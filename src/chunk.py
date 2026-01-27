@@ -53,6 +53,9 @@ class Chunk():
 
 
     def calculate_mean_from_data(self) -> None:
+        """
+
+        """
         if self.__data_array is None:
             print("Cannot calculate chunk mean - no data present in instance")
             return
@@ -68,6 +71,12 @@ class Chunk():
 
 # ================================== SETTERS ===================================
     def input_data_array(self, new_array: np.ndarray[np.float64] | np.ndarray[bool]) -> None:
+        """
+        Set new data array
+
+        Args:
+            new_array: An array to become new __data_array field.
+        """
         if len(new_array) != self.num_of_samples:
             raise Exception("CODE IS BROKEN. INCORRECT ARRAY LENGTH COMPARED TO INDEX VALUES!")
 
