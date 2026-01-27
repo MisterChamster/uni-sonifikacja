@@ -4,6 +4,19 @@ from src.utils  import Utils
 
 
 def settings_loop() -> None:
+    """
+    Open settings menu and handle user input.
+
+    Opens a menu to choose settings type. Then, depending on the answer 
+    returns to main menu, opens processing settings or sonification settings. 
+    After that it opens a menu for specific settings type and allows 
+    user to pick the value they want to change. When values are on/off 
+    toggle style, picking them just changes their state. When values are 
+    non-boolean, user is prompted to input a value or return. User stays 
+    in function loop as long as they want to until inputing 'r' to return 
+    to main loop.
+    """
+
     msg_val_changed = "Value successfully changed\n\n"
 
     settings_type = Askers.ask_settings_type()

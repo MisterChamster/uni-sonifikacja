@@ -3,6 +3,20 @@ import numpy as np
 
 
 class Chunk():
+    """
+    Representation of a data segment.
+
+    This is a helper class that assists with segmentation of data. It is 
+    capable of calculating data mean. Serves to make program more abstract 
+    and easier to understand.
+
+    Attributes:
+        index_start (int): Index in the main array where data from Chunk instance begins.
+        index_end (int): Index in the main array where data from Chunk instance ends.
+        num_of_samples (int): Number of samples present in Chunk.
+        __data_array (np.ndarray[np.float64] | np.ndarray[bool] | None): Data present in Chunk.
+        data_mean (np.float64 | float | None): Mean of all samples present in Chunk.
+    """
     index_start:    int
     index_end:      int
     num_of_samples: int
@@ -16,6 +30,17 @@ class Chunk():
         in_end:        int,
         in_data_array: np.ndarray[np.float64] | np.ndarray[bool] | None = None
     ) -> None:
+        """
+        Initialize Chunk instance.
+
+        Initializes Chunk instance. Calculates number of samples. Calculates 
+        samples mean if possible.
+
+        Args:
+            in_start: Index in the main array where data from Chunk instance begins.
+            in_end: Index in the main array where data from Chunk instance ends.
+            in_data_array: Data present in Chunk.
+        """
         self.index_start    = in_start
         self.index_end      = in_end
         self.num_of_samples = in_end - in_start + 1
@@ -57,5 +82,8 @@ class Chunk():
 
 # ================================== DELETERS ==================================
     def del_data_array(self) -> None:
+        """
+        Free up __data_array field space.
+        """
         self.__data_array = None
         return

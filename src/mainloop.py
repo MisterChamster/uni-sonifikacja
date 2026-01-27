@@ -32,6 +32,26 @@ Note.similatiry_threshold = sonif_sim_thold
 
 
 def mainloop() -> None:
+    """
+    Open main menu and handle user input.
+
+    This is a program's strating point and main menu. It begins with 
+    prompting user to choose a txt/csv file to load data from. Then, main 
+    menu begins where user is presented with various options to choose from. 
+    Their options are:
+
+     - Process data, which opens a menu asking them for specific processing 
+    technique and responding accordingly.
+     - Sonify data, which opens a menu to choose correct sonificatin type 
+    and handling responses accordingy.
+     - Show chart, which charts loaded data.
+     - Show histogram, which prints data values on a histogram with 200 bins.
+     - Settings, which opens settings loop.
+     - Load original data, which loads data again from the same file.
+     - Change file, which loads data from a different file chosen by user.
+     - Exit, which exits the program.
+    """
+
     while True:
         loaded_data: DataSonif = DataSonif()
         temp_success:     bool = loaded_data.get_datafile_path()
