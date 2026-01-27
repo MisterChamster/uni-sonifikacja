@@ -80,7 +80,8 @@ class Chunk():
         if len(new_array) != self.num_of_samples:
             raise Exception("CODE IS BROKEN. INCORRECT ARRAY LENGTH COMPARED TO INDEX VALUES!")
 
-        self.__data_array = new_array
+        self.__data_array = new_array.copy()
+        self.calculate_mean_from_data()
         return
 
 
