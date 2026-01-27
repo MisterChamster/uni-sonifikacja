@@ -13,19 +13,15 @@ class Askers():
 
 
     @staticmethod
-    def ask_path_filedialog(
-        node_type: str,
-        message:   str
-    ) -> str:
+    def ask_path_filedialog(starting_path: (str)) -> str:
         original_path = os.getcwd()
-        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-        os.chdir(desktop_path)
+        os.chdir(starting_path)
 
-        sel_path = ""
-        if node_type == "f":
-            sel_path = filedialog.askopenfilename(title=message)
-        elif node_type == "d":
-            sel_path = filedialog.askdirectory(title=message)
+        sel_path = filedialog.askopenfilename(
+            title="Choose a txt or csv file",
+            filetypes=[
+                ("TXT files", "*.txt"),
+                ("CSV files", "*.csv")])
 
         os.chdir(original_path)
         return sel_path
