@@ -9,8 +9,8 @@ import numpy as np
 
 
 class Utils():
-    settings_rel_path: Path
-    notes_rel_path:    Path
+    settings_path: Path
+    notes_path:    Path
 
 
     @staticmethod
@@ -19,11 +19,11 @@ class Utils():
         json_val: bool|str|int|float
     ) -> None:
 
-        with open(Utils.settings_rel_path) as f:
+        with open(Utils.settings_path) as f:
             config = json.load(f)
 
         config[json_key] = json_val
-        with open(Utils.settings_rel_path, "w") as f:
+        with open(Utils.settings_path, "w") as f:
             json.dump(config, f, indent=2)
 
 
@@ -114,7 +114,7 @@ class Utils():
     @staticmethod
     def change_setting_to_opposite(json_key: str) -> None:
         setting_val = Utils.get_val_from_json_fix(
-            Utils.settings_rel_path,
+            Utils.settings_path,
             json_key)
 
         if isinstance(setting_val, bool):

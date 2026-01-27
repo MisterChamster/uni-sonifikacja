@@ -11,23 +11,23 @@ from src.note          import Note
 
 
 src_path = Path(__file__).resolve().parent
-settings_rel_path: Path = src_path / "settings.json"
-notes_rel_path:    Path = src_path / "settings.json"
-Askers.settings_rel_path    = settings_rel_path
-Askers.notes_rel_path       = notes_rel_path
-Utils.settings_rel_path     = settings_rel_path
-Utils.notes_rel_path        = notes_rel_path
-DataSonif.settings_rel_path = settings_rel_path
-DataSonif.notes_rel_path    = notes_rel_path
+settings_path: Path = src_path / "settings.json"
+notes_path:    Path = src_path / "settings.json"
+Askers.settings_path    = settings_path
+Askers.notes_path       = notes_path
+Utils.settings_path     = settings_path
+Utils.notes_path        = notes_path
+DataSonif.settings_path = settings_path
+DataSonif.notes_path    = notes_path
 
 sample_rate: int = Utils.get_val_from_json_fix(
-    settings_rel_path,
+    settings_path,
     "SAMPLE_RATE")
 DataSonif.sample_rate = sample_rate
 Note.sample_rate      = sample_rate
 
 sonif_sim_thold: int = Utils.get_val_from_json_fix(
-    settings_rel_path,
+    settings_path,
     "SONIF_SIMILARITY_THRESHOLD")
 Note.similatiry_threshold = sonif_sim_thold
 
@@ -135,7 +135,7 @@ def mainloop() -> None:
 
                     elif data_processing_asker == "apply_paa":
                         segmenting_style_paa: Literal["count", "size"] = Utils.get_val_from_json_fix(
-                            settings_rel_path,
+                            settings_path,
                             "SEGMENTING_STYLE_PAA")
 
                         asker_segment_value = Askers.ask_segment_value(
@@ -160,7 +160,7 @@ def mainloop() -> None:
 
                     elif data_processing_asker == "convert_to_dwelltimes":
                         segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_json_fix(
-                            settings_rel_path,
+                            settings_path,
                             "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
@@ -180,7 +180,7 @@ def mainloop() -> None:
 
                     elif data_processing_asker == "convert_to_dwelltimes_condensed":
                         segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_json_fix(
-                            settings_rel_path,
+                            settings_path,
                             "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
