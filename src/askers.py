@@ -8,6 +8,16 @@ from src.utils import Utils
 
 
 class Askers():
+    """
+    Container class for asker functions.
+
+    Askers are static methods that prompt user to input a value. In most cases 
+    they can come in form of a menu or a piece of code inquiring a value to 
+    assign to a variable.
+
+    settings_path (Path): Path to a settings file.
+    notes_path (Path): Path to a notes file.
+    """
     settings_rel_path: Path
     notes_rel_path:    Path
 
