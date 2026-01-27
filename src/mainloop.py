@@ -40,16 +40,16 @@ def mainloop() -> None:
     menu begins where user is presented with various options to choose from. 
     Their options are:
 
-     - Process data, which opens a menu asking them for specific processing 
+    - Process data, which opens a menu asking them for specific processing 
     technique and responding accordingly.
-     - Sonify data, which opens a menu to choose correct sonificatin type 
+    - Sonify data, which opens a menu to choose correct sonificatin type 
     and handling responses accordingy.
-     - Show chart, which charts loaded data.
-     - Show histogram, which prints data values on a histogram with 200 bins.
-     - Settings, which opens settings loop.
-     - Load original data, which loads data again from the same file.
-     - Change file, which loads data from a different file chosen by user.
-     - Exit, which exits the program.
+    - Show chart, which charts loaded data.
+    - Show histogram, which prints data values on a histogram with 200 bins.
+    - Settings, which opens settings loop.
+    - Load original data, which loads data again from the same file.
+    - Change file, which loads data from a different file chosen by user.
+    - Exit, which exits the program.
     """
 
     while True:

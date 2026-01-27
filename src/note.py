@@ -103,12 +103,12 @@ class Note():
 
         Cuts (extended) tone so that it matches the previous sine wave. For this, 
         it needs to:
-            - Match its last frequency according to similarity threshold
-            - Also be rising or falling
+        - Match its last frequency according to similarity threshold
+        - Also be rising or falling
 
         Args:
-            is_freq_rising (bool): 
-            prev_note_last_freq (float): 
+            is_freq_rising (bool): Informs if last value of previous sine wave was higher than it's predecessor.
+            prev_note_last_freq (float): Value of the last frequency present in previous sine wave.
         """
         if self.tone is None:
             raise TypeError("[ERROR] Code is written wrong. No tone has been calculated.")
