@@ -3,3 +3,5 @@ numpy==2.3.3
 matplotlib==3.10.6
 EMD-signal==1.9.0
 soundfile==0.13.1
+
+Sphinx==9.1.0
