@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from typing   import Literal
 from datetime import datetime
 
@@ -8,8 +9,8 @@ import numpy as np
 
 
 class Utils():
-    settings_rel_path: str = "src/settings.json"
-    notes_rel_path:    str = "src/notes.json"
+    settings_rel_path: Path
+    notes_rel_path:    Path
 
 
     @staticmethod
@@ -28,7 +29,7 @@ class Utils():
 
     @staticmethod
     def fix_value_in_settings(
-        adress:      str,
+        adress:     Path,
         json_key:    str,
         default_val: bool|str|int|float
     ) -> None:
@@ -61,8 +62,8 @@ class Utils():
 
     @staticmethod
     def get_val_from_json_fix(
-        adress:      str,
-        json_key:    Literal[
+        adress:   Path,
+        json_key: Literal[
             "AUTOMATIC_NORMALIZATION_AT_LOAD",
             "AUTOMATIC_THRESHOLD_AT_LOAD",
             "SHOW_THRESHOLD_ON_CHARTS",
