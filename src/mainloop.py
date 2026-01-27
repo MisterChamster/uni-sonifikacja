@@ -10,8 +10,9 @@ from src.note          import Note
 
 
 
-settings_rel_path = "src/settings.json"
-notes_rel_path    = "src/notes.json"
+src_path = Path(__file__).resolve().parent
+settings_rel_path: Path = src_path / "settings.json"
+notes_rel_path:    Path = src_path / "settings.json"
 Askers.settings_rel_path    = settings_rel_path
 Askers.notes_rel_path       = notes_rel_path
 Utils.settings_rel_path     = settings_rel_path
