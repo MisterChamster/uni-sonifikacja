@@ -3,6 +3,22 @@ import numpy as np
 
 
 class Note():
+    """
+    Representation of a frequency (note) in time.
+
+    Attributes:
+        freq (float): Frequency.
+        og_sample_amount (int): Original amount of samples.
+        lowest_note_wavelen_samples_roundup (int): Amount of samples needed for calculating full wavelength of the lowest possible note.
+
+        time_vector (np.ndarray[np.float64]): Constatnly rising function for calculation sine wave.
+        tone (np.ndarray[np.float64] | None): Sine wave sample values array.
+        last_freq (float | None): Last frequency of calculated tone.
+        curr_sample_amount (int): Amount of samples in current tone.
+
+        sample_rate (int): Sample rate of sound.
+        similatiry_threshold (float): Threshold dictating when two frequencies are similar.
+    """
     freq: float
     og_sample_amount: int
     lowest_note_wavelen_samples_roundup: int
@@ -23,6 +39,14 @@ class Note():
         og_sample_amount: int,
         lowest_note_wavelen_samples_roundup: int
     ) -> None:
+        """
+        Initialize Note instance.
+
+        Args:
+            freq: Frequency.
+            og_sample_amount: Original amount of samples.
+            lowest_note_wavelen_samples_roundup: Amount of samples needed for calculating full wavelength of the lowest possible note.
+        """
         self.freq               = freq
         self.og_sample_amount   = og_sample_amount
         self.curr_sample_amount = og_sample_amount
@@ -36,18 +60,33 @@ class Note():
 
 
 # ============================== FUNCTIONALITIES ==============================
-    def calculate_time_vector(self) -> None: 
+    def calculate_time_vector(self) -> None:
+        """
+        Calculate and set time vector of instance.
+        """
         self.time_vector = np.arange(self.curr_sample_amount) / self.sample_rate
         return
 
 
     def calculate_tone(self) -> None:
+        """
+        Calculate and set tone of instance.
+
+        Calculates a sine wave of an instance, then sets it and last frequency.
+        """
         self.tone      = np.sin(2 * np.pi * self.freq * self.time_vector)
         self.last_freq = self.tone[-1]
         return
 
 
     def extend_with_lowest_note(self) -> None:
+        """
+        Extend time vector and tone with lowest note length.
+
+        Sets up a new amount of samples to make tone from by adding a length of 
+        the lowest possible note in samples. Then recalculates time vector and 
+        tone of an instance.
+        """
         self.curr_sample_amount += self.lowest_note_wavelen_samples_roundup
         self.calculate_time_vector()
         self.calculate_tone()
@@ -59,6 +98,18 @@ class Note():
         is_freq_rising:      bool,
         prev_note_last_freq: float
     ) -> None:
+        """
+        Cut (extended) tone to match the previous sine wave.
+
+        Cuts (extended) tone so that it matches the previous sine wave. For this, 
+        it needs to:
+            - Match its last frequency according to similarity threshold
+            - Also be rising or falling
+
+        Args:
+            is_freq_rising (bool): 
+            prev_note_last_freq (float): 
+        """
         if self.tone is None:
             raise TypeError("[ERROR] Code is written wrong. No tone has been calculated.")
 
@@ -107,12 +158,20 @@ class Note():
     # This does not check if tone is calculated for faster working
     # Check if tone is calculated before loop that uses this fun!
     def is_freq_rising_end(self) -> bool:
+        """
+        Check if tone is rising at the end.
+        """
         if self.tone[-2] < self.tone[-1]:
             return True
         return False
 
 
     def are_freqs_similar(self, freq1: float, freq2: float) -> bool:
+        """
+        Check if notes are similar.
+
+        Checks if notes are similar according to a similarity threshold.
+        """
         # My approximation threshold will be 0.03. This value is arbitrary and
         # can be changed, but I think that it'll make little, if any, noticeable difference.
         # That value probably can be safely lowered l8r!
@@ -123,8 +182,14 @@ class Note():
 
 # ================================== GETTERS ==================================
     def get_tone(self) -> np.ndarray:
+        """
+        Get tone field of an instance.
+        """
         return self.tone
 
 
     def get_last_freq(self) -> float:
+        """
+        Get last frequency field of an instance.
+        """
         return self.last_freq
