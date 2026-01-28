@@ -347,6 +347,12 @@ class Askers():
         "change_segmenting_setting_dwelltimes",
         "change_imfs_from"
     ] | None:
+        """
+        Get data settings menu action.
+
+        Returns:
+            Actions in forms of pre-defined strings or None if returning.
+        """
         returns_dict = {
             "an": "auto_normalization_at_load",
             "at": "auto_threshold_at_load",
@@ -434,6 +440,12 @@ class Askers():
             "change_binary_low_note",
             "change_binary_high_note",
             "change_similarity_threshold"] | None:
+        """
+        Get sonification settings menu action.
+
+        Returns:
+            Actions in forms of pre-defined strings or None if returning.
+        """
         returns_dict = {
             "bl": "change_binary_low_note",
             "bh": "change_binary_high_note",
@@ -462,6 +474,18 @@ class Askers():
     def ask_note_binary(
         low_or_high: Literal["low", "high"]
     ) -> str | None:
+        """
+        Get high or low note for binary sonification.
+
+        Asks user to input a low or high note name depending on argument. 
+        Value is checked if exists in notes.json.
+
+        Args:
+            low_or_high (str): Low or high note for specific prints.
+
+        Returns:
+            Note name of lowest/highest note or None if not chosen.
+        """
         available_notes = Utils.get_keys_from_json(Askers.notes_path)
         lowest_note     = available_notes[0]
         highest_note    = available_notes[-1]
@@ -490,6 +514,20 @@ class Askers():
         bin_available:    bool,
         analog_available: bool
     ) -> Literal["binary", "analog"] | None:
+        """
+        Get sonification type menu action.
+
+        Asks user to pick sonification type. Displays messages when it is 
+        not available. Picking unavailabe message makes program display 
+        the reason why it's not available.
+
+        Args:
+            bin_available (bool): Informs if binary sonification is available for choosing.
+            analog_available (bool): Informs if analog sonification is available for choosing.
+
+        Returns:
+            Actions in forms of pre-defined strings or None if returning.
+        """
         returns_dict = {
             "b": "binary",
             "a": "analog"}
