@@ -15,8 +15,9 @@ class Askers():
     they can come in form of a menu or a piece of code inquiring a value to 
     assign to a variable.
 
-    settings_path (Path): Path to a settings file.
-    notes_path (Path): Path to a notes file.
+    Attributes:
+        settings_path (Path): Path to a settings file.
+        notes_path (Path): Path to a notes file.
     """
     settings_path: Path
     notes_path:    Path
@@ -24,6 +25,18 @@ class Askers():
 
     @staticmethod
     def ask_path_filedialog(starting_path: (str)) -> str:
+        """
+        Open file dialogbox and get txt/csv file.
+
+        Opens a file dialog box that propmpts user to choose a txt or csv file, 
+        starting on a starting_path path.
+
+        Args:
+            starting_path (str): Path where dialog box opens.
+
+        Returns:
+            Path of the chosen file.
+        """
         original_path = os.getcwd()
         os.chdir(starting_path)
 
@@ -39,6 +52,18 @@ class Askers():
 
     @staticmethod
     def ask_downsampling(is_initial: bool = False) -> int|None:
+        """
+        Get downsampling n value from user.
+
+        Asks user to choose n value for downsampling that ranges from 1 to 10. 
+        If user doesn't want to downsample, returns None instead.
+
+        Args:
+            is_initial (bool): Determines if menu is for initial segmentation or not.
+
+        Returns:
+            n value for downsampling in (1, 10) or None if not chosen.
+        """
         stroing = ("Input 'exit' to exit program."
                    if is_initial
                    else "Input 'r' to return.")
@@ -77,6 +102,12 @@ class Askers():
         "original_data",
         "change_file",
         "exit"]:
+        """
+        Get main menu action.
+
+        Returns:
+            Actions in forms of pre-defined strings.
+        """
         returns_dict = {
             "p": "process_data",
             "s": "sonify",
@@ -121,6 +152,12 @@ class Askers():
         "convert_to_dwelltimes",
         "convert_to_dwelltimes_condensed",
         "appy_emd"] | None:
+        """
+        Get processing menu action.
+
+        Returns:
+            Actions in forms of pre-defined strings or None if returning.
+        """
         returns_dict = {
             "x": "reverse_order",
             "y": "reverse_sign",
@@ -160,6 +197,12 @@ class Askers():
 
     @staticmethod
     def ask_new_imfs_from() -> int | None:
+        """
+        Get number of IMF to start displaying from.
+
+        Returns:
+            Number of IMF in (min_num, max_num) or None if not chosen.
+        """
         min_num = 1
         max_num = 20
 
@@ -187,6 +230,16 @@ class Askers():
 
     @staticmethod
     def ask_imf_num(lowest: int, highest: int) -> int | None:
+        """
+        Get number of IMF to pick.
+
+        Args:
+            lowest (int): Lowest possible IMF to pick.
+            highest (int): Highest possible IMF to pick.
+
+        Returns:
+            Number of IMF in (min_num, max_num) or None if not chosen.
+        """
         while True:
             print("Enter a number of IMF You want to set as new data\n"
                   "(type 'r' to return)\n>> ", end="")
@@ -215,6 +268,20 @@ class Askers():
         data_length:      int,
         segmenting_style: Literal["count", "size"]
     ) -> int | None:
+        """
+        Get segmenting value from user.
+
+        Asks user to input a segmenting value. Prints depend on what style 
+        of segmenting is chosen. User input is checked to be in a correct 
+        range.
+
+        Args:
+            data_length (int): Length of the data to be segmented.
+            segmenting_style (str): Type of segmentation to be performed.
+
+        Returns:
+            Value of a segment (length or size) or None if not chosen.
+        """
 
         if segmenting_style == "count":
             string1 = "number of segments"
@@ -246,6 +313,12 @@ class Askers():
 
     @staticmethod
     def ask_settings_type() -> Literal["data_settings", "sonif_settings"] | None:
+        """
+        Get settings type menu action.
+
+        Returns:
+            Actions in forms of pre-defined strings or None if returning.
+        """
         returns_dict = {
             "d": "data_settings",
             "s": "sonif_settings",
