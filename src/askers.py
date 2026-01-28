@@ -437,9 +437,9 @@ class Askers():
 
     @staticmethod
     def ask_sonif_settings() -> Literal[
-            "change_binary_low_note",
-            "change_binary_high_note",
-            "change_similarity_threshold"] | None:
+        "change_binary_low_note",
+        "change_binary_high_note",
+        "change_similarity_threshold"] | None:
         """
         Get sonification settings menu action.
 
@@ -490,7 +490,9 @@ class Askers():
         lowest_note     = available_notes[0]
         highest_note    = available_notes[-1]
 
-        temp_dict_key = "BINARY_SONIF_LOW_NOTE" if low_or_high == "low" else "BINARY_SONIF_HIGH_NOTE"
+        temp_dict_key = ("BINARY_SONIF_LOW_NOTE"
+                         if low_or_high == "low"
+                         else "BINARY_SONIF_HIGH_NOTE")
         current_note  = Utils.get_val_from_json_fix(
             Askers.settings_path,
             temp_dict_key)
@@ -578,6 +580,8 @@ class Askers():
         Returns:
             Number of miliseconds that every sample lasts in output audio file or None if not chosen.
         """
+        lowest = 1
+        highest = 4000
         while True:
             print("Input new note duration (ms):\n"
                   "(type 'r' to return)\n>> ", end="")
@@ -590,11 +594,11 @@ class Askers():
                 continue
 
             asker = int(asker)
-            if asker > 4000:
-                print("Duration is too long (max 4000)\n")
+            if asker > highest:
+                print(f"Duration is too long (max {highest})\n")
                 continue
-            elif asker < 1:
-                print("Duration is too short (min 1)\n")
+            elif asker < lowest:
+                print(f"Duration is too short (min {lowest})\n")
                 continue
             return asker
 
