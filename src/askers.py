@@ -568,6 +568,16 @@ class Askers():
 
     @staticmethod
     def ask_note_duration() -> int | None:
+        """
+        Get duration of a note in ms.
+
+        Asks user how much miliseconds a single note should last. 
+        Value is then checked if it is present within a range of acceptable 
+        answers.
+
+        Returns:
+            Number of miliseconds that every sample lasts in output audio file or None if not chosen.
+        """
         while True:
             print("Input new note duration (ms):\n"
                   "(type 'r' to return)\n>> ", end="")
@@ -595,6 +605,20 @@ class Askers():
         highest_lowest_note_possible: str,
         notes:                        list[str]
     ) -> str | None:
+        """
+        Get lowest note for analog sonification from user.
+
+        Calculates a range of notes that are possible to choose from, 
+        then prompts user to choose one. Checks if input is within range.
+
+        Args:
+            current_lowest_note_name (str): Current lowest note name.
+            highest_lowest_note_possible (str): Highest lowest note name possible.
+            notes (list[str]): All notes available for sonification.
+
+        Returns:
+            Lowest note for analog sonification or None if not chosen.
+        """
         lowest_lowest_note_possible: str = notes[0]
         highest_possible_index = notes.index(highest_lowest_note_possible)
         available_notes = notes[:highest_possible_index+1]
@@ -615,6 +639,18 @@ class Askers():
 
     @staticmethod
     def ask_note_amount(available_notes_count: int) -> int | None:
+        """
+        Get amount of notes for analog sonification from user.
+
+        Asks user for the amount of notes to be used in analog sonification. 
+        Checks if value fits within a specified range.
+
+        Args:
+            available_notes_count (int): Upper note threshold (just in case).
+
+        Returns:
+            Amount of notes to be used in analog sonification or None if not chosen.
+        """
         min_amount = 5
         max_amount = (30
                       if available_notes_count >= 30
@@ -643,6 +679,15 @@ class Askers():
 
     @staticmethod
     def ask_similarity_threshold() -> float:
+        """
+        Get similarity threshold from user.
+
+        Asks user for similarity threshold for note cutting during sonification. 
+        Checks if value fits within a specified range.
+
+        Returns:
+            Similarity threshold for note cutting during sonification.
+        """
         min_val = 0.001
         max_val = 0.3
 
