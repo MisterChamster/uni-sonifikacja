@@ -6,6 +6,11 @@ class Note():
     """
     Representation of a frequency (note) in time.
 
+    This is a representation of a note that is used for sonification. Class 
+    handles generating a sine wave in an array as well as handling tone 
+    extension with lowest note wave length and cutting it to math previous 
+    sine wave.
+
     Attributes:
         freq (float): Frequency.
         og_sample_amount (int): Original amount of samples.

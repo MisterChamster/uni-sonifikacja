@@ -17,6 +17,32 @@ from src.note   import Note
 
 
 class DataSonif():
+    """
+    Representation of data to be sonified.
+
+    This class holds data array and information regarding it. It's capable of 
+    performing all processing and sonification operations on data as well as 
+    lesser operations such as showing charts and loading data.
+
+    Attributes:
+        file_path (Path | None): Path to the original file with data.
+        data_array (np.ndarray[np.float64] | np.ndarray[bool] | None): Data 
+        that will be processed and sonified, loaded from a file.
+        data_sign (str | None): Sign of data.
+        is_og_order (bool | None): Informs if data has original order or not.
+        is_og_sign (bool | None): Informs if data has original sign or not.
+        min_val (float | None): Min val from data array.
+        max_val (float | None): Max val from data array.
+        bins_count (int): Amount of bins used for creating histogram and calculating data threshold.
+        threshold (float | None): Data threshold for open/closed states.
+        is_normalized (bool): Informs if data is currently normalized.
+        downsampling_performed (list[int]): Stores all values of used to perform downsampling of the data.
+        is_converted_to_binary (bool): Informs if data is binary.
+
+        settings_path (Path): Stores path to settings.json.
+        notes_path (Path): Stores path to notes.json.
+        sample_rate (int): Output audio sample rate.
+    """
     file_path:   Path | None
     data_array:  np.ndarray[np.float64] | np.ndarray[bool] | None
     data_sign:   str | None
