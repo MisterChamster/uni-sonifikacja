@@ -62,12 +62,23 @@ class DataSonif():
 
 
     def __init__(self) -> None:
+        """
+        Initialize DataSonif instance.
+
+        Initializes an instance od DataSonif by creating empty fields.
+        """
         self.file_path   = None
         self.reset_instance_fields()
         return
 
 
     def reset_instance_fields(self) -> None:
+        """
+        Reset most fields of instance.
+
+        Resets all instance fields besides file_path. Also doesn't 
+        reset class fields.
+        """
         self.data_array  = None
         self.data_sign   = None
         self.is_og_order = None
@@ -83,6 +94,15 @@ class DataSonif():
 
 
     def downsample_data(self, n: int) -> None:
+        """
+        Downsample data in data array.
+
+        Downsamples data array by remplacing it with a new one where every n-th 
+        value from original array will be saved.
+
+        Args:
+            n (int): Value of lines that will remain, where every n-th line will not be removed.
+        """
         if n > self.get_sample_count():
             print("n is higher than the current number of loaded samples!\n")
             return
@@ -101,6 +121,17 @@ class DataSonif():
 
 
     def get_datafile_path(self, filebox_startpath: str) -> bool:
+        """
+        Ask and set path of data file.
+
+        Asks user for path to data file and sets its path as field.
+
+        Args:
+            filebox_startpath (str): Path where dialog box should open.
+
+        Returns:
+            True if path has been set, else False.
+        """
         print("Choose data file in txt/csv format:")
         datafile_path = Askers.ask_path_filedialog(filebox_startpath)
         if not datafile_path:
@@ -114,6 +145,16 @@ class DataSonif():
 
 
     def load_data(self) -> bool:
+        """
+        Load data from file path field.
+
+        Resets fields, then asks user if they want to downsample data. After 
+        that, attempts to load it from file. If succeeds, updates fields and 
+        normalizes data/calculates threshold if settings say to do so.
+
+        Returns:
+            True if data has been loaded, else False.
+        """
         self.reset_instance_fields()
 
         asker_downsample: int = Askers.ask_downsampling(True)
@@ -165,12 +206,18 @@ class DataSonif():
 
 
     def _update_min_max(self) -> None:
+        """
+        Updates min and max value fields.
+        """
         self.min_val = float(np.min(self.data_array))
         self.max_val = float(np.max(self.data_array))
         return
 
 
     def reverse_data_order(self) -> None:
+        """
+        Reverses data array.
+        """
         self.data_array = self.data_array[::-1]
         self.is_og_order = not self.is_og_order
         return
@@ -969,4 +1016,7 @@ class DataSonif():
 
 # ================================== GETTERS ==================================
     def get_sample_count(self) -> int:
+        """
+        Gets length of data array.
+        """
         return len(self.data_array)
