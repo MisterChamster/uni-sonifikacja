@@ -58,7 +58,7 @@ class DataSonif():
 
     settings_path: Path
     notes_path:    Path
-    sample_rate:       int = 44100
+    sample_rate:    int = 44100
 
 
     def __init__(self) -> None:
@@ -244,7 +244,7 @@ class DataSonif():
 
         self.is_og_sign = not self.is_og_sign
         if self.threshold:
-            self.calculate_threshold()
+            self.threshold = -self.threshold
         return
 
 
