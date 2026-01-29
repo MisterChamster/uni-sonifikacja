@@ -207,6 +207,11 @@ class DataSonif():
 
 
     def reverse_data_sign(self) -> None:
+        """
+        Reverse sign of data.
+
+        Reverses data sign and updates affected fields accordingly.
+        """
         self.data_array = -self.data_array
         self._update_min_max()
 
@@ -233,6 +238,12 @@ class DataSonif():
 
     # Normalization xnorm = (x-xmin)/(xmax-xmin)
     def normalize_data(self) -> None:
+        """
+        Normalize data array.
+
+        Performs min max normalization on data array. Updates affected fields 
+        accordingly.
+        """
         if self.is_normalized == True:
             return
 
@@ -255,6 +266,13 @@ class DataSonif():
 
     # Getting threshold as average between two sample count peaks (open and closed)
     def calculate_threshold(self) -> None:
+        """
+        Calculate open/close threshold for data array.
+
+        Calculates open/close threshold for data array by creating a histogram 
+        and finding a midpoint between two peaks. Updates affected fields 
+        accordingly.
+        """
         # Returns two ndarrays
         sample_count, voltage_val = np.histogram(
             self.data_array,
