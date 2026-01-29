@@ -26,8 +26,7 @@ class DataSonif():
 
     Attributes:
         file_path (Path | None): Path to the original file with data.
-        data_array (np.ndarray[np.float64] | np.ndarray[bool] | None): Data 
-        that will be processed and sonified, loaded from a file.
+        data_array (np.ndarray[np.float64] | np.ndarray[bool] | None): Data that will be processed and sonified, loaded from a file.
         data_sign (str | None): Sign of data.
         is_og_order (bool | None): Informs if data has original order or not.
         is_og_sign (bool | None): Informs if data has original sign or not.
@@ -43,22 +42,6 @@ class DataSonif():
         notes_path (Path): Stores path to notes.json.
         sample_rate (int): Output audio sample rate.
     """
-    file_path:   Path | None
-    data_array:  np.ndarray[np.float64] | np.ndarray[bool] | None
-    data_sign:   str | None
-    is_og_order: bool | None
-    is_og_sign:  bool | None
-    min_val:     float | None
-    max_val:     float | None
-    bins_count:  int
-    threshold:   float | None
-    is_normalized: bool
-    downsampling_performed: list[int]
-    is_converted_to_binary: bool
-
-    settings_path: Path
-    notes_path:    Path
-    sample_rate:    int = 44100
 
 
     def __init__(self) -> None:

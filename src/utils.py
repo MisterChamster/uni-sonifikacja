@@ -9,8 +9,13 @@ import numpy as np
 
 
 class Utils():
-    settings_path: Path
-    notes_path:    Path
+    """
+    Container class for various functions.
+
+    Attributes:
+        settings_path (Path): Stores path to settings.json.
+        notes_path (Path): Stores path to notes.json.
+    """
 
 
     @staticmethod

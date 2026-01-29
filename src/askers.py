@@ -19,8 +19,6 @@ class Askers():
         settings_path (Path): Path to a settings file.
         notes_path (Path): Path to a notes file.
     """
-    settings_path: Path
-    notes_path:    Path
 
 
     @staticmethod

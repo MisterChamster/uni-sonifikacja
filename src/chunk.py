@@ -17,12 +17,6 @@ class Chunk():
         __data_array (np.ndarray[np.float64] | np.ndarray[bool] | None): Data present in Chunk.
         data_mean (np.float64 | float | None): Mean of all samples present in Chunk.
     """
-    index_start:    int
-    index_end:      int
-    num_of_samples: int
-    __data_array:   np.ndarray[np.float64] | np.ndarray[bool] | None
-    data_mean:      np.float64 | float | None
-
 
     def __init__(
         self,

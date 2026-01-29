@@ -24,17 +24,6 @@ class Note():
         sample_rate (int): Sample rate of sound.
         similatiry_threshold (float): Threshold dictating when two frequencies are similar.
     """
-    freq: float
-    og_sample_amount: int
-    lowest_note_wavelen_samples_roundup: int
-
-    time_vector:        np.ndarray[np.float64]
-    tone:               np.ndarray[np.float64] | None
-    last_freq:          float | None
-    curr_sample_amount: int
-
-    sample_rate:            int = 44100
-    similatiry_threshold: float = 0.03
 
 
 # ================================== INITIAL ==================================
