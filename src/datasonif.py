@@ -14,6 +14,15 @@ from src.askers import Askers
 from src.chunk  import Chunk
 from src.note   import Note
 
+plt.rcParams.update({
+    "font.size": 14,
+    "axes.titlesize": 18,
+    "axes.labelsize": 16,
+    "xtick.labelsize": 14,
+    "ytick.labelsize": 14,
+    "legend.fontsize": 14
+})
+
 
 
 class DataSonif():
