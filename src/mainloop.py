@@ -54,7 +54,7 @@ def mainloop() -> None:
             print(f"Data downsampling:     {downsampling_info}")
             print(f"Data normalization:    {loaded_data.is_normalized}")
             print(f"Num of bins (hist):    {loaded_data.bins_count}")
-            print(f"State threshold:       {loaded_data.threshold}")
+            print(f"State threshold:       {loaded_data.threshold:.4f}")
             print(f"Num of loaded samples: {loaded_data.get_sample_count()}")
             print()
             action_asker = Askers.ask_action()
@@ -72,7 +72,7 @@ def mainloop() -> None:
                     print(f"Data downsampling:        {downsampling_info}")
                     print(f"Data normalization:       {loaded_data.is_normalized}")
                     print(f"Num of bins (hist/thold): {loaded_data.bins_count}")
-                    print(f"State threshold:          {loaded_data.threshold}")
+                    print(f"State threshold:          {loaded_data.threshold:.4f}")
                     print(f"Num of loaded samples:    {loaded_data.get_sample_count()}")
                     print()
                     is_treshold = False if not loaded_data.threshold else True
