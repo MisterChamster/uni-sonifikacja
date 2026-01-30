@@ -44,6 +44,17 @@ class Utils():
         json_key:    str,
         default_val: bool|str|int|float
     ) -> None:
+        """
+        Fix a value in json if it's broken.
+
+        Chcecks if a key is present in settings. If not, 
+        adds it with default value given.
+
+        Args:
+            adress (Path): Path to json file.
+            json_key (str): Key to fix.
+            default_val (bool|str|int|float): Value for key if fixing is needed.
+        """
 
         with open(adress) as f:
             config = json.load(f)
@@ -63,6 +74,13 @@ class Utils():
         adress:   str,
         json_key: str
     ) -> str|bool|int|float:
+        """
+        Get value from json file for given key.
+
+        Args:
+            adress (str): Path to json file.
+            json_key (str): Key to get value from.
+        """
 
         with open(adress) as f:
             config = json.load(f)
@@ -92,6 +110,19 @@ class Utils():
             "SONIF_SIMILARITY_THRESHOLD"],
         default_val: str|bool|int|float = None
     ) -> str|bool|int|float:
+        """
+        Get val from settings, fix with automatic if needed.
+
+        Attempts to get a value from settings for given literal 
+        key. If fails, attempts to fix it with pre defined values.
+
+        Args:
+            json_key (str): A literal key to get values from.
+            default_val (str|bool|int|float): Optional value for assigning non-predefined values.
+
+        Returns:
+            Value read from settings or default if there were problems.
+        """
 
         if not default_val:
             default_settings_dict = {
