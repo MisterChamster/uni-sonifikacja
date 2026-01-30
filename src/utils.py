@@ -82,30 +82,31 @@ class Utils():
         default_val: str|bool|int|float = None
     ) -> str|bool|int|float:
 
-        if not default_val:
-            default_settings_dict = {
-                "AUTOMATIC_NORMALIZATION_AT_LOAD":  True,
-                "AUTOMATIC_THRESHOLD_AT_LOAD":      True,
-                "SHOW_THRESHOLD_ON_CHARTS":         True,
-                "CUT_REMAINDER_SAMPLES_PAA":        True,
-                "CUT_REMAINDER_SAMPLES_DWELLTIMES": True,
-                "SEGMENTING_STYLE_PAA":            "count",
-                "SEGMENTING_STYLE_DWELLTIMES":     "count",
-                "EMD_CONSIDER_IMFS_FROM":           10,
-                "SAMPLE_RATE":                      44100,
-                "BINARY_SONIF_LOW_NOTE":           "D3",
-                "BINARY_SONIF_HIGH_NOTE":          "A4",
-                "BINARY_SONIF_NOTE_DURATION_MILIS": 300,
-                "ANAL_SONIF_NOTE_DURATION_MILIS":   300,
-                "ANAL_SONIF_AMOUNT_OF_USED_NOTES":  20,
-                "ANAL_SONIF_LOWEST_NOTE":          "D3",
-                "SONIF_SIMILARITY_THRESHOLD":       0.03}
-            default_val = default_settings_dict[json_key]
-
         try:
             temp = Utils.get_val_from_json(Utils.settings_path, json_key)
             return temp
+
         except:
+            if not default_val:
+                default_settings_dict = {
+                    "AUTOMATIC_NORMALIZATION_AT_LOAD":  True,
+                    "AUTOMATIC_THRESHOLD_AT_LOAD":      True,
+                    "SHOW_THRESHOLD_ON_CHARTS":         True,
+                    "CUT_REMAINDER_SAMPLES_PAA":        True,
+                    "CUT_REMAINDER_SAMPLES_DWELLTIMES": True,
+                    "SEGMENTING_STYLE_PAA":            "count",
+                    "SEGMENTING_STYLE_DWELLTIMES":     "count",
+                    "EMD_CONSIDER_IMFS_FROM":           10,
+                    "SAMPLE_RATE":                      44100,
+                    "BINARY_SONIF_LOW_NOTE":           "D3",
+                    "BINARY_SONIF_HIGH_NOTE":          "A4",
+                    "BINARY_SONIF_NOTE_DURATION_MILIS": 300,
+                    "ANAL_SONIF_NOTE_DURATION_MILIS":   300,
+                    "ANAL_SONIF_AMOUNT_OF_USED_NOTES":  20,
+                    "ANAL_SONIF_LOWEST_NOTE":          "D3",
+                    "SONIF_SIMILARITY_THRESHOLD":       0.03}
+                default_val = default_settings_dict[json_key]
+
             Utils.fix_value_in_json(Utils.settings_path, json_key, default_val)
             return default_val
 
