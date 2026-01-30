@@ -28,7 +28,7 @@ class Utils():
 
 
     @staticmethod
-    def fix_value_in_settings(
+    def fix_value_in_json(
         adress:     Path,
         json_key:    str,
         default_val: bool|str|int|float
@@ -61,8 +61,7 @@ class Utils():
 
 
     @staticmethod
-    def get_val_from_json_fix(
-        adress:   Path,
+    def get_val_from_settings_fix(
         json_key: Literal[
             "AUTOMATIC_NORMALIZATION_AT_LOAD",
             "AUTOMATIC_THRESHOLD_AT_LOAD",
@@ -104,18 +103,16 @@ class Utils():
             default_val = default_settings_dict[json_key]
 
         try:
-            temp = Utils.get_val_from_json(adress, json_key)
+            temp = Utils.get_val_from_json(Utils.settings_path, json_key)
             return temp
         except:
-            Utils.fix_value_in_settings(adress, json_key, default_val)
+            Utils.fix_value_in_json(Utils.settings_path, json_key, default_val)
             return default_val
 
 
     @staticmethod
     def change_setting_to_opposite(json_key: str) -> None:
-        setting_val = Utils.get_val_from_json_fix(
-            Utils.settings_path,
-            json_key)
+        setting_val = Utils.get_val_from_settings_fix(json_key)
 
         if isinstance(setting_val, bool):
             setting_val = not setting_val

@@ -133,14 +133,12 @@ class DataSonif():
         self.is_og_order = True
         self.is_og_sign  = True
 
-        is_normalization_automatic = Utils.get_val_from_json_fix(
-            self.settings_path,
+        is_normalization_automatic = Utils.get_val_from_settings_fix(
             "AUTOMATIC_NORMALIZATION_AT_LOAD")
         if is_normalization_automatic:
             self.normalize_data()
 
-        is_threshold_automatic = Utils.get_val_from_json_fix(
-            self.settings_path,
+        is_threshold_automatic = Utils.get_val_from_settings_fix(
             "AUTOMATIC_THRESHOLD_AT_LOAD")
         if is_threshold_automatic:
             self.calculate_threshold()
@@ -261,8 +259,7 @@ class DataSonif():
         segmenting_style: Literal["count", "size"]
     ) -> None:
 
-        cut_string_paa = Utils.get_val_from_json_fix(
-            self.settings_path,
+        cut_string_paa = Utils.get_val_from_settings_fix(
             "CUT_REMAINDER_SAMPLES_PAA")
 
         if segmenting_style == "count":
@@ -345,8 +342,7 @@ class DataSonif():
         segmenting_style: Literal["count", "size"]
     ) -> None:
 
-        cut_string_paa = Utils.get_val_from_json_fix(
-            self.settings_path,
+        cut_string_paa = Utils.get_val_from_settings_fix(
             "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         if not self.threshold:
             self.calculate_threshold()
@@ -432,8 +428,7 @@ class DataSonif():
         segmenting_style: Literal["count", "size"]
     ) -> None:
 
-        cut_string_paa = Utils.get_val_from_json_fix(
-            self.settings_path,
+        cut_string_paa = Utils.get_val_from_settings_fix(
             "CUT_REMAINDER_SAMPLES_DWELLTIMES")
         if not self.threshold:
             self.calculate_threshold()
@@ -560,22 +555,19 @@ class DataSonif():
 
     def binary_sonif_loop(self) -> None:
         msg_val_changed = "Value successfully changed\n\n"
-        low_note_name: str = Utils.get_val_from_json_fix(
-            self.settings_path,
+        low_note_name: str = Utils.get_val_from_settings_fix(
             "BINARY_SONIF_LOW_NOTE")
         low_note_freq: float = Utils.get_val_from_json(
             self.notes_path,
             low_note_name)
-        high_note_name: str = Utils.get_val_from_json_fix(
-            self.settings_path,
+        high_note_name: str = Utils.get_val_from_settings_fix(
             "BINARY_SONIF_HIGH_NOTE")
         high_note_freq: float = Utils.get_val_from_json(
             self.notes_path,
             high_note_name)
 
         while True:
-            note_duration_milis: int = Utils.get_val_from_json_fix(
-                self.settings_path,
+            note_duration_milis: int = Utils.get_val_from_settings_fix(
                 "BINARY_SONIF_NOTE_DURATION_MILIS")
 
             final_length_milis: int = (note_duration_milis *
@@ -699,17 +691,14 @@ class DataSonif():
 
         notes = Utils.get_keys_from_json(self.notes_path)
         while True:
-            lowest_note_name: str = Utils.get_val_from_json_fix(
-                self.settings_path,
+            lowest_note_name: str = Utils.get_val_from_settings_fix(
                 "ANAL_SONIF_LOWEST_NOTE")
             lowest_note_freq: float = Utils.get_val_from_json(
                 self.notes_path,
                 lowest_note_name)
-            note_duration_milis: int = Utils.get_val_from_json_fix(
-                self.settings_path,
+            note_duration_milis: int = Utils.get_val_from_settings_fix(
                 "ANAL_SONIF_NOTE_DURATION_MILIS")
-            notes_used_amount: int = Utils.get_val_from_json_fix(
-                self.settings_path,
+            notes_used_amount: int = Utils.get_val_from_settings_fix(
                 "ANAL_SONIF_AMOUNT_OF_USED_NOTES")
 
             highest_note_name = Utils.get_highest_note_anal_safe(
@@ -846,8 +835,7 @@ class DataSonif():
             print("EMD cannot be applied - data is not normalized")
             return False
 
-        consider_imfs_from = Utils.get_val_from_json_fix(
-            self.settings_path,
+        consider_imfs_from = Utils.get_val_from_settings_fix(
             "EMD_CONSIDER_IMFS_FROM")
 
         emd = EMD()
@@ -908,8 +896,7 @@ class DataSonif():
                               s=1)
 
         # Threshold line
-        show_thold: bool = Utils.get_val_from_json_fix(
-            self.settings_path,
+        show_thold: bool = Utils.get_val_from_settings_fix(
             "SHOW_THRESHOLD_ON_CHARTS")
         if show_thold and self.threshold:
             plt.axhline(y=self.threshold, color="red")
@@ -933,8 +920,7 @@ class DataSonif():
         plt.hist(self.data_array, bins=self.bins_count)
 
         # Threshold line
-        show_thold: bool = Utils.get_val_from_json_fix(
-            self.settings_path,
+        show_thold: bool = Utils.get_val_from_settings_fix(
             "SHOW_THRESHOLD_ON_CHARTS")
         if show_thold and self.threshold:
             plt.axvline(x=self.threshold, color="red")
