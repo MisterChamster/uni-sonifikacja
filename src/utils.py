@@ -17,12 +17,18 @@ class Utils():
         notes_path (Path): Stores path to notes.json.
     """
 
-
     @staticmethod
     def save_value_to_settings(
         json_key: str,
         json_val: bool|str|int|float
     ) -> None:
+        """
+        Save value with key to settings.json.
+
+        Args:
+            json_key (str): Key for value to be saved.
+            json_val (bool|str|int|float): Value to be saved.
+        """
 
         with open(Utils.settings_path) as f:
             config = json.load(f)
