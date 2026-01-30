@@ -440,7 +440,7 @@ class DataSonif():
         Converts binary data array to dwell times.
 
         Based on segment value, divides data array into segments and based on 
-        their mean comaperd to state threshold decides a binary state for 
+        their mean compared to state threshold, decides a binary state for 
         whole segment. All values in the segment are then converted to that 
         state.
         Amount of segments and their size is based on function input.
@@ -538,6 +538,19 @@ class DataSonif():
         segment_value:    int,
         segmenting_style: Literal["count", "size"]
     ) -> None:
+        """
+        Converts binary data array to reduced dwell times.
+
+        Based on segment value, divides data array into segments and based on 
+        their mean compared to state threshold, decides a binary state for 
+        whole segment. From these states a new array is created, replacing 
+        the old one after it's filled.
+        Amount of segments and their size is based on function input.
+
+        Args:
+            segment_value (int): Value of segment, either amount of segments or their size.
+            segmenting_style (str): Style of segmenting, "count" or "size".
+        """
 
         cut_string_paa = Utils.get_val_from_json_fix(
             self.settings_path,
@@ -601,6 +614,9 @@ class DataSonif():
         segment_value:    int,
         segmenting_style: str
     ) -> None:
+        """
+        Convert data array to reduced dwell times.
+        """
 
         if not self.is_converted_to_binary:
             self.convert_data_to_binary()
