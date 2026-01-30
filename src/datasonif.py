@@ -640,7 +640,7 @@ class DataSonif():
         Iteratively for every value in data array, decides frequency for 
         evey sample, creates an extended sine wave in an array, cuts it to 
         match constant duration and adds it to audio array. When audio array 
-        is filled, it's sine waves are joined into a flac file saved in 
+        is filled, it's sine waves are joined into a flac file and saved in 
         outputs directory.
 
         Args:
@@ -777,6 +777,21 @@ class DataSonif():
         notes_used:          list[str],
         notes_dict:          dict[str, float]
     ) -> None:
+        """
+        Perform analog sonification on data array.
+
+        Iteratively for every value in data array, decides frequency for 
+        sample by assigning it to a correct bin and finding corresponding 
+        value in the freqs array. Then creates an extended sine wave 
+        in an array, cuts it to match constant duration and adds it to 
+        audio array. When audio array is filled, it's sine waves are 
+        joined into a flac file and saved in outputs directory.
+
+        Args:
+            note_duration_milis (int): Duration of note for a single sample.
+            notes_used (List[str]): Note names used for sonification.
+            notes_dict: (dict[str, float]): Note to frequency dictionary.
+        """
         sample_amount_for_note: int = int((note_duration_milis/1000) * self.sample_rate)
         bin_count: int = len(notes_used)
         audio: list = []
@@ -833,6 +848,14 @@ class DataSonif():
 
 
     def analog_sonif_loop(self) -> None:
+        """
+        Asker loop for analog sonification.
+
+        Asker loop for analog sonification (not in Askers class because 
+        performs it operations on DataSonif). Prints information 
+        regarding sonification and allows changing note length, lowest 
+        note, amount of notes as well as analog sonification itself.
+        """
         impossible_anal_message = (
             "Analog sonification cannot be performed.\n"
             "The issue results from messed settings.json or notes.json.\n"
@@ -986,6 +1009,16 @@ class DataSonif():
 
 # ==================================== EMD ====================================
     def apply_emd(self) -> bool:
+        """
+        Apply EMD decomposition on data array and let user choose IMF.
+
+        Applies EMD decomposition on data array and displays IMFs possible for 
+        choosing. Then asks user to select IMF to replace data array or return. 
+        If an IMF is chosen it also updates affected fields accordingly.
+
+        Returns:
+            True if EMD has been applied correctly.
+        """
         if not self.is_normalized:
             print("EMD cannot be applied - data is not normalized")
             return False
@@ -1047,6 +1080,11 @@ class DataSonif():
 
 # ================================== PLOTTING ==================================
     def show_chart(self) -> None:
+        """
+        Plot data array on a chart.
+
+        Plots data array on a chart. Can also show threshold.
+        """
         plt.scatter(np.arange(self.data_array.shape[0]),
                               self.data_array,
                               s=1)
@@ -1074,6 +1112,11 @@ class DataSonif():
 
 
     def show_histogram(self) -> None:
+        """
+        Plot data array histogram on a chart.
+
+        Creates a histogram with 200 bins and charts it. Can show threshold.
+        """
         plt.hist(self.data_array, bins=self.bins_count)
 
         # Threshold line
