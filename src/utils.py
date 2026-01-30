@@ -71,7 +71,7 @@ class Utils():
 
     @staticmethod
     def get_val_from_json(
-        adress:   str,
+        adress:  Path,
         json_key: str
     ) -> str|bool|int|float:
         """
@@ -181,25 +181,25 @@ class Utils():
 
 
     @staticmethod
-    def get_keys_from_json(rel_adress: str) -> list[str]:
+    def get_keys_from_json(json_adress: Path) -> list[str]:
         """
         Get keys from json file.
 
         Args:
-            rel_adress (str): Adress of the json file.
+            json_adress (Path): Adress of the json file.
 
         Returns:
             List of keys from chosen json file.
         """
-        with open(rel_adress) as f:
+        with open(json_adress) as f:
             dict_from_json = json.load(f)
 
         return list(dict_from_json.keys())
 
 
     @staticmethod
-    def get_dict_from_json(rel_adress: str) -> dict[str]:
-        with open(rel_adress) as f:
+    def get_dict_from_json(json_adress: Path) -> dict[str]:
+        with open(json_adress) as f:
             dict_from_json = json.load(f)
 
         return dict_from_json

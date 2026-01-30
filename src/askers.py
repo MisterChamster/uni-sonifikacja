@@ -22,7 +22,7 @@ class Askers():
 
 
     @staticmethod
-    def ask_path_filedialog(starting_path: (str)) -> str:
+    def ask_path_filedialog(starting_path: str) -> str:
         """
         Open file dialogbox and get txt/csv file.
 
