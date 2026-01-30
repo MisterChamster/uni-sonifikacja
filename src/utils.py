@@ -315,8 +315,19 @@ class Utils():
         notes_amount: int
     ) -> str | None:
         """
+        Get highest note name for analog sonification.
+
         Checks if it is possible to get the highest note.
-        Then, calculates the highest note name and returns it.
+        Then, calculates the highest note name and returns it 
+        or returns None if check fails.
+
+        Args:
+            notes (list[str]): List of note names.
+            lowest_note (str): Low note name.
+            notes_amount (int): Amount of notes for analog sonification.
+
+        Returns:
+            Highest possible note name.
         """
         is_anal_possible = Utils._is_anal_possible(
             notes,
@@ -339,8 +350,18 @@ class Utils():
         notes_amount: int
     ) -> str:
         """
-        Return the highest possible lowest note that can be selected when choosing
-        a fixed number of notes from an ordered note list.
+        Get highest possible name of the lowest note.
+
+        Returns the highest possible lowest note name that can 
+        be selected when choosing a fixed number of notes 
+        from an ordered note list.
+
+        Args:
+            notes (list[str]): List of note names.
+            notes_amount (int): Amount of notes for analog sonification.
+
+        Returns:
+            Highest possible name of the lowest note.
         """
         highest_lowest_note_index = len(notes) - notes_amount
         highest_lowest_note       = notes[highest_lowest_note_index]
@@ -353,6 +374,20 @@ class Utils():
         lowest_note:  str,
         notes_amount: int
     ) -> list[str]:
+        """
+        Get a list of notes to be used in analog sonification.
+
+        Gets a list of notes to be used in analog sonification 
+        based on amount ouf notes and lowest note name.
+
+        Args:
+            notes (list[str]): List of note names.
+            lowest_note (str): Low note name.
+            notes_amount (int): Amount of notes for analog sonification.
+
+        Returns:
+            List of names of notes to be used in analog sonification.
+        """
         lowest_index = notes.index(lowest_note)
         notes = notes[lowest_index:]
         notes = notes[:notes_amount]
