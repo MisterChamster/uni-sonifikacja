@@ -109,7 +109,7 @@ class Askers():
         "apply_paa",
         "convert_to_bin",
         "convert_to_dwelltimes",
-        "convert_to_dwelltimes_condensed",
+        "convert_to_dwelltimes_reduced",
         "appy_emd"] | None:
         returns_dict = {
             "x": "reverse_order",
@@ -120,7 +120,7 @@ class Askers():
             "p": "apply_paa",
             "b": "convert_to_bin",
             "i": "convert_to_dwelltimes",
-            "c": "convert_to_dwelltimes_condensed",
+            "c": "convert_to_dwelltimes_reduced",
             "e": "appy_emd",
             "r": None}
         normalized_msg = "already normalized" if is_normalized else "not normalized"
@@ -137,7 +137,7 @@ class Askers():
                   "p - Apply PAA downsampling\n"
                  f"b - Convert data to binary ({binary_msg})\n"
                   "i - Convert data to dwell times\n"
-                  "c - Convert data to condensed dwell times\n"
+                  "c - Convert data to reduced dwell times\n"
                   "e - Apply EMD method\n"
                   "r - Return to main menu\n>> ", end="")
             asker = input().strip().lower()

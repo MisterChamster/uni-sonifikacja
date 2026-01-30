@@ -425,8 +425,8 @@ class DataSonif():
         return
 
 
-# =========================== CONDENSED DWELL TIMES ===========================
-    def __binary_to_dwelltimes_CONDENSED(
+# ============================ REDUCED DWELL TIMES ============================
+    def __binary_to_dwelltimes_REDUCED(
         self,
         segment_value:    int,
         segmenting_style: Literal["count", "size"]
@@ -489,7 +489,7 @@ class DataSonif():
         return
 
 
-    def convert_to_dwell_times_CONDENSED(
+    def convert_to_dwell_times_REDUCED(
         self,
         segment_value:    int,
         segmenting_style: str
@@ -498,7 +498,7 @@ class DataSonif():
         if not self.is_converted_to_binary:
             self.convert_data_to_binary()
 
-        self.__binary_to_dwelltimes_CONDENSED(
+        self.__binary_to_dwelltimes_REDUCED(
             segment_value,
             segmenting_style)
         return
