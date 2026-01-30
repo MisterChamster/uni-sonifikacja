@@ -634,6 +634,20 @@ class DataSonif():
         low_note_freq:       float,
         high_note_freq:      float
     ) -> None:
+        """
+        Perform binary sonification on data array.
+
+        Iteratively for every value in data array, decides frequency for 
+        evey sample, creates an extended sine wave in an array, cuts it to 
+        match constant duration and adds it to audio array. When audio array 
+        is filled, it's sine waves are joined into a flac file saved in 
+        outputs directory.
+
+        Args:
+            note_duration_milis (int): Duration of note for a single sample.
+            low_note_freq (float): Frequency of high note.
+            high_note_freq (float): Frequency of low note.
+        """
         sample_amount_for_note: int = int((note_duration_milis/1000) * self.sample_rate)
         audio: list = []
         longest_wavelen_in_samples: int = math.ceil(self.sample_rate / low_note_freq)
@@ -682,6 +696,13 @@ class DataSonif():
 
 
     def binary_sonif_loop(self) -> None:
+        """
+        Asker loop for binary sonification.
+
+        Asker loop for binary sonification (not in Askers class because performs 
+        it operations on DataSonif). Prints information regarding sonification 
+        and allows changing note length as well as binary sonification itself.
+        """
         msg_val_changed = "Value successfully changed\n\n"
         low_note_name: str = Utils.get_val_from_json_fix(
             self.settings_path,
