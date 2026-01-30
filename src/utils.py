@@ -155,6 +155,16 @@ class Utils():
 
     @staticmethod
     def change_setting_to_opposite(json_key: str) -> None:
+        """
+        Change binary settings to opposite.
+
+        Changes two-state settings to opposite to what is 
+        currently set. Is able to change bool values, 
+        size/count and fixed/user.
+
+        Args:
+            json_key: Key to change the value of.
+        """
         setting_val = Utils.get_val_from_settings_fix(json_key)
 
         if isinstance(setting_val, bool):
@@ -172,6 +182,15 @@ class Utils():
 
     @staticmethod
     def get_keys_from_json(rel_adress: str) -> list[str]:
+        """
+        Get keys from json file.
+
+        Args:
+            rel_adress (str): Adress of the json file.
+
+        Returns:
+            List of keys from chosen json file.
+        """
         with open(rel_adress) as f:
             dict_from_json = json.load(f)
 
@@ -291,6 +310,12 @@ class Utils():
 
     @staticmethod
     def draw_tone(tone: np.ndarray) -> None:
+        """
+        Plots a soundwave on a chart.
+
+        Args:
+            tone (np.ndarray): Soundwave to draw.
+        """
         plt.figure()
         plt.plot(tone)
         plt.xlabel("Sample")
