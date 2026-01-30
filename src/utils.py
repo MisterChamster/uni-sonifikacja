@@ -199,6 +199,15 @@ class Utils():
 
     @staticmethod
     def get_dict_from_json(json_adress: Path) -> dict[str]:
+        """
+        Get dictionary from json file.
+
+        Args:
+            json_adress (Path): Adress of the json file.
+
+        Returns:
+            Dictionary extracted from json file.
+        """
         with open(json_adress) as f:
             dict_from_json = json.load(f)
 
@@ -207,6 +216,15 @@ class Utils():
 
     @staticmethod
     def human_read_milis(milis: int) -> str:
+        """
+        Convert milis to human readable.
+
+        Args:
+            milis (int): Miliseconds to convert to readable.
+
+        Returns:
+            Miliseconds in human readable.
+        """
         seconds = milis // 1000
         minutes, seconds = divmod(seconds, 60)
         hours, minutes = divmod(minutes, 60)
@@ -224,6 +242,14 @@ class Utils():
 
     @staticmethod
     def get_curr_time_to_name() -> str:
+        """
+        Get current time.
+
+        Gets current time to add to audio file name.
+
+        Returns:
+            Current time string.
+        """
         currtime: datetime   = datetime.now()
         currtime_string: str = currtime.strftime("%Y-%m-%d_%H:%M:%S")
         return currtime_string
@@ -235,6 +261,17 @@ class Utils():
         lowest_note:  str,
         notes_amount: int
     ) -> bool:
+        """
+        Check if analog sonification is possible.
+
+        Args:
+            notes (list[str]): Notes for analog sonification.
+            lowest_note (str): Lowest note for analog sonification.
+            notes_amount (int): Amount of notes for analog sonification.
+
+        Returns:
+            True if analog sonification is possible.
+        """
         if not lowest_note in notes:
             return False
 
@@ -252,6 +289,20 @@ class Utils():
         lowest_note:  str,
         notes_amount: int
     ) -> str:
+        """
+        Calculate highest note name for analog sonification.
+
+        Calculates the highest note name for given lowest note 
+        and note amount.
+
+        Args:
+            notes (list[str]): List of note names.
+            lowest_note (str): Low note name.
+            notes_amount (int): Amount of notes for analog sonification.
+
+        Returns:
+            Highest possible note name.
+        """
         lowest_note_index: int  = notes.index(lowest_note)
         highest_note_index: int = lowest_note_index + notes_amount - 1
         return notes[highest_note_index]
