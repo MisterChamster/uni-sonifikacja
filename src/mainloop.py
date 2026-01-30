@@ -179,7 +179,7 @@ def mainloop() -> None:
                             segmenting_style_dwt)
                         print("Done!\n\n")
 
-                    elif data_processing_asker == "convert_to_dwelltimes_condensed":
+                    elif data_processing_asker == "convert_to_dwelltimes_reduced":
                         segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_json_fix(
                             settings_path,
                             "SEGMENTING_STYLE_DWELLTIMES")
@@ -193,8 +193,8 @@ def mainloop() -> None:
                             print()
                             continue
 
-                        print("Converting data to condensed dwell times...")
-                        loaded_data.convert_to_dwell_times_CONDENSED(
+                        print("Converting data to reduced dwell times...")
+                        loaded_data.convert_to_dwell_times_REDUCED(
                             asker_segment_value,
                             segmenting_style_dwt)
                         print("Done!\n\n")
