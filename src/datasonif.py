@@ -281,7 +281,7 @@ class DataSonif():
         accordingly.
         """
         # Returns two ndarrays
-        sample_count, voltage_val = np.histogram(
+        sample_count, current_val = np.histogram(
             self.data_array,
             bins=self.bins_count)
         halfarr = int(self.bins_count/2)
@@ -291,35 +291,35 @@ class DataSonif():
 
         threshold_index = (first_peak_index + second_peak_index)/2
 
-        # There are more voltages than sample counts. So, if mid index between
+        # There are more currents than sample counts. So, if mid index between
         # two peaks is odd, we have to round it up. If midpoint is even, we need
-        # to calculate average voltage between index i and i+1.
+        # to calculate average current between index i and i+1.
 
         # Example 1:
         # Samples:  [1000, 6000, 2000, 3000, 5000, 1000]
-        # Voltages: [0, 1.7, 3.3, 5, 6.7, 8.3, 10]
+        # Currents: [0, 1.7, 3.3, 5, 6.7, 8.3, 10]
 
         # Here, our sample peaks are at index 1 and 4. (1+4)/2 = 2.5 => 3
-        # 5V has index 3 so it checks
+        # 5pA has index 3 so it checks
 
         # Example 2:
         # Samples:  [1000, 6000, 2000, 5000, 1000]
-        # Voltages: [0, 2, 4, 6, 8, 10]
+        # Currents: [0, 2, 4, 6, 8, 10]
 
         # Here, our sample peaks are at index 1 and 3. (1+3)/2 = 2
-        # 4V has index 2, but as we see 2000 samples are between 4 and 6V.
-        # Thus, calculating (4+6)/2 = 5V returns us a truest average voltage
-        # between two peaks. Keep in mind that average voltage is still not an
+        # 4pA has index 2, but as we see 2000 samples are between 4 and 6pA.
+        # Thus, calculating (4+6)/2 = 5pA returns us a truest average current
+        # between two peaks. Keep in mind that average current is still not an
         # accurate threshold between open/closed states!!
 
         if threshold_index != int(threshold_index):
             threshold_index = int(threshold_index + 0.5)
-            threshold_val   = voltage_val[threshold_index]
+            threshold_val   = current_val[threshold_index]
 
         elif threshold_index == int(threshold_index):
             threshold_index = int(threshold_index)
-            tempval1 = voltage_val[threshold_index]
-            tempval2 = voltage_val[threshold_index+1]
+            tempval1 = current_val[threshold_index]
+            tempval2 = current_val[threshold_index+1]
             threshold_val = (tempval1+tempval2)/2
 
         self.threshold = threshold_val
@@ -1089,9 +1089,9 @@ class DataSonif():
 
         plt.xlabel("Sample index")
         if self.is_normalized:
-            plt.ylabel("Normalised Voltage")
+            plt.ylabel("Normalised Current")
         else:
-            plt.ylabel("Voltage [V]")
+            plt.ylabel("Current [pA]")
         plt.title('Open and closed states of the ion channel in time (perceived in samples)')
 
         plt.show()
@@ -1114,10 +1114,10 @@ class DataSonif():
 
         plt.ylabel("Sample count")
         if self.is_normalized == True:
-            plt.xlabel("Normalised Voltage")
+            plt.xlabel("Normalised Current")
         else:
-            plt.xlabel("Voltage [V]")
-        plt.title('Histogram of number of samples per voltage')
+            plt.xlabel("Current [pA]")
+        plt.title('Histogram of number of samples per current')
 
         plt.show()
         return
