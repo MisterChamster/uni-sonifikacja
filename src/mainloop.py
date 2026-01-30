@@ -21,15 +21,11 @@ Utils.notes_path        = notes_path
 DataSonif.settings_path = settings_path
 DataSonif.notes_path    = notes_path
 
-sample_rate: int = Utils.get_val_from_json_fix(
-    settings_path,
-    "SAMPLE_RATE")
+sample_rate: int = Utils.get_val_from_settings_fix("SAMPLE_RATE")
 DataSonif.sample_rate = sample_rate
 Note.sample_rate      = sample_rate
 
-sonif_sim_thold: int = Utils.get_val_from_json_fix(
-    settings_path,
-    "SONIF_SIMILARITY_THRESHOLD")
+sonif_sim_thold: int = Utils.get_val_from_settings_fix("SONIF_SIMILARITY_THRESHOLD")
 Note.similatiry_threshold = sonif_sim_thold
 
 
@@ -135,8 +131,7 @@ def mainloop() -> None:
                         print("Done!\n\n")
 
                     elif data_processing_asker == "apply_paa":
-                        segmenting_style_paa: Literal["count", "size"] = Utils.get_val_from_json_fix(
-                            settings_path,
+                        segmenting_style_paa: Literal["count", "size"] = Utils.get_val_from_settings_fix(
                             "SEGMENTING_STYLE_PAA")
 
                         asker_segment_value = Askers.ask_segment_value(
@@ -160,8 +155,7 @@ def mainloop() -> None:
                         print("Done!\n\n")
 
                     elif data_processing_asker == "convert_to_dwelltimes":
-                        segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_json_fix(
-                            settings_path,
+                        segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_settings_fix(
                             "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
@@ -180,8 +174,7 @@ def mainloop() -> None:
                         print("Done!\n\n")
 
                     elif data_processing_asker == "convert_to_dwelltimes_reduced":
-                        segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_json_fix(
-                            settings_path,
+                        segmenting_style_dwt: Literal["count", "size"] = Utils.get_val_from_settings_fix(
                             "SEGMENTING_STYLE_DWELLTIMES")
 
                         asker_segment_value = Askers.ask_segment_value(
