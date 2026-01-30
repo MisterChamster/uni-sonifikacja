@@ -1,9 +1,6 @@
 src package
 ===========
 
-Submodules
-----------
-
 src.askers module
 -----------------
 
@@ -67,11 +64,3 @@ src.utils module
    :show-inheritance:
    :undoc-members:
 
-Module contents
----------------
-
-.. automodule:: src
-   :members:
-   :no-index:
-   :show-inheritance:
-   :undoc-members:

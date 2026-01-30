@@ -24,7 +24,12 @@ extensions = ["sphinx.ext.autodoc",
 
 templates_path = ['_templates']
 exclude_patterns = []
-
+latex_engine = "pdflatex"
+latex_elements = {
+    "papersize": "a4paper",
+    "pointsize": "12pt",
+    "classoptions": ",oneside"
+}
 
 
 # -- Options for HTML output -------------------------------------------------
