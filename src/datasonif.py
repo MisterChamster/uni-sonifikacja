@@ -334,6 +334,18 @@ class DataSonif():
         segment_value:    int,
         segmenting_style: Literal["count", "size"]
     ) -> None:
+        """
+        Apply PAA aggregation on data array.
+
+        Applies PAA aggregation on data array by cutting it into segments and 
+        calculating their mean, from which a new array is created, replacing 
+        the old one after it's filled.
+        Amount of segments and their size is based on function input.
+
+        Args:
+            segment_value (int): Value of segment, either amount of segments or their size.
+            segmenting_style (str): Style of segmenting, "count" or "size".
+        """
 
         cut_string_paa = Utils.get_val_from_json_fix(
             self.settings_path,
@@ -393,6 +405,12 @@ class DataSonif():
 
 # ============================= BINARY CONVERSION =============================
     def convert_data_to_binary(self) -> None:
+        """
+        Convert data array to binary.
+
+        Converts samples in data array to binary values by comparing them 
+        to state threshold.
+        """
         if not self.is_normalized:
             self.normalize_data()
 
@@ -418,6 +436,19 @@ class DataSonif():
         segment_value:    int,
         segmenting_style: Literal["count", "size"]
     ) -> None:
+        """
+        Converts binary data array to dwell times.
+
+        Based on segment value, divides data array into segments and based on 
+        their mean comaperd to state threshold decides a binary state for 
+        whole segment. All values in the segment are then converted to that 
+        state.
+        Amount of segments and their size is based on function input.
+
+        Args:
+            segment_value (int): Value of segment, either amount of segments or their size.
+            segmenting_style (str): Style of segmenting, "count" or "size".
+        """
 
         cut_string_paa = Utils.get_val_from_json_fix(
             self.settings_path,
@@ -489,7 +520,9 @@ class DataSonif():
         segment_value:    int,
         segmenting_style: str
     ) -> None:
-
+        """
+        Convert data array to dwell times.
+        """
         if not self.is_converted_to_binary:
             self.convert_data_to_binary()
 
