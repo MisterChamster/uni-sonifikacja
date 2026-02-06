@@ -19,9 +19,7 @@ class Askers():
 
         sel_path = filedialog.askopenfilename(
             title="Choose a txt or csv file",
-            filetypes=[
-                ("TXT files", "*.txt"),
-                ("CSV files", "*.csv")])
+            filetypes=[("TXT or CSV files", "*.txt *.csv")])
 
         os.chdir(original_path)
         return sel_path
