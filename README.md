@@ -1,5 +1,9 @@
 # uni-sonifikacja
 
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+
 ## Installation
 ```bash
 git clone https://github.com/MisterChamster/uni-sonifikacja.git sonif
