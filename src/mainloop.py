@@ -13,7 +13,7 @@ from src.note          import Note
 src_path = Path(__file__).resolve().parent
 filebox_startpath = str(src_path.parent / "data")
 settings_path: Path = src_path / "settings.json"
-notes_path:    Path = src_path / "settings.json"
+notes_path:    Path = src_path / "notes.json"
 Askers.settings_path    = settings_path
 Askers.notes_path       = notes_path
 Utils.settings_path     = settings_path
