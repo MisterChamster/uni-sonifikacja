@@ -29,7 +29,7 @@ class Utils():
 
     @staticmethod
     def fix_value_in_json(
-        adress:     Path,
+        adress:      Path,
         json_key:    str,
         default_val: bool|str|int|float
     ) -> None:
