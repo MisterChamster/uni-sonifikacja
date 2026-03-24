@@ -45,7 +45,7 @@ class DataSonif():
 
 
     def __init__(self) -> None:
-        self.file_path   = None
+        self.file_path = None
         self.reset_instance_fields()
         return
 
@@ -91,7 +91,6 @@ class DataSonif():
             return False
         print(f"{datafile_path}\n\n")
 
-        datafile_path = Path(datafile_path)
         self.file_path = datafile_path
         return True
 

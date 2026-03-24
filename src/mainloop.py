@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing  import Literal
-import os
 
 from src.askers        import Askers
 from src.datasonif     import DataSonif
@@ -211,7 +210,7 @@ def mainloop() -> None:
                 print("\n")
 
             elif action_asker == "original_data":
-                if not os.path.exists(loaded_data.file_path):
+                if not loaded_data.file_path.exists():
                     print(f"Chosen file no longer exists in path {loaded_data.file_path}")
                     continue
                 print(loaded_data.file_path, "\n")

@@ -1,4 +1,4 @@
-import os
+from os import chdir
 from pathlib import Path
 from tkinter import filedialog
 from typing  import Literal
@@ -13,15 +13,18 @@ class Askers():
 
 
     @staticmethod
-    def ask_path_filedialog(starting_path: str) -> str:
-        original_path = os.getcwd()
-        os.chdir(starting_path)
+    def ask_path_filedialog(starting_path: Path) -> Path | None:
+        original_path = Path.cwd()
+        chdir(starting_path)
 
         sel_path = filedialog.askopenfilename(
             title="Choose a txt or csv file",
             filetypes=[("TXT or CSV files", "*.txt *.csv")])
+        if sel_path == "":
+            return
 
-        os.chdir(original_path)
+        sel_path = Path(sel_path)
+        chdir(original_path)
         return sel_path
 
 
